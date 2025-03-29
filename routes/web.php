@@ -7,6 +7,8 @@ use App\Http\Controllers\Sections\SectionsController;
 use App\Http\Controllers\Students\FeeInvoiceController;
 use App\Http\Controllers\Students\FeesController;
 use App\Http\Controllers\Students\GraduatedController;
+use App\Http\Controllers\Students\PaymentStudentController;
+use App\Http\Controllers\Students\ProcessingFeeController;
 use App\Http\Controllers\Students\PromotionController;
 use App\Http\Controllers\Students\ReceiptStudentController;
 use App\Http\Controllers\Students\StudentsController;
@@ -78,6 +80,9 @@ Route::group(
         Route::resource('Fees_Invoices', FeeInvoiceController::class);
 
         Route::resource('receipt_students', ReceiptStudentController::class);
+        Route::resource('ProcessingFee', ProcessingFeeController::class);
+        Route::resource('Payment_students', PaymentStudentController::class);
+
     }
 );
 
