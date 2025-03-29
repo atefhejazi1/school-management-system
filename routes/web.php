@@ -4,9 +4,11 @@ use App\Http\Controllers\Classrooms\ClassroomController;
 use App\Http\Controllers\Grades\GradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Sections\SectionsController;
+use App\Http\Controllers\Students\FeeInvoiceController;
 use App\Http\Controllers\Students\FeesController;
 use App\Http\Controllers\Students\GraduatedController;
 use App\Http\Controllers\Students\PromotionController;
+use App\Http\Controllers\Students\ReceiptStudentController;
 use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
@@ -72,6 +74,10 @@ Route::group(
         Route::resource('Graduated', GraduatedController::class);
 
         Route::resource('Fees', FeesController::class);
+
+        Route::resource('Fees_Invoices', FeeInvoiceController::class);
+
+        Route::resource('receipt_students', ReceiptStudentController::class);
     }
 );
 
