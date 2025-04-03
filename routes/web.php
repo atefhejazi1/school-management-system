@@ -1,21 +1,27 @@
 <?php
 
+use App\Http\Controllers\Students\AttendanceController;
 use App\Http\Controllers\Classrooms\ClassroomController;
 use App\Http\Controllers\Grades\GradeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\questions\QuestionController;
+use App\Http\Controllers\Quizzes\QuizzeController;
 use App\Http\Controllers\Sections\SectionsController;
 use App\Http\Controllers\Students\FeeInvoiceController;
 use App\Http\Controllers\Students\FeesController;
 use App\Http\Controllers\Students\GraduatedController;
+use App\Http\Controllers\Students\OnlineClassController;
 use App\Http\Controllers\Students\PaymentStudentController;
 use App\Http\Controllers\Students\ProcessingFeeController;
 use App\Http\Controllers\Students\PromotionController;
 use App\Http\Controllers\Students\ReceiptStudentController;
 use App\Http\Controllers\Students\StudentsController;
+use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Jubaer\Zoom\Facades\Zoom;
 
 
 Route::middleware('auth')->group(function () {
@@ -82,7 +88,19 @@ Route::group(
         Route::resource('receipt_students', ReceiptStudentController::class);
         Route::resource('ProcessingFee', ProcessingFeeController::class);
         Route::resource('Payment_students', PaymentStudentController::class);
+        Route::resource('Attendance', AttendanceController::class);
 
+        Route::resource('subjects', SubjectController::class);
+
+
+        Route::resource('Quizzes', QuizzeController::class);
+        Route::resource('questions', QuestionController::class);
+
+
+        Route::resource('online_classes', OnlineClassController::class);
+
+        Route::get('/indirect', [OnlineClassController::class, 'indirectCreate'])->name('indirect.create');
+        Route::post('/indirect', [OnlineClassController::class, 'storeIndirect'])->name('indirect.store');
     }
 );
 

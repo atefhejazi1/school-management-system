@@ -12,6 +12,24 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+
+    // في User.php
+    public static function zoomClientID()
+    {
+        return '4iSGLbyoRfK7tp8dvj5_Nw';
+    }
+
+    public static function zoomClientSecret()
+    {
+        return 'Rw4DDT0hDLQOOLTsXazkAyVZ9ZKMbHd5';
+    }
+
+    public static function accountID()
+    {
+        return '8Ib71QRNQRmFUoXn8bj67w';
+    }
+
+
     /**
      * The attributes that are mass assignable.
      *
