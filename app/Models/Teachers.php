@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class Teachers extends Model
+class Teachers extends Authenticatable
 {
     use HasTranslations;
     public $translatable = ['Name'];

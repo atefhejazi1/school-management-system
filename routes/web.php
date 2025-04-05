@@ -1,15 +1,19 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Students\AttendanceController;
 use App\Http\Controllers\Classrooms\ClassroomController;
+use App\Http\Controllers\FullCalenderController;
 use App\Http\Controllers\Grades\GradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\questions\QuestionController;
 use App\Http\Controllers\Quizzes\QuizzeController;
 use App\Http\Controllers\Sections\SectionsController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Students\FeeInvoiceController;
 use App\Http\Controllers\Students\FeesController;
 use App\Http\Controllers\Students\GraduatedController;
+use App\Http\Controllers\Students\LibraryController;
 use App\Http\Controllers\Students\OnlineClassController;
 use App\Http\Controllers\Students\PaymentStudentController;
 use App\Http\Controllers\Students\ProcessingFeeController;
@@ -31,16 +35,17 @@ Route::middleware('auth')->group(function () {
 });
 
 // only for guests
-Route::group(
-    [
-        'middleware' => ['guest']
-    ],
-    function () {
-        Route::get('/', function () {
-            return view('auth.login');
-        });
-    }
-);
+Route::group(['middleware' => ['guest']], function () {
+    Route::get('/', function () {
+        return view('auth.selection'); // صفحة الاختيار
+    });
+    // Route to show login form for different user types
+    Route::get('/login/{type}', [AuthenticatedSessionController::class, 'create'])->name('login.show');
+    // Route to handle login request
+    Route::post('/login/{type}', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+});
+
+Route::post('/logout/{type}', [AuthenticatedSessionController::class, 'destroy'])->name('custom.logout');
 
 
 // routes/web.php
@@ -54,6 +59,14 @@ Route::group(
             return view('dashboard');
         })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+        // 🔐 مسارات الطلاب
+        Route::middleware(['web', 'auth:student'])->prefix('student')->name('student.')->group(function () {
+            Route::get('/dashboard', function () {
+                return view('pages.students.dashboard');
+            })->name('dashboard');
+        });
+        //==============================Sections============================
         Route::resource('Grades', GradeController::class);
         Route::resource('Classrooms', ClassroomController::class);
         Route::post('delete_all', [ClassroomController::class, 'delete_all'])->name('delete_all');
@@ -62,13 +75,16 @@ Route::group(
         Route::resource('Sections', SectionsController::class);
         Route::get('classes/{id}', [SectionsController::class, 'getclasses']);
 
+        //==============================parents============================
         Livewire::setUpdateRoute(function ($handle) {
             return Route::post('/livewire/update', $handle);
         });
-        Route::view('add_parent', 'livewire.show_Form');
+        Route::view('add_parent', 'livewire.show_Form')->name('add_parent');
 
+        //==============================Teachers============================
         Route::resource('Teachers', TeachersController::class);
 
+        //==============================Students============================
         Route::resource('Students', StudentsController::class);
         Route::get('/Get_classrooms/{id}', [StudentsController::class,  'Get_classrooms']);
         Route::get('/Get_Sections/{id}', [StudentsController::class,  'Get_Sections']);
@@ -90,18 +106,27 @@ Route::group(
         Route::resource('Payment_students', PaymentStudentController::class);
         Route::resource('Attendance', AttendanceController::class);
 
+
+        //==============================Quizzes , questions and subjects============================
         Route::resource('subjects', SubjectController::class);
-
-
         Route::resource('Quizzes', QuizzeController::class);
         Route::resource('questions', QuestionController::class);
 
 
         Route::resource('online_classes', OnlineClassController::class);
-
         Route::get('/indirect', [OnlineClassController::class, 'indirectCreate'])->name('indirect.create');
         Route::post('/indirect', [OnlineClassController::class, 'storeIndirect'])->name('indirect.store');
+
+        Route::resource('library', LibraryController::class);
+        Route::get('download_file/{filename}', [LibraryController::class, 'downloadAttachment'])->name('downloadAttachment');
+
+
+        //==============================Setting============================
+        Route::resource('settings', SettingController::class);
     }
 );
 
+require __DIR__ . '/teacher.php';
+require __DIR__ . '/student.php';
+require __DIR__ . '/parent.php';
 require __DIR__ . '/auth.php';

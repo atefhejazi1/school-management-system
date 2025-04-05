@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class My_Parent extends Model
+class My_Parent extends Authenticatable
 {
     use HasTranslations;
     public $translatable = ['Name_Father', 'Job_Father', 'Name_Mother', 'Job_Mother'];
