@@ -31,8 +31,8 @@ class TeacherRepository implements TeacherRepositoryInterface
 
         try {
             $Teachers = new Teachers();
-            $Teachers->Email = $request->Email;
-            $Teachers->Password =  Hash::make($request->Password);
+            $Teachers->email = $request->Email;
+            $Teachers->password =  Hash::make($request->Password);
 
             $Teachers
                 ->setTranslation('Name', 'en', $request->Name_en)
@@ -63,8 +63,8 @@ class TeacherRepository implements TeacherRepositoryInterface
     {
         try {
             $Teachers = Teachers::findOrFail($request->id);
-            $Teachers->Email = $request->Email;
-            $Teachers->Password =  Hash::make($request->Password);
+            $Teachers->email = $request->Email;
+            $Teachers->password =  Hash::make($request->Password);
 
             $Teachers
                 ->setTranslation('Name', 'en', $request->Name_en)
