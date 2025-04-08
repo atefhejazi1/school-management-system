@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Teachers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Classroom;
 use App\Models\Grade;
+use App\Models\Question;
 use App\Models\Quizze;
 use App\Models\sections;
 use App\Models\Subject;
@@ -31,7 +32,10 @@ class QuizzesController extends Controller
     {
         try {
             $quizzes = new Quizze();
-            $quizzes->name = ['en' => $request->Name_en, 'ar' => $request->Name_ar];
+
+            $quizzes
+                ->setTranslation('name', 'en', $request->Name_en)
+                ->setTranslation('name', 'ar', $request->Name_ar);
             $quizzes->subject_id = $request->subject_id;
             $quizzes->grade_id = $request->Grade_id;
             $quizzes->classroom_id = $request->Classroom_id;
@@ -45,7 +49,13 @@ class QuizzesController extends Controller
         }
     }
 
+    public function show($id)
+    {
+        $questions = Question::where('quizze_id', $id)->get();
+        $quizz = Quizze::findorFail($id);
 
+        return view('pages.Teachers.Dashboard.Questions.index', compact('questions', 'quizz'));
+    }
 
     public function edit($id)
     {
@@ -60,7 +70,9 @@ class QuizzesController extends Controller
     {
         try {
             $quizz = Quizze::findorFail($request->id);
-            $quizz->name = ['en' => $request->Name_en, 'ar' => $request->Name_ar];
+            $quizz
+                ->setTranslation('name', 'en', $request->Name_en)
+                ->setTranslation('name', 'ar', $request->Name_ar);
             $quizz->subject_id = $request->subject_id;
             $quizz->grade_id = $request->Grade_id;
             $quizz->classroom_id = $request->Classroom_id;
@@ -86,17 +98,5 @@ class QuizzesController extends Controller
         }
     }
 
-    public function getClassrooms($id)
-    {
-        $list_classes = Classroom::where("Grade_id", $id)->pluck("Name_Class", "id");
-        return $list_classes;
-    }
 
-    //Get Sections
-    public function Get_Sections($id)
-    {
-
-        $list_sections = sections::where("Class_id", $id)->pluck("Name_Section", "id");
-        return $list_sections;
-    }
 }

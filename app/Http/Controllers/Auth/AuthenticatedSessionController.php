@@ -69,9 +69,7 @@ class AuthenticatedSessionController extends Controller
         }
 
 
-        return back()->withErrors([
-            'email' => 'These credentials do not match our records.',
-        ]);
+        return redirect()->back()->with('message', 'يوجد خطا في كلمة المرور او اسم المستخدم');
     }
 
 

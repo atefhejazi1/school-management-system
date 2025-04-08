@@ -13,7 +13,7 @@ class OnlineClassController extends Controller
 {
     public function index()
     {
-        $online_classes = online_class::all();
+        $online_classes = online_class::where('created_by', Auth::user()->email)->get();
         return view('pages.online_classes.index', compact('online_classes'));
     }
 
@@ -34,7 +34,7 @@ class OnlineClassController extends Controller
 
     public function store(Request $request)
     {
-        // try {
+        try {
         $requestData = [
             "topic" => $request->topic,
             "type" => 2, // 2 = scheduled meeting
@@ -61,7 +61,8 @@ class OnlineClassController extends Controller
             'Grade_id' => $request->Grade_id,
             'Classroom_id' => $request->Classroom_id,
             'section_id' => $request->section_id,
-            'user_id' => auth()->user()->id,
+            // 'user_id' => auth()->user()->id,
+            'created_by' => Auth::user()->email,
             'meeting_id' => $meeting['data']['id'],  // ✅ استخراج id الصحيح
             'topic' => $request->topic,
             'start_at' => $request->start_time,
@@ -76,9 +77,9 @@ class OnlineClassController extends Controller
 
         toastr()->success(trans('messages.success'));
         return redirect()->route('online_classes.index');
-        // } catch (\Exception $e) {
-        //     return redirect()->back()->with(['error' => $e->getMessage()]);
-        // }
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
     }
 
     public function storeIndirect(Request $request)
@@ -89,7 +90,8 @@ class OnlineClassController extends Controller
                 'Grade_id' => $request->Grade_id,
                 'Classroom_id' => $request->Classroom_id,
                 'section_id' => $request->section_id,
-                'user_id' => auth()->user()->id,
+                // 'user_id' => auth()->user()->id,
+                'created_by' => Auth::user()->email,
                 'meeting_id' => $request->meeting_id,
                 'topic' => $request->topic,
                 'start_at' => $request->start_time,

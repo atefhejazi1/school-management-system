@@ -12,6 +12,23 @@ class Teachers extends Authenticatable
     public $translatable = ['Name'];
     protected $guarded = [];
 
+
+
+    public static function zoomClientID()
+    {
+        return '4iSGLbyoRfK7tp8dvj5_Nw';
+    }
+
+    public static function zoomClientSecret()
+    {
+        return 'Rw4DDT0hDLQOOLTsXazkAyVZ9ZKMbHd5';
+    }
+
+    public static function accountID()
+    {
+        return '8Ib71QRNQRmFUoXn8bj67w';
+    }
+
     // علاقة بين المعلمين والتخصصات لجلب اسم التخصص
     public function specializations()
     {

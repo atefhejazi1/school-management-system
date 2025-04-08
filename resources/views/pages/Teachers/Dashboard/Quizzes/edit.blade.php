@@ -1,6 +1,5 @@
 @extends('layouts.master')
 @section('css')
-    @toastr_css
 @section('title')
     تعديل اختبار {{$quizz->name}}
 @stop
