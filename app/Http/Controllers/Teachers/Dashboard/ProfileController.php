@@ -23,7 +23,9 @@ class ProfileController extends Controller
         $information = Teachers::findorFail($id);
 
         if (!empty($request->password)) {
-            $information->Name = ['en' => $request->Name_en, 'ar' => $request->Name_ar];
+            $information
+                ->setTranslation('Name', 'en', $request->Name_en)
+                ->setTranslation('Name', 'ar', $request->Name_ar);
             $information->password = Hash::make($request->password);
             $information->save();
         } else {

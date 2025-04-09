@@ -77,8 +77,9 @@ Route::group(
 
         //==============================parents============================
         Livewire::setUpdateRoute(function ($handle) {
-            return Route::post('/livewire/update', $handle);
+            return Route::post('livewire/update', $handle);
         });
+
         Route::view('add_parent', 'livewire.show_Form')->name('add_parent');
 
         //==============================Teachers============================
