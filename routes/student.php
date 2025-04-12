@@ -22,9 +22,9 @@ Route::group(
         })->name('dashboard');
 
         Route::group([], function () {
-            Livewire::setUpdateRoute(function ($handle) {
-                return Route::post('/livewire/update', $handle);
-            });
+            // Livewire::setUpdateRoute(function ($handle) {
+            //     return Route::post('/livewire/update', $handle);
+            // });
 
             Route::resource('student_exams', ExamsController::class);
             Route::resource('profile-student', ProfileController::class);

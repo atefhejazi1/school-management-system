@@ -25,7 +25,6 @@ use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
-use Jubaer\Zoom\Facades\Zoom;
 
 require __DIR__ . '/ajax.php';
 Route::middleware('auth')->group(function () {
@@ -76,9 +75,7 @@ Route::group(
         Route::get('classes/{id}', [SectionsController::class, 'getclasses']);
 
         //==============================parents============================
-        Livewire::setUpdateRoute(function ($handle) {
-            return Route::post('livewire/update', $handle);
-        });
+
 
         Route::view('add_parent', 'livewire.show_Form')->name('add_parent');
 

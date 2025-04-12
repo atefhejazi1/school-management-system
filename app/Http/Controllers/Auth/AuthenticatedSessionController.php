@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\My_Parent;
 use App\Models\students;
 use App\Models\Teachers;
 use App\Models\User;
@@ -50,7 +51,7 @@ class AuthenticatedSessionController extends Controller
             $model = Teachers::class;
         } elseif ($type == 'parent') {
             $guard = 'parent';
-            $model = Parent::class;
+            $model = My_Parent::class;
         } else {
             $guard = 'web';
             $model = User::class;

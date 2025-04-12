@@ -133,8 +133,8 @@ class AddParent extends Component
         try {
             $My_Parent = new My_Parent();
             // Father_INPUTS
-            $My_Parent->Email = $this->Email;
-            $My_Parent->Password = Hash::make($this->Password);
+            $My_Parent->email = $this->Email;
+            $My_Parent->password = Hash::make($this->Password);
             $My_Parent
                 ->setTranslation('Name_Father', 'en', $this->Name_Father_en)
                 ->setTranslation('Name_Father', 'ar',  $this->Name_Father);
@@ -232,8 +232,8 @@ class AddParent extends Component
         $this->updateMode = true;
         $My_Parent = My_Parent::where('id', $id)->first();
         $this->Parent_id = $id;
-        $this->Email = $My_Parent->Email;
-        $this->Password = $My_Parent->Password;
+        $this->Email = $My_Parent->email;
+        $this->Password = $My_Parent->password;
         $this->Name_Father = $My_Parent->getTranslation('Name_Father', 'ar');
         $this->Name_Father_en = $My_Parent->getTranslation('Name_Father', 'en');
         $this->Job_Father = $My_Parent->getTranslation('Job_Father', 'ar');;

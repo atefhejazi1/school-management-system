@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AjaxController;
 use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
 
 
 
