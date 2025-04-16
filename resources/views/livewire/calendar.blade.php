@@ -13,25 +13,22 @@
                 var Draggable = FullCalendar.Draggable;
                 var calendarEl = document.getElementById('calendar');
                 var checkbox = document.getElementById('drop-remove');
-                var data = @this.events;
+                var data =   @this.events;
                 var calendar = new Calendar(calendarEl, {
                     events: JSON.parse(data),
-                    dateClick(info) {
+                    dateClick(info)  {
                         var title = prompt('ادخل عنوان الحدث ');
                         var date = new Date(info.dateStr + 'T00:00:00');
-                        if (title != null && title != '') {
+                        if(title != null && title != ''){
                             calendar.addEvent({
                                 title: title,
                                 start: date,
                                 allDay: true
                             });
-                            var eventAdd = {
-                                title: title,
-                                start: date
-                            };
-                            @this.addevent(eventAdd);
+                            var eventAdd = {title: title,start: date};
+                        @this.addevent(eventAdd);
                             alert('تم اضافة الحدث بنجاح');
-                        } else {
+                        }else{
                             alert('من فضلك ادخل عنوان الحدث');
                         }
                     },
@@ -50,7 +47,7 @@
                     loading: function(isLoading) {
                         if (!isLoading) {
                             // Reset custom events
-                            this.getEvents().forEach(function(e) {
+                            this.getEvents().forEach(function(e){
                                 if (e.source === null) {
                                     e.remove();
                                 }
@@ -59,9 +56,9 @@
                     }
                 });
                 calendar.render();
-                @this.on(`refreshCalendar`, () => {
-                    calendar.refetchEvents()
-                });
+            @this.on(`refreshCalendar`, () => {
+                calendar.refetchEvents()
+            });
             });
         </script>
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.3.1/main.min.css' rel='stylesheet' />
