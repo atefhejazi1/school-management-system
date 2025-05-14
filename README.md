@@ -50,9 +50,6 @@ Each user type has access to a dedicated dashboard with tailored features:
 - Students can submit **re-exam requests** in case of issues.
 
 ## 🌄 Screenshots
-
-> Add your images to the `/screenshots` folder in your repository and display them like below:
-
   
 ![Admin Dashboard](screenshots/01_login.png)
 ![Admin Dashboard](screenshots/02_login_admin.png)
