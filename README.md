@@ -1,66 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎓 School Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A robust and modular school management system built with Laravel and Livewire, supporting role-based dashboards for Admins, Teachers, Students, and Parents.
 
-## About Laravel
+## 🚀 Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 🔐 Multi-Role Authentication & Dashboards
+Each user type has access to a dedicated dashboard with tailored features:
+- **Admin**: Full control over the system including student promotions, accounting, and user management.
+- **Teacher**: Create and manage exams, record attendance, and monitor student performance.
+- **Student**: Access tests, view results, and request re-exams.
+- **Parent**: Monitor their children's academic progress, attendance, grades, and financial dues.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🌐 Multi-Language Support
+- Full support for **Arabic** and **English** interfaces.
+- Users can easily switch the language from within the system.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🧩 Design Pattern
+- Utilizes the **Repository Design Pattern** to keep code clean, modular, and maintainable.
 
-## Learning Laravel
+### 🎥 Zoom Integration
+- Admins and Teachers can schedule, manage, and hold online classes directly through **Zoom Integration**.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### ⚙️ Livewire Integration
+- Real-time, dynamic UI powered by **Laravel Livewire** for seamless interactivity without full page reloads.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 🎓 Student Promotion System
+- Promote students from:
+  - One grade to another
+  - One class to another
+  - One academic year to another
+- Also supports graduating students.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 💼 Attendance System
+- **Teachers** can record daily attendance for each class.
+- **Parents** can view their children's attendance history (dates of absence/presence).
+- **Admins** have access to full attendance reports.
 
-## Laravel Sponsors
+### 💵 Accounting Module
+- Full accounting features for managing:
+  - Invoices & fees
+  - Payment status
+  - Balance tracking (Debtor or Creditor)
+  - Student-specific financial summaries
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 📝 Examination System
+- Teachers can create and assign exams.
+- Students can submit exams and receive immediate grading.
+- Parents can view the performance of their children.
+- Students can submit **re-exam requests** in case of issues.
 
-### Premium Partners
+## 🌄 Screenshots
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+> Add your images to the `/screenshots` folder in your repository and display them like below:
 
-## Contributing
+  
+![Admin Dashboard](screenshots/01_login.png)
+![Admin Dashboard](screenshots/02_login_admin.png)
+![Admin Dashboard](screenshots/03_admin_dahboard_ar.png)
+![Admin Dashboard](screenshots/04_admin_dashboard_en.png)
+![Admin Dashboard](screenshots/05_admin_dashboard_en.png)
+![Admin Dashboard](screenshots/06_class.png)
+![Admin Dashboard](screenshots/07_sections.png)
+![Admin Dashboard](screenshots/08_std.png)
+![Admin Dashboard](screenshots/09_addstd.png)
+![Admin Dashboard](screenshots/10_promotion.png)
+![Admin Dashboard](screenshots/11_add_parent.png)
+![Admin Dashboard](screenshots/12_addfees.png)
+![Admin Dashboard](screenshots/13_add_subject.png)
+![Admin Dashboard](screenshots/14_addexam.png)
+![Admin Dashboard](screenshots/15_make_zoom_meet.png)
+![Admin Dashboard](screenshots/16_all_zoom_meetings.png)
+![Admin Dashboard](screenshots/17_settings.png)
+![Admin Dashboard](screenshots/18_teacher_dash.png)
+![Admin Dashboard](screenshots/19_add_q.png)
+![Admin Dashboard](screenshots/20_std_dash.png)
+![Admin Dashboard](screenshots/21_std_exam.png)
+![Admin Dashboard](screenshots/23_exam_grade.png_std_exam)
+![Admin Dashboard](screenshots/24_parent_dash.png)
+![Admin Dashboard](screenshots/25_parent_invoices.png)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## 🛠️ Tech Stack
+- **Laravel** (Backend)
+- **Livewire** (Frontend interactivity)
+- **Zoom API** (Online sessions)
+- **Repository Pattern** (Code architecture)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📂 Structure
+- Modular, scalable structure following best practices.
+- Each module is separated and can be extended easily.
 
-## Security Vulnerabilities
+## ✅ Future Enhancements
+- Notifications system for reminders and updates
+- Mobile-friendly version
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🧑‍💻 Developed by [Atef Hejazi](https://www.linkedin.com/in/atefhejazi)
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Feel free to fork, contribute, or reach out for collaboration.
