@@ -19,6 +19,7 @@ use App\Http\Controllers\Students\PaymentStudentController;
 use App\Http\Controllers\Students\ProcessingFeeController;
 use App\Http\Controllers\Students\PromotionController;
 use App\Http\Controllers\Students\ReceiptStudentController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\Teachers\TeachersController;
@@ -27,6 +28,10 @@ use Livewire\Livewire;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 require __DIR__ . '/ajax.php';
+
+// Public landing page — accessible by everyone
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -35,9 +40,9 @@ Route::middleware('auth')->group(function () {
 
 // only for guests
 Route::group(['middleware' => ['guest']], function () {
-    Route::get('/', function () {
-        return view('auth.selection'); // صفحة الاختيار
-    });
+    Route::get('/select', function () {
+        return view('auth.selection');
+    })->name('selection');
     // Route to show login form for different user types
     Route::get('/login/{type}', [AuthenticatedSessionController::class, 'create'])->name('login.show');
     // Route to handle login request
@@ -119,6 +124,11 @@ Route::group(
 
         //==============================Setting============================
         Route::resource('settings', SettingController::class);
+
+        //==============================School Registrations============================
+        Route::get('/admin/registrations', function () {
+            return view('admin.registrations.index');
+        })->name('admin.registrations.index');
     }
 );
 
