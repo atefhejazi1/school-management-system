@@ -1,526 +1,507 @@
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 /* ══════════════════════════════════════════
-   ADMIN SIDEBAR — Complete Redesign
-   ══════════════════════════════════════════ */
-
-/* Override the template's side-menu-fixed */
-.side-menu-fixed {
-    width: 265px !important;
-    background: linear-gradient(180deg, #0f172a 0%, #1a2744 100%) !important;
-    border: none !important;
-    box-shadow: 4px 0 24px rgba(0,0,0,0.4) !important;
-    display: flex !important;
-    flex-direction: column !important;
-    overflow: hidden !important;
-}
-
-/* ── Brand Section ── */
-.sb-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 20px 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    background: rgba(0,0,0,0.2);
-    flex-shrink: 0;
-}
-
-.sb-brand-icon {
-    width: 42px; height: 42px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; color: white;
-    box-shadow: 0 4px 12px rgba(59,130,246,0.4);
-    flex-shrink: 0;
-}
-
-.sb-brand-text { flex: 1; min-width: 0; }
-.sb-brand-name {
-    font-family: 'Cairo', sans-serif;
-    font-size: 14px; font-weight: 800;
-    color: #f1f5f9;
-    display: block; line-height: 1.3;
-}
-.sb-brand-sub {
-    font-family: 'Cairo', sans-serif;
-    font-size: 10px; color: #64748b; font-weight: 400;
-    display: block;
-}
+   ADMIN SIDEBAR — Emerald Green Theme
+   All directions use CSS logical properties
+   so the sidebar mirrors in LTR/RTL automatically.
+══════════════════════════════════════════ */
 
 /* ── Scrollable nav body ── */
 .sb-scroll {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 10px 0 16px;
+    padding: 8px 0 16px;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255,255,255,0.08) transparent;
+    scrollbar-color: rgba(255,255,255,.08) transparent;
+}
+.sb-scroll::-webkit-scrollbar { width: 4px; }
+.sb-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+/* ── Brand ── */
+.sb-brand {
+    display: flex; align-items: center; gap: 11px;
+    padding: 18px 16px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    background: rgba(0,0,0,.18);
+    flex-shrink: 0;
+    text-decoration: none;
+}
+.sb-brand-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--em-600, #059669), var(--em-800, #065f46));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: white;
+    box-shadow: 0 4px 12px rgba(5,150,105,.45);
+    flex-shrink: 0;
+}
+.sb-brand-name {
+    font-family: 'Cairo', sans-serif;
+    font-size: 13.5px; font-weight: 800;
+    color: #f1f5f9; display: block; line-height: 1.25;
+}
+.sb-brand-sub {
+    font-family: 'Cairo', sans-serif;
+    font-size: 9.5px; color: #475569; display: block; font-weight: 400;
 }
 
-.sb-scroll::-webkit-scrollbar { width: 4px; }
-.sb-scroll::-webkit-scrollbar-track { background: transparent; }
-.sb-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-
-/* ── Section labels ── */
+/* ── Section label ── */
 .sb-label {
     font-family: 'Cairo', sans-serif;
-    font-size: 9.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.4px;
-    color: #475569;
-    padding: 18px 20px 7px;
+    font-size: 9px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.6px;
+    color: #334155;
+    padding: 16px 18px 6px;
     display: block;
 }
 
-/* ── Nav list & items ── */
+/* ── Nav list ── */
 .sb-list { list-style: none; padding: 0; margin: 0; }
-.sb-list li { margin: 1px 10px; }
+.sb-list li { margin: 1px 8px; }
 
-/* Top-level nav link */
+/* ── Nav link ── */
 .sb-link {
-    display: flex !important;
-    align-items: center;
-    gap: 11px;
-    padding: 10px 14px !important;
+    display: flex !important; align-items: center; gap: 10px;
+    padding: 9px 12px !important;
     border-radius: 10px !important;
     color: #94a3b8 !important;
     font-family: 'Cairo', sans-serif !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
+    font-size: 13px !important; font-weight: 500 !important;
     text-decoration: none !important;
-    transition: all 0.2s ease !important;
-    position: relative;
+    transition: all .2s ease !important;
     cursor: pointer;
     background: transparent !important;
     border: none !important;
+    width: 100%;
+    text-align: start !important;
 }
-
 .sb-link:hover {
-    background: rgba(255,255,255,0.06) !important;
+    background: rgba(255,255,255,.06) !important;
     color: #e2e8f0 !important;
 }
-
 .sb-link.sb-active {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
+    background: linear-gradient(135deg, var(--em-800, #065f46), var(--em-600, #059669)) !important;
     color: white !important;
-    box-shadow: 0 4px 14px rgba(37,99,235,0.35), inset -3px 0 0 rgba(255,255,255,0.25) !important;
+    box-shadow: 0 4px 14px rgba(5,150,105,.3), inset 0 0 0 1px rgba(255,255,255,.1) !important;
 }
-
-.sb-link.sb-active .sb-icon { color: white !important; }
-.sb-link.sb-active .sb-arrow { color: rgba(255,255,255,0.6) !important; }
-
-/* Has-submenu open state */
+.sb-link.sb-active .sb-icon { background: rgba(255,255,255,.18) !important; color: white !important; }
 .sb-link[aria-expanded="true"] {
-    background: rgba(255,255,255,0.06) !important;
+    background: rgba(255,255,255,.06) !important;
     color: #e2e8f0 !important;
 }
 
-/* ── Icon ── */
+/* ── Icon box ── */
 .sb-icon {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.06);
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(255,255,255,.06);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    color: #64748b;
+    font-size: 13px; color: #64748b;
     flex-shrink: 0;
-    transition: all 0.2s ease;
+    transition: all .2s;
 }
+.sb-link:hover .sb-icon { background: rgba(255,255,255,.1); color: var(--em-400, #34d399); }
 
-.sb-link:hover .sb-icon {
-    background: rgba(255,255,255,0.1);
-    color: #93c5fd;
-}
+/* ── Text label ── */
+.sb-text { flex: 1; line-height: 1; }
 
-.sb-link.sb-active .sb-icon {
-    background: rgba(255,255,255,0.2);
-    color: white;
-}
-
-/* ── Label text ── */
-.sb-text {
-    flex: 1;
-    line-height: 1;
-}
-
-/* ── Arrow chevron ── */
+/* ── Arrow chevron — logical transform for RTL/LTR ── */
 .sb-arrow {
-    font-size: 10px;
-    color: #475569;
-    transition: transform 0.25s ease;
-    margin-right: auto;
+    font-size: 10px; color: #475569;
+    transition: transform .25s ease;
+    margin-inline-start: auto;
 }
-
 .sb-link[aria-expanded="true"] .sb-arrow {
     transform: rotate(-90deg);
-    color: #93c5fd;
+    color: var(--em-400, #34d399);
 }
 
 /* ── Submenu ── */
 .sb-submenu {
-    list-style: none;
-    padding: 4px 0;
-    margin: 3px 10px 4px 0;
-    background: rgba(0,0,0,0.2);
+    list-style: none; padding: 3px 0;
+    margin: 2px 8px 3px 0;
+    background: rgba(0,0,0,.18);
     border-radius: 10px;
-    border-right: 2px solid rgba(59,130,246,0.25);
+    border-inline-start: 2px solid rgba(5,150,105,.3);
     overflow: hidden;
 }
+[dir="ltr"] .sb-submenu { margin: 2px 0 3px 8px; }
 
-.sb-submenu li { margin: 1px 6px; }
-
+.sb-submenu li { margin: 1px 5px; }
 .sb-submenu a {
-    display: flex !important;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 14px !important;
+    display: flex !important; align-items: center; gap: 8px;
+    padding: 8px 13px !important;
     border-radius: 7px !important;
     color: #64748b !important;
     font-family: 'Cairo', sans-serif !important;
-    font-size: 12px !important;
-    font-weight: 500 !important;
+    font-size: 12px !important; font-weight: 500 !important;
     text-decoration: none !important;
-    transition: all 0.18s ease !important;
+    transition: all .18s ease !important;
 }
-
-.sb-submenu a:hover {
-    color: #93c5fd !important;
-    background: rgba(59,130,246,0.1) !important;
-}
-
+.sb-submenu a:hover { color: var(--em-400, #34d399) !important; background: rgba(5,150,105,.08) !important; }
+.sb-submenu a.sub-active { color: var(--em-400, #34d399) !important; font-weight: 700 !important; }
 .sb-submenu a::before {
-    content: '';
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: #334155;
-    flex-shrink: 0;
-    transition: background 0.2s;
+    content: ''; width: 5px; height: 5px;
+    border-radius: 50%; background: #334155;
+    flex-shrink: 0; transition: background .2s;
 }
-
-.sb-submenu a:hover::before { background: #3b82f6; }
+.sb-submenu a:hover::before,
+.sb-submenu a.sub-active::before { background: var(--em-500, #10b981); }
 
 /* ── Sidebar footer ── */
 .sb-footer {
-    padding: 14px 16px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    background: rgba(0,0,0,0.2);
+    padding: 12px 14px;
+    border-top: 1px solid rgba(255,255,255,.06);
+    background: rgba(0,0,0,.18);
     flex-shrink: 0;
 }
-
-.sb-user {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
+.sb-user { display: flex; align-items: center; gap: 9px; }
 .sb-avatar {
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--em-600, #059669), var(--em-800, #065f46));
     display: flex; align-items: center; justify-content: center;
-    font-size: 15px; color: white; font-weight: 700;
-    font-family: 'Cairo', sans-serif;
-    flex-shrink: 0;
+    font-size: 14px; color: white; font-weight: 800;
+    font-family: 'Cairo', sans-serif; flex-shrink: 0;
 }
-
 .sb-user-info { flex: 1; min-width: 0; }
 .sb-user-name {
     font-family: 'Cairo', sans-serif;
-    font-size: 12px; font-weight: 700;
-    color: #e2e8f0; display: block;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    font-size: 11.5px; font-weight: 700; color: #e2e8f0;
+    display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .sb-user-role {
     font-family: 'Cairo', sans-serif;
-    font-size: 10px; color: #475569; display: block;
+    font-size: 9.5px; color: #475569; display: block;
 }
-
 .sb-logout {
-    width: 32px; height: 32px;
-    border-radius: 8px;
-    background: rgba(239,68,68,0.1);
-    border: 1px solid rgba(239,68,68,0.2);
+    width: 30px; height: 30px; border-radius: 8px;
+    background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.18);
     display: flex; align-items: center; justify-content: center;
-    color: #ef4444; font-size: 13px;
-    cursor: pointer; text-decoration: none;
-    transition: all 0.2s ease;
-    flex-shrink: 0;
+    color: #ef4444; font-size: 13px; cursor: pointer;
+    transition: all .2s; flex-shrink: 0;
 }
-.sb-logout:hover {
-    background: rgba(239,68,68,0.2);
-    color: #ef4444;
-}
+.sb-logout:hover { background: rgba(239,68,68,.22); color: #ef4444; }
 
-/* Override the old scrollbar div */
-.scrollbar.side-menu-bg {
-    display: contents !important;
-}
-
-/* Hide old nav ul */
-.nav.navbar-nav.side-menu { display: none !important; }
-
-/* ── Content wrapper margin override ── */
-@media (min-width: 992px) {
-    .content-wrapper {
-        margin-right: 265px !important;
+/* ── BS5 offcanvas close button (mobile) ── */
+.offcanvas-header { display: none; }
+@media (max-width: 991.98px) {
+    .offcanvas-header {
+        display: flex;
+        padding: 12px 16px;
+        border-bottom: 1px solid rgba(255,255,255,.06);
+        background: rgba(0,0,0,.18);
+        align-items: center;
+        justify-content: space-between;
     }
+    .offcanvas-header .btn-close {
+        filter: invert(1) brightness(2);
+        opacity: .6;
+    }
+    .offcanvas-header .btn-close:hover { opacity: 1; }
 }
 </style>
 
-<!-- ══ Brand ══ -->
-<div class="sb-brand">
-    <div class="sb-brand-icon">
-        <i class="fas fa-graduation-cap"></i>
-    </div>
-    <div class="sb-brand-text">
-        <span class="sb-brand-name">إدارة المدارس</span>
-        <span class="sb-brand-sub">School Management System</span>
-    </div>
+{{-- ── Mobile-only offcanvas header (close button) ── --}}
+<div class="offcanvas-header">
+    <span class="sb-brand-name" id="adminSidebarLabel">{{ trans('main_trans.main_menu') }}</span>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="{{ trans('main_trans.cancel') }}"></button>
 </div>
 
-<!-- ══ Scrollable navigation ══ -->
+{{-- ── Brand (desktop) ── --}}
+<a href="{{ url('/dashboard') }}" class="sb-brand">
+    <div class="sb-brand-icon"><i class="fas fa-graduation-cap"></i></div>
+    <div>
+        <span class="sb-brand-name">{{ trans('main_trans.Programname') }}</span>
+        <span class="sb-brand-sub">School Management System</span>
+    </div>
+</a>
+
+{{-- ── Scrollable nav ── --}}
 <div class="sb-scroll">
 
-    <!-- Dashboard -->
-    <ul class="sb-list">
+    {{-- Dashboard --}}
+    <ul class="sb-list mt-1">
         <li>
-            <a href="{{ url('/dashboard') }}" class="sb-link {{ request()->is('dashboard') ? 'sb-active' : '' }}">
-                <span class="sb-icon"><i class="fas fa-th-large"></i></span>
+            <a href="{{ url('/dashboard') }}"
+               class="sb-link {{ request()->is('dashboard') ? 'sb-active' : '' }}">
+                <span class="sb-icon"><i class="fas fa-gauge-high"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Dashboard') }}</span>
             </a>
         </li>
     </ul>
 
-    <!-- ── Academic ── -->
-    <span class="sb-label">الشؤون الأكاديمية</span>
+    {{-- ── Academic Affairs ── --}}
+    <span class="sb-label">{{ trans('main_trans.academic_affairs') }}</span>
     <ul class="sb-list">
 
-        <!-- Grades -->
         <li>
-            <a href="#sub-grades" data-toggle="collapse" class="sb-link {{ request()->routeIs('Grades.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Grades.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-grades"
+                    class="sb-link {{ request()->routeIs('Grades.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('Grades.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-grades">
                 <span class="sb-icon"><i class="fas fa-layer-group"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Grades') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('Grades.*') ? 'show' : '' }}" id="sub-grades">
-                <li><a href="{{ route('Grades.index') }}">{{ trans('main_trans.Grades_list') }}</a></li>
+                <li><a href="{{ route('Grades.index') }}" class="{{ request()->routeIs('Grades.index') ? 'sub-active' : '' }}">{{ trans('main_trans.Grades_list') }}</a></li>
             </ul>
         </li>
 
-        <!-- Classes -->
         <li>
-            <a href="#sub-classes" data-toggle="collapse" class="sb-link {{ request()->routeIs('Classrooms.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Classrooms.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-classes"
+                    class="sb-link {{ request()->routeIs('Classrooms.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('Classrooms.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-classes">
                 <span class="sb-icon"><i class="fas fa-building"></i></span>
                 <span class="sb-text">{{ trans('main_trans.classes') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('Classrooms.*') ? 'show' : '' }}" id="sub-classes">
-                <li><a href="{{ route('Classrooms.index') }}">{{ trans('main_trans.List_classes') }}</a></li>
+                <li><a href="{{ route('Classrooms.index') }}" class="{{ request()->routeIs('Classrooms.index') ? 'sub-active' : '' }}">{{ trans('main_trans.List_classes') }}</a></li>
             </ul>
         </li>
 
-        <!-- Sections -->
         <li>
-            <a href="#sub-sections" data-toggle="collapse" class="sb-link {{ request()->routeIs('Sections.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Sections.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-sections"
+                    class="sb-link {{ request()->routeIs('Sections.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('Sections.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-sections">
                 <span class="sb-icon"><i class="fas fa-chalkboard"></i></span>
                 <span class="sb-text">{{ trans('main_trans.sections') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('Sections.*') ? 'show' : '' }}" id="sub-sections">
-                <li><a href="{{ route('Sections.index') }}">{{ trans('main_trans.List_sections') }}</a></li>
+                <li><a href="{{ route('Sections.index') }}" class="{{ request()->routeIs('Sections.index') ? 'sub-active' : '' }}">{{ trans('main_trans.List_sections') }}</a></li>
             </ul>
         </li>
 
-        <!-- Subjects -->
         <li>
-            <a href="#sub-subjects" data-toggle="collapse" class="sb-link {{ request()->routeIs('subjects.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('subjects.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-subjects"
+                    class="sb-link {{ request()->routeIs('subjects.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('subjects.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-subjects">
                 <span class="sb-icon"><i class="fas fa-book-open"></i></span>
-                <span class="sb-text">المواد الدراسية</span>
+                <span class="sb-text">{{ trans('main_trans.subjects') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('subjects.*') ? 'show' : '' }}" id="sub-subjects">
-                <li><a href="{{ route('subjects.index') }}">قائمة المواد</a></li>
+                <li><a href="{{ route('subjects.index') }}" class="{{ request()->routeIs('subjects.index') ? 'sub-active' : '' }}">{{ trans('main_trans.subjects_list') }}</a></li>
             </ul>
         </li>
 
     </ul>
 
-    <!-- ── People ── -->
-    <span class="sb-label">المستخدمون</span>
+    {{-- ── People ── --}}
+    <span class="sb-label">{{ trans('main_trans.people') }}</span>
     <ul class="sb-list">
 
-        <!-- Students -->
         <li>
-            <a href="#sub-students" data-toggle="collapse" class="sb-link {{ request()->routeIs('Students.*') || request()->routeIs('Promotion.*') || request()->routeIs('Graduated.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Students.*') || request()->routeIs('Promotion.*') || request()->routeIs('Graduated.*') ? 'true' : 'false' }}">
+            @php $studActive = request()->routeIs('Students.*') || request()->routeIs('Promotion.*') || request()->routeIs('Graduated.*'); @endphp
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-students"
+                    class="sb-link {{ $studActive ? 'sb-active' : '' }}"
+                    aria-expanded="{{ $studActive ? 'true' : 'false' }}"
+                    aria-controls="sub-students">
                 <span class="sb-icon"><i class="fas fa-user-graduate"></i></span>
                 <span class="sb-text">{{ trans('main_trans.students') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
-            <ul class="collapse sb-submenu {{ request()->routeIs('Students.*') ? 'show' : '' }}" id="sub-students">
-                <li><a href="{{ route('Students.create') }}">{{ trans('main_trans.add_student') }}</a></li>
-                <li><a href="{{ route('Students.index') }}">{{ trans('main_trans.list_students') }}</a></li>
-                <li><a href="{{ route('Promotion.index') }}">{{ trans('main_trans.Students_Promotions') }}</a></li>
-                <li><a href="{{ route('Graduated.index') }}">{{ trans('main_trans.Graduate_students') }}</a></li>
+            </button>
+            <ul class="collapse sb-submenu {{ $studActive ? 'show' : '' }}" id="sub-students">
+                <li><a href="{{ route('Students.create') }}" class="{{ request()->routeIs('Students.create') ? 'sub-active' : '' }}">{{ trans('main_trans.add_student') }}</a></li>
+                <li><a href="{{ route('Students.index') }}"  class="{{ request()->routeIs('Students.index')  ? 'sub-active' : '' }}">{{ trans('main_trans.list_students') }}</a></li>
+                <li><a href="{{ route('Promotion.index') }}" class="{{ request()->routeIs('Promotion.*')     ? 'sub-active' : '' }}">{{ trans('main_trans.Students_Promotions') }}</a></li>
+                <li><a href="{{ route('Graduated.index') }}" class="{{ request()->routeIs('Graduated.*')    ? 'sub-active' : '' }}">{{ trans('main_trans.Graduate_students') }}</a></li>
             </ul>
         </li>
 
-        <!-- Teachers -->
         <li>
-            <a href="#sub-teachers" data-toggle="collapse" class="sb-link {{ request()->routeIs('Teachers.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Teachers.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-teachers"
+                    class="sb-link {{ request()->routeIs('Teachers.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('Teachers.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-teachers">
                 <span class="sb-icon"><i class="fas fa-chalkboard-user"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Teachers') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('Teachers.*') ? 'show' : '' }}" id="sub-teachers">
-                <li><a href="{{ route('Teachers.index') }}">{{ trans('main_trans.List_Teachers') }}</a></li>
+                <li><a href="{{ route('Teachers.index') }}" class="{{ request()->routeIs('Teachers.index') ? 'sub-active' : '' }}">{{ trans('main_trans.List_Teachers') }}</a></li>
             </ul>
         </li>
 
-        <!-- Parents -->
         <li>
-            <a href="#sub-parents" data-toggle="collapse" class="sb-link {{ request()->routeIs('add_parent') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('add_parent') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-parents"
+                    class="sb-link {{ request()->is('add_parent') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->is('add_parent') ? 'true' : 'false' }}"
+                    aria-controls="sub-parents">
                 <span class="sb-icon"><i class="fas fa-user-tie"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Parents') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
-            <ul class="collapse sb-submenu {{ request()->routeIs('add_parent') ? 'show' : '' }}" id="sub-parents">
-                <li><a href="{{ url('add_parent') }}">{{ trans('main_trans.List_Parents') }}</a></li>
+            </button>
+            <ul class="collapse sb-submenu {{ request()->is('add_parent') ? 'show' : '' }}" id="sub-parents">
+                <li><a href="{{ url('add_parent') }}" class="{{ request()->is('add_parent') ? 'sub-active' : '' }}">{{ trans('main_trans.List_Parents') }}</a></li>
             </ul>
         </li>
 
     </ul>
 
-    <!-- ── Finance ── -->
-    <span class="sb-label">المالية</span>
+    {{-- ── Finance ── --}}
+    <span class="sb-label">{{ trans('main_trans.finance') }}</span>
     <ul class="sb-list">
 
         <li>
-            <a href="#sub-accounts" data-toggle="collapse" class="sb-link {{ request()->routeIs('Fees.*') || request()->routeIs('Fees_Invoices.*') || request()->routeIs('receipt_students.*') || request()->routeIs('ProcessingFee.*') || request()->routeIs('Payment_students.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Fees.*') ? 'true' : 'false' }}">
+            @php $finActive = request()->routeIs('Fees.*') || request()->routeIs('Fees_Invoices.*') || request()->routeIs('receipt_students.*') || request()->routeIs('ProcessingFee.*') || request()->routeIs('Payment_students.*'); @endphp
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-accounts"
+                    class="sb-link {{ $finActive ? 'sb-active' : '' }}"
+                    aria-expanded="{{ $finActive ? 'true' : 'false' }}"
+                    aria-controls="sub-accounts">
                 <span class="sb-icon"><i class="fas fa-coins"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Accounts') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
-            <ul class="collapse sb-submenu {{ request()->routeIs('Fees.*') || request()->routeIs('Fees_Invoices.*') ? 'show' : '' }}" id="sub-accounts">
-                <li><a href="{{ route('Fees.index') }}">الرسوم الدراسية</a></li>
-                <li><a href="{{ route('Fees_Invoices.index') }}">الفواتير</a></li>
-                <li><a href="{{ route('receipt_students.index') }}">سندات القبض</a></li>
-                <li><a href="{{ route('ProcessingFee.index') }}">استبعاد رسوم</a></li>
-                <li><a href="{{ route('Payment_students.index') }}">سندات الصرف</a></li>
+            </button>
+            <ul class="collapse sb-submenu {{ $finActive ? 'show' : '' }}" id="sub-accounts">
+                <li><a href="{{ route('Fees.index') }}"             class="{{ request()->routeIs('Fees.index')             ? 'sub-active' : '' }}">{{ trans('main_trans.fees_title') }}</a></li>
+                <li><a href="{{ route('Fees_Invoices.index') }}"    class="{{ request()->routeIs('Fees_Invoices.*')        ? 'sub-active' : '' }}">{{ trans('main_trans.invoices') }}</a></li>
+                <li><a href="{{ route('receipt_students.index') }}" class="{{ request()->routeIs('receipt_students.*')    ? 'sub-active' : '' }}">{{ trans('main_trans.receipts') }}</a></li>
+                <li><a href="{{ route('ProcessingFee.index') }}"    class="{{ request()->routeIs('ProcessingFee.*')       ? 'sub-active' : '' }}">{{ trans('main_trans.fee_exemptions') }}</a></li>
+                <li><a href="{{ route('Payment_students.index') }}" class="{{ request()->routeIs('Payment_students.*')   ? 'sub-active' : '' }}">{{ trans('main_trans.payment_orders') }}</a></li>
             </ul>
         </li>
 
     </ul>
 
-    <!-- ── Activity & Content ── -->
-    <span class="sb-label">النشاط والمحتوى</span>
+    {{-- ── Activity & Content ── --}}
+    <span class="sb-label">{{ trans('main_trans.activity_content') }}</span>
     <ul class="sb-list">
 
-        <!-- Attendance -->
         <li>
-            <a href="#sub-attendance" data-toggle="collapse" class="sb-link {{ request()->routeIs('Attendance.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Attendance.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-attendance"
+                    class="sb-link {{ request()->routeIs('Attendance.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('Attendance.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-attendance">
                 <span class="sb-icon"><i class="fas fa-calendar-check"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Attendance') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('Attendance.*') ? 'show' : '' }}" id="sub-attendance">
-                <li><a href="{{ route('Attendance.index') }}">قائمة الطلاب</a></li>
+                <li><a href="{{ route('Attendance.index') }}" class="{{ request()->routeIs('Attendance.index') ? 'sub-active' : '' }}">{{ trans('main_trans.attendance_list') }}</a></li>
             </ul>
         </li>
 
-        <!-- Quizzes -->
         <li>
-            <a href="#sub-quizzes" data-toggle="collapse" class="sb-link {{ request()->routeIs('Quizzes.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('Quizzes.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-quizzes"
+                    class="sb-link {{ request()->routeIs('Quizzes.*') || request()->routeIs('questions.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('Quizzes.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-quizzes">
                 <span class="sb-icon"><i class="fas fa-file-pen"></i></span>
-                <span class="sb-text">الاختبارات</span>
+                <span class="sb-text">{{ trans('main_trans.quizzes') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('Quizzes.*') ? 'show' : '' }}" id="sub-quizzes">
-                <li><a href="{{ route('Quizzes.index') }}">قائمة الاختبارات</a></li>
+                <li><a href="{{ route('Quizzes.index') }}" class="{{ request()->routeIs('Quizzes.index') ? 'sub-active' : '' }}">{{ trans('main_trans.quizzes_list') }}</a></li>
             </ul>
         </li>
 
-        <!-- Library -->
         <li>
-            <a href="#sub-library" data-toggle="collapse" class="sb-link {{ request()->routeIs('library.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('library.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-library"
+                    class="sb-link {{ request()->routeIs('library.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('library.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-library">
                 <span class="sb-icon"><i class="fas fa-book"></i></span>
                 <span class="sb-text">{{ trans('main_trans.library') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('library.*') ? 'show' : '' }}" id="sub-library">
-                <li><a href="{{ route('library.index') }}">قائمة الكتب</a></li>
+                <li><a href="{{ route('library.index') }}" class="{{ request()->routeIs('library.index') ? 'sub-active' : '' }}">{{ trans('main_trans.library_list') }}</a></li>
             </ul>
         </li>
 
-        <!-- Online Classes -->
         <li>
-            <a href="#sub-online" data-toggle="collapse" class="sb-link {{ request()->routeIs('online_classes.*') ? 'sb-active' : '' }}" aria-expanded="{{ request()->routeIs('online_classes.*') ? 'true' : 'false' }}">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-online"
+                    class="sb-link {{ request()->routeIs('online_classes.*') ? 'sb-active' : '' }}"
+                    aria-expanded="{{ request()->routeIs('online_classes.*') ? 'true' : 'false' }}"
+                    aria-controls="sub-online">
                 <span class="sb-icon"><i class="fas fa-video"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Onlineclasses') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu {{ request()->routeIs('online_classes.*') ? 'show' : '' }}" id="sub-online">
-                <li><a href="{{ route('online_classes.index') }}">حصص أونلاين — Zoom</a></li>
+                <li><a href="{{ route('online_classes.index') }}" class="{{ request()->routeIs('online_classes.index') ? 'sub-active' : '' }}">{{ trans('main_trans.online_zoom') }}</a></li>
             </ul>
         </li>
 
     </ul>
 
-    <!-- ── System ── -->
-    <span class="sb-label">النظام</span>
+    {{-- ── System ── --}}
+    <span class="sb-label">{{ trans('main_trans.system_section') }}</span>
     <ul class="sb-list">
 
         <li>
-            <a href="{{ route('settings.index') }}" class="sb-link {{ request()->routeIs('settings.*') ? 'sb-active' : '' }}">
+            <a href="{{ route('settings.index') }}"
+               class="sb-link {{ request()->routeIs('settings.*') ? 'sb-active' : '' }}">
                 <span class="sb-icon"><i class="fas fa-gear"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Settings') }}</span>
             </a>
         </li>
 
         <li>
-            <a href="{{ route('admin.registrations.index') }}" class="sb-link {{ request()->routeIs('admin.registrations.*') ? 'sb-active' : '' }}">
+            <a href="{{ route('admin.registrations.index') }}"
+               class="sb-link {{ request()->routeIs('admin.registrations.*') ? 'sb-active' : '' }}">
                 <span class="sb-icon"><i class="fas fa-clipboard-list"></i></span>
-                <span class="sb-text">طلبات التسجيل</span>
-                @php $__pendingReg = \App\Models\SchoolRegistration::pending()->count(); @endphp
-                @if ($__pendingReg > 0)
-                    <span style="margin-right:auto; background:#ef4444; color:white; font-size:10px; font-weight:700; padding:2px 7px; border-radius:50px; line-height:1.6;">
-                        {{ $__pendingReg }}
+                <span class="sb-text">{{ trans('main_trans.registrations') }}</span>
+                @php $__pendReg = \App\Models\SchoolRegistration::pending()->count(); @endphp
+                @if ($__pendReg > 0)
+                    <span style="margin-inline-start:auto; background:#ef4444; color:white; font-size:10px; font-weight:700; padding:2px 8px; border-radius:50px; line-height:1.7; flex-shrink:0;">
+                        {{ $__pendReg }}
                     </span>
                 @endif
             </a>
         </li>
 
         <li>
-            <a href="#sub-users" data-toggle="collapse" class="sb-link" aria-expanded="false">
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-users"
+                    class="sb-link"
+                    aria-expanded="false"
+                    aria-controls="sub-users">
                 <span class="sb-icon"><i class="fas fa-users-cog"></i></span>
                 <span class="sb-text">{{ trans('main_trans.Users') }}</span>
                 <i class="fas fa-chevron-left sb-arrow"></i>
-            </a>
+            </button>
             <ul class="collapse sb-submenu" id="sub-users">
-                <li><a href="#">إدارة المستخدمين</a></li>
+                <li><a href="#">{{ trans('main_trans.users_mgmt') }}</a></li>
             </ul>
         </li>
 
     </ul>
 
-</div>
+</div>{{-- /.sb-scroll --}}
 
-<!-- ══ Sidebar Footer (user info + logout) ══ -->
+{{-- ── Sidebar Footer ── --}}
 <div class="sb-footer">
     <div class="sb-user">
         <div class="sb-avatar">
             {{ mb_substr(auth()->user()->name ?? 'A', 0, 1) }}
         </div>
         <div class="sb-user-info">
-            <span class="sb-user-name">{{ auth()->user()->name ?? 'المسؤول' }}</span>
-            <span class="sb-user-role">مسؤول النظام</span>
+            <span class="sb-user-name">{{ auth()->user()->name ?? trans('main_trans.role_admin') }}</span>
+            <span class="sb-user-role">{{ trans('main_trans.admin_role_label') }}</span>
         </div>
         <form method="POST" action="{{ route('custom.logout', 'web') }}" style="margin:0">
             @csrf
-            <button type="submit" class="sb-logout" title="تسجيل الخروج">
+            <button type="submit" class="sb-logout" title="{{ trans('main_trans.logout') }}">
                 <i class="fas fa-right-from-bracket"></i>
             </button>
         </form>

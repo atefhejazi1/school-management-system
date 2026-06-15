@@ -36,7 +36,152 @@ return [
     'Settings'=>'الاعدادات',
     'Users'=>'المستخدمين',
     'Copyright' => 'جميع الحقوق محفوظة ',
-    'Name_Programer' => 'عاطف حجازي'
+    'Name_Programer' => 'عاطف حجازي',
 
+    // ── Selection page ──
+    'select_role'         => 'اختر دورك',
+    'select_subtitle'     => 'برنامج إدارة المدارس — اختر نوع حسابك للمتابعة',
+    'login_now'           => 'دخول الآن',
+    'lang_name'           => 'العربية',
+    'role_student'        => 'طالب',
+    'role_teacher'        => 'معلم',
+    'role_admin'          => 'مسؤول',
+    'role_parent'         => 'ولي الأمر',
+    'role_student_desc'   => 'الدرجات · الجدول الدراسي · الحضور',
+    'role_teacher_desc'   => 'إدارة الفصول والمواد والدرجات',
+    'role_admin_desc'     => 'الإدارة الشاملة للنظام والمستخدمين',
+    'role_parent_desc'    => 'تابع تقدم أبنائك ونتائجهم',
+
+    // ── Header ──
+    'search_placeholder'  => 'بحث في النظام...',
+    'notifications'       => 'الإشعارات',
+    'mark_all_read'       => 'تحديد الكل كمقروء',
+    'profile'             => 'الملف الشخصي',
+    'system_settings'     => 'إعدادات النظام',
+    'logout'              => 'تسجيل الخروج',
+    'fullscreen'          => 'ملء الشاشة',
+    'admin_role_label'    => 'مسؤول النظام',
+    'toggle_sidebar'      => 'تبديل القائمة',
+    'main_menu'           => 'القائمة الرئيسية',
+    'breadcrumb_home'     => 'الرئيسية',
+
+    // ── Sidebar sections ──
+    'academic_affairs'    => 'الشؤون الأكاديمية',
+    'people'              => 'المستخدمون',
+    'finance'             => 'المالية',
+    'activity_content'    => 'النشاط والمحتوى',
+    'system_section'      => 'النظام',
+
+    // ── Sidebar items ──
+    'subjects'            => 'المواد الدراسية',
+    'subjects_list'       => 'قائمة المواد',
+    'fees_title'          => 'الرسوم الدراسية',
+    'invoices'            => 'الفواتير',
+    'receipts'            => 'سندات القبض',
+    'fee_exemptions'      => 'استبعاد رسوم',
+    'payment_orders'      => 'سندات الصرف',
+    'attendance_list'     => 'قائمة الطلاب',
+    'quizzes'             => 'الاختبارات',
+    'quizzes_list'        => 'قائمة الاختبارات',
+    'library_list'        => 'قائمة الكتب',
+    'online_zoom'         => 'حصص أونلاين — Zoom',
+    'users_mgmt'          => 'إدارة المستخدمين',
+    'registrations'       => 'طلبات التسجيل',
+
+    // ── Footer ──
+    'system_active'       => 'النظام يعمل بشكل طبيعي',
+    'all_rights'          => 'جميع الحقوق محفوظة',
+    'terms'               => 'شروط الاستخدام',
+    'privacy'             => 'سياسة الخصوصية',
+    'support'             => 'الدعم الفني',
+
+    // ── UI Components ──
+    'loading'             => 'جارٍ التحميل...',
+    'no_data'             => 'لا توجد بيانات',
+    'no_data_desc'        => 'لم يتم العثور على أي سجلات حتى الآن',
+    'no_results'          => 'لا توجد نتائج',
+    'no_results_desc'     => 'لم يتطابق أي سجل مع معايير البحث',
+    'retry'               => 'إعادة المحاولة',
+    'add_new'             => 'إضافة جديد',
+
+    // ── Modal ──
+    'confirm_action'      => 'تأكيد الإجراء',
+    'confirm_delete'      => 'هل أنت متأكد من حذف هذا السجل؟',
+    'confirm_delete_desc' => 'هذا الإجراء لا يمكن التراجع عنه.',
+    'cancel'              => 'إلغاء',
+    'confirm_btn'         => 'تأكيد',
+    'delete_btn'          => 'حذف',
+
+    // ── Toasts ──
+    'toast_saved'         => 'تم الحفظ بنجاح',
+    'toast_updated'       => 'تم التحديث بنجاح',
+    'toast_deleted'       => 'تم الحذف بنجاح',
+    'toast_error'         => 'حدث خطأ، يرجى المحاولة مرة أخرى',
+    'toast_warning'       => 'تنبيه',
+
+    // ── Inner Page & Template UI ──
+    'search'              => 'بحث',
+    'filter'              => 'تصفية',
+    'reset'               => 'إعادة ضبط',
+    'save'                => 'حفظ',
+    'save_changes'        => 'حفظ التغييرات',
+    'back'                => 'رجوع',
+    'create'              => 'إنشاء',
+    'edit'                => 'تعديل',
+    'view_details'        => 'عرض التفاصيل',
+    'actions'             => 'الإجراءات',
+    'row_num'             => '#',
+    'select_option'       => '— اختر —',
+    'saving'              => 'جارٍ الحفظ...',
+    'export'              => 'تصدير',
+    'per_page_label'      => 'لكل صفحة',
+    'showing_results'     => 'عرض',
+    'of_results'          => 'من',
+    'records_count'       => 'سجل',
+
+    // ── Form Sections ──
+    'personal_info'       => 'المعلومات الشخصية',
+    'personal_info_desc'  => 'بيانات التعريف الأساسية والأكاديمية',
+    'contact_info'        => 'معلومات التواصل',
+    'contact_info_desc'   => 'البريد الإلكتروني ورقم الجوال والعنوان',
+    'additional_info'     => 'معلومات إضافية',
+    'additional_info_desc'=> 'ملاحظات وصورة شخصية وإعدادات الحساب',
+    'options_label'       => 'خيارات الحساب',
+
+    // ── Field Labels ──
+    'status'              => 'الحالة',
+    'created_at_label'    => 'تاريخ الإنشاء',
+    'updated_at_label'    => 'آخر تحديث',
+    'active'              => 'نشط',
+    'inactive'            => 'غير نشط',
+    'male'                => 'ذكر',
+    'female'              => 'أنثى',
+    'name_label'          => 'الاسم الكامل',
+    'first_name'          => 'الاسم الأول',
+    'last_name'           => 'اسم العائلة',
+    'email_label'         => 'البريد الإلكتروني',
+    'phone_label'         => 'رقم الجوال',
+    'birth_date_label'    => 'تاريخ الميلاد',
+    'gender_label'        => 'الجنس',
+    'address_label'       => 'العنوان',
+    'notes_label'         => 'ملاحظات',
+    'notes_placeholder'   => 'أدخل أي ملاحظات إضافية هنا...',
+    'image_label'         => 'الصورة الشخصية',
+    'national_id'         => 'رقم الهوية',
+    'national_id_hint'    => 'يجب أن يكون فريداً ومطابقاً للهوية الرسمية',
+    'upload_file'         => 'انقر أو اسحب صورة للرفع',
+    'upload_hint'         => 'الحد الأقصى 2 ميغابايت',
+
+    // ── Checkboxes / Options ──
+    'send_welcome_email'      => 'إرسال بريد ترحيبي للطالب',
+    'send_welcome_email_hint' => 'سيُرسل تلقائياً بريد إلكتروني يتضمن بيانات تسجيل الدخول.',
+    'notify_parent'           => 'إشعار ولي الأمر',
+
+    // ── Show / Profile Page ──
+    'profile_overview'    => 'نظرة عامة على الملف',
+    'quick_stats'         => 'إحصائيات سريعة',
+    'general_details'     => 'التفاصيل العامة',
+    'related_records'     => 'السجلات المرتبطة',
+    'students_subtitle'   => 'إدارة جميع الطلاب المسجلين',
 
 ];

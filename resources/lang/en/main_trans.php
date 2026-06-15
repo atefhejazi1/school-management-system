@@ -33,7 +33,152 @@ return [
     'Settings'=>'Settings',
     'Users'=>'Users',
     'Copyright' => 'Copyright',
-    'Name_Programer' => 'SamirGamal MoraSoft All Rights Reserved'
+    'Name_Programer' => 'Atef Hejazi',
 
+    // ── Selection page ──
+    'select_role'         => 'Select Your Role',
+    'select_subtitle'     => 'School Management System — Choose your account type to continue',
+    'login_now'           => 'Login Now',
+    'lang_name'           => 'English',
+    'role_student'        => 'Student',
+    'role_teacher'        => 'Teacher',
+    'role_admin'          => 'Admin',
+    'role_parent'         => 'Parent',
+    'role_student_desc'   => 'Grades · Schedule · Attendance',
+    'role_teacher_desc'   => 'Manage classes, subjects & grades',
+    'role_admin_desc'     => 'Full system and user management',
+    'role_parent_desc'    => 'Track your children\'s progress',
+
+    // ── Header ──
+    'search_placeholder'  => 'Search the system...',
+    'notifications'       => 'Notifications',
+    'mark_all_read'       => 'Mark all as read',
+    'profile'             => 'My Profile',
+    'system_settings'     => 'System Settings',
+    'logout'              => 'Logout',
+    'fullscreen'          => 'Fullscreen',
+    'admin_role_label'    => 'System Admin',
+    'toggle_sidebar'      => 'Toggle Sidebar',
+    'main_menu'           => 'Main Menu',
+    'breadcrumb_home'     => 'Dashboard',
+
+    // ── Sidebar sections ──
+    'academic_affairs'    => 'Academic Affairs',
+    'people'              => 'Users',
+    'finance'             => 'Finance',
+    'activity_content'    => 'Activities & Content',
+    'system_section'      => 'System',
+
+    // ── Sidebar items ──
+    'subjects'            => 'Subjects',
+    'subjects_list'       => 'Subjects List',
+    'fees_title'          => 'Tuition Fees',
+    'invoices'            => 'Invoices',
+    'receipts'            => 'Receipts',
+    'fee_exemptions'      => 'Fee Exemptions',
+    'payment_orders'      => 'Payment Orders',
+    'attendance_list'     => 'Students List',
+    'quizzes'             => 'Quizzes',
+    'quizzes_list'        => 'Quizzes List',
+    'library_list'        => 'Books List',
+    'online_zoom'         => 'Online Classes — Zoom',
+    'users_mgmt'          => 'User Management',
+    'registrations'       => 'Registration Requests',
+
+    // ── Footer ──
+    'system_active'       => 'System is running normally',
+    'all_rights'          => 'All Rights Reserved',
+    'terms'               => 'Terms of Use',
+    'privacy'             => 'Privacy Policy',
+    'support'             => 'Technical Support',
+
+    // ── UI Components ──
+    'loading'             => 'Loading...',
+    'no_data'             => 'No Data Found',
+    'no_data_desc'        => 'No records have been added yet',
+    'no_results'          => 'No Results',
+    'no_results_desc'     => 'No records matched your search criteria',
+    'retry'               => 'Retry',
+    'add_new'             => 'Add New',
+
+    // ── Modal ──
+    'confirm_action'      => 'Confirm Action',
+    'confirm_delete'      => 'Are you sure you want to delete this record?',
+    'confirm_delete_desc' => 'This action cannot be undone.',
+    'cancel'              => 'Cancel',
+    'confirm_btn'         => 'Confirm',
+    'delete_btn'          => 'Delete',
+
+    // ── Toasts ──
+    'toast_saved'         => 'Saved successfully',
+    'toast_updated'       => 'Updated successfully',
+    'toast_deleted'       => 'Deleted successfully',
+    'toast_error'         => 'An error occurred, please try again',
+    'toast_warning'       => 'Warning',
+
+    // ── Inner Page & Template UI ──
+    'search'              => 'Search',
+    'filter'              => 'Filter',
+    'reset'               => 'Reset',
+    'save'                => 'Save',
+    'save_changes'        => 'Save Changes',
+    'back'                => 'Back',
+    'create'              => 'Create',
+    'edit'                => 'Edit',
+    'view_details'        => 'View Details',
+    'actions'             => 'Actions',
+    'row_num'             => '#',
+    'select_option'       => '— Select —',
+    'saving'              => 'Saving...',
+    'export'              => 'Export',
+    'per_page_label'      => 'Per Page',
+    'showing_results'     => 'Showing',
+    'of_results'          => 'of',
+    'records_count'       => 'records',
+
+    // ── Form Sections ──
+    'personal_info'       => 'Personal Information',
+    'personal_info_desc'  => 'Basic identification and academic data',
+    'contact_info'        => 'Contact Information',
+    'contact_info_desc'   => 'Email, phone, and address details',
+    'additional_info'     => 'Additional Information',
+    'additional_info_desc'=> 'Notes, photo, and account settings',
+    'options_label'       => 'Account Options',
+
+    // ── Field Labels ──
+    'status'              => 'Status',
+    'created_at_label'    => 'Created At',
+    'updated_at_label'    => 'Last Updated',
+    'active'              => 'Active',
+    'inactive'            => 'Inactive',
+    'male'                => 'Male',
+    'female'              => 'Female',
+    'name_label'          => 'Full Name',
+    'first_name'          => 'First Name',
+    'last_name'           => 'Last Name',
+    'email_label'         => 'Email Address',
+    'phone_label'         => 'Phone Number',
+    'birth_date_label'    => 'Date of Birth',
+    'gender_label'        => 'Gender',
+    'address_label'       => 'Address',
+    'notes_label'         => 'Notes',
+    'notes_placeholder'   => 'Enter any additional notes here...',
+    'image_label'         => 'Profile Photo',
+    'national_id'         => 'National ID',
+    'national_id_hint'    => 'Must be unique and match official ID',
+    'upload_file'         => 'Click or drag a photo to upload',
+    'upload_hint'         => 'Max 2 MB',
+
+    // ── Checkboxes / Options ──
+    'send_welcome_email'      => 'Send welcome e-mail to student',
+    'send_welcome_email_hint' => 'An e-mail with login credentials will be sent automatically.',
+    'notify_parent'           => 'Notify parent / guardian',
+
+    // ── Show / Profile Page ──
+    'profile_overview'    => 'Profile Overview',
+    'quick_stats'         => 'Quick Stats',
+    'general_details'     => 'General Details',
+    'related_records'     => 'Related Records',
+    'students_subtitle'   => 'Manage all enrolled students',
 
 ];

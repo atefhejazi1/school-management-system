@@ -10,7 +10,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    box-shadow: 0 1px 6px rgba(0,0,0,.04);
 }
 
 .footer-copy {
@@ -41,9 +41,9 @@
     color: #94a3b8;
     text-decoration: none;
     font-weight: 500;
-    transition: color 0.2s;
+    transition: color .2s;
 }
-.footer-links a:hover { color: #3b82f6; }
+.footer-links a:hover { color: var(--em-600, #059669); }
 
 .footer-status {
     display: inline-flex;
@@ -68,13 +68,13 @@
 }
 
 @keyframes dotBlink {
-    0%,100% { opacity: 1; }
-    50%      { opacity: 0.4; }
+    0%, 100% { opacity: 1; }
+    50%       { opacity: .4; }
 }
 
 @keyframes statusPulse {
-    0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.15); }
-    50%     { box-shadow: 0 0 0 4px rgba(34,197,94,0.08); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,.15); }
+    50%       { box-shadow: 0 0 0 4px rgba(34,197,94,.08); }
 }
 
 @media (max-width: 576px) {
@@ -85,20 +85,21 @@
 
 <footer class="admin-footer">
     <div class="footer-copy">
-        <i class="fas fa-school" style="color:#3b82f6;"></i>
-        &copy; <strong>نظام إدارة المدارس</strong>
-        <span id="footer-year"></span> — جميع الحقوق محفوظة
+        <i class="fas fa-school" style="color:var(--em-600,#059669);"></i>
+        &copy; <strong>{{ trans('main_trans.Programname') }}</strong>
+        <span id="footer-year"></span>
+        &mdash; {{ trans('main_trans.all_rights') }}
     </div>
 
     <div class="footer-status">
         <div class="status-dot"></div>
-        النظام يعمل بشكل طبيعي
+        {{ trans('main_trans.system_active') }}
     </div>
 
     <ul class="footer-links">
-        <li><a href="#">شروط الاستخدام</a></li>
-        <li><a href="#">سياسة الخصوصية</a></li>
-        <li><a href="#">الدعم الفني</a></li>
+        <li><a href="#">{{ trans('main_trans.terms') }}</a></li>
+        <li><a href="#">{{ trans('main_trans.privacy') }}</a></li>
+        <li><a href="#">{{ trans('main_trans.support') }}</a></li>
     </ul>
 </footer>
 
