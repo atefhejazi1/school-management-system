@@ -65,7 +65,25 @@ class AuthenticatedSessionController extends Controller
             } elseif ($type == 'parent') {
                 return redirect()->intended('/parent/dashboard');
             } else {
-                return redirect()->intended('/dashboard');
+                /** @var User $authenticatedUser */
+                $authenticatedUser = Auth::guard('web')->user();
+
+                // إذا كانت مدرسة هذا المستخدم معلّقة من قِبل الإدارة، يُمنع من تسجيل الدخول فوراً
+                if (! is_null($authenticatedUser->school_id) && $authenticatedUser->school?->isSuspended()) {
+                    Auth::guard('web')->logout();
+
+                    return redirect()->back()->with(
+                        'message',
+                        'تم تعليق وصول مدرستكم إلى المنصة من قِبل الإدارة. يرجى التواصل مع الدعم الفني.'
+                    );
+                }
+
+                // التمييز بين منشئ المنصة العام (Super Admin) ومستخدمي المدارس بناءً على school_id
+                if ($authenticatedUser->isSuperAdmin()) {
+                    return redirect()->intended(route('super-admin.dashboard'));
+                }
+
+                return redirect()->intended(route('dashboard'));
             }
         }
 

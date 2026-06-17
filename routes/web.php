@@ -22,6 +22,7 @@ use App\Http\Controllers\Students\ReceiptStudentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Subjects\SubjectController;
+use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -56,7 +57,7 @@ Route::post('/logout/{type}', [AuthenticatedSessionController::class, 'destroy']
 Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
-        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth']
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth', 'role.redirect']
     ],
     function () {
         Route::get('/dashboard', function () {
@@ -129,6 +130,26 @@ Route::group(
         Route::get('/admin/registrations', function () {
             return view('admin.registrations.index');
         })->name('admin.registrations.index');
+    }
+);
+
+// ══════════════════════════════════════════════════════════
+// لوحة تحكم منشئ المنصة (Super Admin) — معزولة تماماً عن مسارات المدارس،
+// لكنها تبقى داخل مجموعة الـ locale نفسها لضمان عمل تبديل اللغة (AR/EN) بشكل صحيح
+// ══════════════════════════════════════════════════════════
+Route::group(
+    [
+        'prefix'     => LaravelLocalization::setLocale(),
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath', 'auth', 'role.redirect'],
+    ],
+    function () {
+        Route::prefix('super-admin')->name('super-admin.')->group(function () {
+            Route::get('/dashboard', [SuperAdminDashboardController::class, 'index'])->name('dashboard');
+
+            Route::get('/school-requests', function () {
+                return view('super-admin.school-requests.index');
+            })->name('school-requests.index');
+        });
     }
 );
 

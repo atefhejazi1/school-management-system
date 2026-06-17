@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SchoolRegistration extends Model
 {
@@ -17,7 +18,16 @@ class SchoolRegistration extends Model
         'message',
         'status',
         'admin_notes',
+        'school_id',
     ];
+
+    /**
+     * سجل المدرسة الذي تم إنشاؤه عند الموافقة على هذا الطلب (إن وُجد).
+     */
+    public function school(): BelongsTo
+    {
+        return $this->belongsTo(School::class);
+    }
 
     public function scopePending(Builder $query): Builder
     {
