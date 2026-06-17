@@ -19,6 +19,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'localeCookieRedirect'    => \Mcamara\LaravelLocalization\Middleware\LocaleCookieRedirect::class,
             'localeViewPath'          => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationViewPath::class,
             'Zoom' => Jubaer\Zoom\Facades\Zoom::class,
+            'role.redirect' => \App\Http\Middleware\RedirectBasedOnRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
