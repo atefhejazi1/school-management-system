@@ -3,6 +3,7 @@
 namespace App\Models;
 
 
+use App\Traits\BelongsToSchool;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,8 @@ class students extends Authenticatable
 {
     use SoftDeletes;
     use HasTranslations;
+    // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
+    use BelongsToSchool;
     public $translatable = ['name'];
     protected $guarded = [];
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToSchool;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
@@ -9,6 +10,8 @@ use Spatie\Translatable\HasTranslations;
 class Teachers extends Authenticatable
 {
     use HasTranslations;
+    // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
+    use BelongsToSchool;
     public $translatable = ['Name'];
     protected $guarded = [];
 
