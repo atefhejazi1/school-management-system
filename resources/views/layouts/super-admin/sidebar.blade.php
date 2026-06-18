@@ -206,6 +206,13 @@
                 <span class="pf-sb-text">{{ __('super_dash.settings') }}</span>
             </a>
         </li>
+        <li>
+            <a href="{{ route('super-admin.admins.index') }}"
+               class="pf-sb-link {{ request()->routeIs('super-admin.admins.*') ? 'pf-sb-active' : '' }}">
+                <span class="pf-sb-icon"><i class="fas fa-user-shield"></i></span>
+                <span class="pf-sb-text">منشئو المنصة</span>
+            </a>
+        </li>
     </ul>
 
 </div>{{-- /.pf-sb-scroll --}}

@@ -25,6 +25,7 @@ use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\ImpersonationController;
 use App\Http\Controllers\SuperAdmin\PlanSelectionController;
+use App\Http\Controllers\SuperAdmin\SuperAdminUserController;
 use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -169,6 +170,10 @@ Route::group(
             Route::get('/settings', function () {
                 return view('super-admin.settings.index');
             })->name('settings.index');
+
+            // ── إدارة حسابات منشئي المنصة الثانويين (Super Admin Provisioning) ──
+            Route::get('/admins', [SuperAdminUserController::class, 'index'])->name('admins.index');
+            Route::post('/admins', [SuperAdminUserController::class, 'store'])->name('admins.store');
         });
     }
 );
