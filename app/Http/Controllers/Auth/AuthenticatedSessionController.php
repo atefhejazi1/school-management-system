@@ -22,73 +22,83 @@ class AuthenticatedSessionController extends Controller
 
     public function create($type = null): View
     {
-        // إذا كانت القيمة فارغة، يمكن تعيين قيمة افتراضية مثل 'student'
-        if ($type == null) {
-            return view('auth.selection');
-        }
+        // $type = null يعني أننا في البوابة الموحدة (/login) التي يستخدمها كل المستخدمين
+        // بنفس النموذج تماماً، بصرف النظر عن دورهم؛ أما $type المحدد فهو دعم توافقي
+        // مع الروابط القديمة (/login/{type}) التي ما زالت تعمل بنفس الشكل السابق.
         return view('auth.login', compact('type'));
     }
 
     /**
-     * Handle an incoming authentication request.
+     * Handle an incoming authentication request via the legacy per-type route (/login/{type}).
      */
     public function store(Request $request, $type)
     {
-        // $request->authenticate();
-
-        // $request->session()->regenerate();
-
-        // return redirect()->intended(route('dashboard', absolute: false));
-
         $credentials = $request->only('email', 'password');
 
         // تحديد نوع المستخدم بناءً على الـ $type المرسل
-        if ($type == 'student') {
-            $guard = 'student';
-            $model = students::class;
-        } elseif ($type == 'teacher') {
-            $guard = 'teacher';
-            $model = Teachers::class;
-        } elseif ($type == 'parent') {
-            $guard = 'parent';
-            $model = My_Parent::class;
-        } else {
-            $guard = 'web';
-            $model = User::class;
+        $guard = match ($type) {
+            'student' => 'student',
+            'teacher' => 'teacher',
+            'parent'  => 'parent',
+            default   => 'web',
+        };
+
+        if (Auth::guard($guard)->attempt($credentials, $request->boolean('remember'))) {
+            return $this->redirectAfterLogin($guard);
         }
 
-        if (Auth::guard($guard)->attempt($credentials)) {
-            if ($type == 'student') {
-                return redirect()->intended('/student/dashboard');
-            } elseif ($type == 'teacher') {
-                return redirect()->intended('/teacher/dashboard');
-            } elseif ($type == 'parent') {
-                return redirect()->intended('/parent/dashboard');
-            } else {
-                /** @var User $authenticatedUser */
-                $authenticatedUser = Auth::guard('web')->user();
+        return redirect()->back()->with('message', 'يوجد خطا في كلمة المرور او اسم المستخدم');
+    }
 
-                // إذا كانت مدرسة هذا المستخدم معلّقة من قِبل الإدارة، يُمنع من تسجيل الدخول فوراً
-                if (! is_null($authenticatedUser->school_id) && $authenticatedUser->school?->isSuspended()) {
-                    Auth::guard('web')->logout();
+    /**
+     * Handle an incoming authentication request via the unified gateway (/login).
+     *
+     * البوابة الموحدة: نحاول تسجيل الدخول على كل الحراس بالتتابع (مدير/منشئ منصة، معلم، طالب، ولي أمر)
+     * لأن المستخدم نفسه قد يكون أياً منهم، وكلٌ منهم محفوظ في جدول مستقل خاص به. التمييز بين
+     * منشئ المنصة العام ومدير المدرسة يحدث صامتاً بعد المصادقة بناءً على school_id فقط.
+     */
+    public function storeUnified(Request $request): RedirectResponse
+    {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
 
-                    return redirect()->back()->with(
-                        'message',
-                        'تم تعليق وصول مدرستكم إلى المنصة من قِبل الإدارة. يرجى التواصل مع الدعم الفني.'
-                    );
-                }
-
-                // التمييز بين منشئ المنصة العام (Super Admin) ومستخدمي المدارس بناءً على school_id
-                if ($authenticatedUser->isSuperAdmin()) {
-                    return redirect()->intended(route('super-admin.dashboard'));
-                }
-
-                return redirect()->intended(route('dashboard'));
+        foreach (['web', 'teacher', 'student', 'parent'] as $guard) {
+            if (Auth::guard($guard)->attempt($credentials, $remember)) {
+                return $this->redirectAfterLogin($guard);
             }
         }
 
-
         return redirect()->back()->with('message', 'يوجد خطا في كلمة المرور او اسم المستخدم');
+    }
+
+    /**
+     * يقرر الوجهة الصحيحة بعد نجاح المصادقة بناءً على الحارس (Guard) الذي نجحت عليه المحاولة.
+     */
+    private function redirectAfterLogin(string $guard): RedirectResponse
+    {
+        if ($guard !== 'web') {
+            return redirect()->intended("/{$guard}/dashboard");
+        }
+
+        /** @var User $authenticatedUser */
+        $authenticatedUser = Auth::guard('web')->user();
+
+        // إذا كانت مدرسة هذا المستخدم معلّقة من قِبل الإدارة، يُمنع من تسجيل الدخول فوراً
+        if (! is_null($authenticatedUser->school_id) && $authenticatedUser->school?->isSuspended()) {
+            Auth::guard('web')->logout();
+
+            return redirect()->route('login')->with(
+                'message',
+                'تم تعليق حساب هذه المدرسة، يرجى التواصل مع الإدارة.'
+            );
+        }
+
+        // التمييز بين منشئ المنصة العام (Super Admin) ومستخدمي المدارس بناءً على school_id
+        if ($authenticatedUser->isSuperAdmin()) {
+            return redirect()->intended(route('super-admin.dashboard'));
+        }
+
+        return redirect()->intended(route('dashboard'));
     }
 
 

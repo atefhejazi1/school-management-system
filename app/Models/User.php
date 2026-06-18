@@ -81,4 +81,14 @@ class User extends Authenticatable
     {
         return is_null($this->school_id);
     }
+
+    /**
+     * مدير مدرسة: مستخدم منتمٍ لمدرسة (school_id محدد) عبر حارس (Guard) المستخدمين العام (web).
+     * لا يوجد عمود role حالياً لأن جدول users لا يحتوي إلا على دور واحد لكل مدرسة (مدير المدرسة)؛
+     * أي تمييز أدق بين المعلم/الطالب/ولي الأمر يتم عبر جداول وحراس مصادقة مستقلة بالفعل.
+     */
+    public function isSchoolAdmin(): bool
+    {
+        return ! $this->isSuperAdmin();
+    }
 }

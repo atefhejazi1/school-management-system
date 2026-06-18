@@ -44,9 +44,15 @@ Route::group(['middleware' => ['guest']], function () {
     Route::get('/select', function () {
         return view('auth.selection');
     })->name('selection');
-    // Route to show login form for different user types
+
+    // ── البوابة الموحدة لتسجيل الدخول: نفس الرابط ونفس النموذج لكل المستخدمين ──
+    // (منشئ المنصة، مدير المدرسة، المعلم، الطالب، ولي الأمر). التمييز بين الأدوار
+    // يحدث صامتاً في الباك-إند بعد المصادقة عبر AuthenticatedSessionController::storeUnified().
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'storeUnified'])->name('login.attempt');
+
+    // المسارات القديمة الخاصة بكل نوع مستخدم — تبقى متاحة للتوافق مع الروابط الحالية في الواجهات
     Route::get('/login/{type}', [AuthenticatedSessionController::class, 'create'])->name('login.show');
-    // Route to handle login request
     Route::post('/login/{type}', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
 
