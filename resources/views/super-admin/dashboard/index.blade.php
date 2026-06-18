@@ -67,6 +67,37 @@
         </div>
     </div>
 
+    {{-- ── عدّادات شاملة عبر كل المدارس على المنصة (Ecosystem-wide counters) ── --}}
+    <div class="flat-counters-row mb-4">
+        <div class="flat-counter">
+            <div class="flat-counter-value">{{ $stats['total_students'] }}</div>
+            <div class="flat-counter-label">إجمالي الطلاب على المنصة</div>
+        </div>
+        <div class="flat-counter">
+            <div class="flat-counter-value">{{ $stats['total_teachers'] }}</div>
+            <div class="flat-counter-label">إجمالي المعلمين على المنصة</div>
+        </div>
+        <div class="flat-counter">
+            <div class="flat-counter-value">{{ $stats['total_parents'] }}</div>
+            <div class="flat-counter-label">إجمالي أولياء الأمور على المنصة</div>
+        </div>
+    </div>
+
+    <style>
+        /* عدّادات مسطّحة بالكامل: بدون تدرج لوني، بدون ظل، بدون أيقونات */
+        .flat-counters-row { display: flex; gap: 16px; flex-wrap: wrap; }
+        .flat-counter {
+            flex: 1 1 220px;
+            background: #ffffff;
+            border: 1px solid var(--border, #e2e8f0);
+            border-radius: 14px;
+            padding: 20px 22px;
+            text-align: center;
+        }
+        .flat-counter-value { font-size: 1.7rem; font-weight: 800; color: #059669; }
+        .flat-counter-label { font-size: .82rem; font-weight: 600; color: #334155; margin-top: 4px; }
+    </style>
+
     {{-- ── Quick shortcut card ── --}}
     <div class="admin-card">
         <div class="admin-card-header">

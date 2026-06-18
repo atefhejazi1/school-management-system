@@ -164,6 +164,11 @@ Route::group(
 
             // ── الدخول كمدير مدرسة محدد لمعاينة لوحته (Impersonation) ──
             Route::post('/impersonate/{schoolAdminId}', [ImpersonationController::class, 'impersonate'])->name('impersonate');
+
+            // ── إعدادات المنصة العامة ──
+            Route::get('/settings', function () {
+                return view('super-admin.settings.index');
+            })->name('settings.index');
         });
     }
 );

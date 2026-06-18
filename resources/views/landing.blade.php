@@ -1051,9 +1051,20 @@
 
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="reg-form-card">
-                    <livewire:school-registration />
-                </div>
+                {{-- إظهار/إخفاء نموذج التسجيل العام يتحكم به منشئ المنصة عبر إعدادات المنصة العامة
+                     (allow_public_registration)؛ القيمة الافتراضية '1' تعني إظهار النموذج إذا لم
+                     يُحدَّد الإعداد بعد. --}}
+                @if (\App\Models\PlatformSetting::get('allow_public_registration', '1') === '1')
+                    <div class="reg-form-card">
+                        <livewire:school-registration />
+                    </div>
+                @else
+                    <div class="reg-form-card text-center" style="padding:40px 24px;">
+                        <p class="mb-0" style="color:#e2e8f0; font-weight:600;" data-i18n="register_closed">
+                            التسجيل العام مغلق حالياً، يرجى التواصل معنا مباشرةً لتفعيل حساب مدرستك.
+                        </p>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

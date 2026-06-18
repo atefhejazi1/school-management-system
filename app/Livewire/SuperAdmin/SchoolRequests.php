@@ -3,6 +3,7 @@
 namespace App\Livewire\SuperAdmin;
 
 use App\Mail\SchoolApproved;
+use App\Models\PlatformSetting;
 use App\Models\School;
 use App\Models\SchoolRegistration;
 use App\Models\User;
@@ -174,14 +175,15 @@ class SchoolRequests extends Component
         // واتساب يتطلب رقم الهاتف بصيغة دولية وأرقام فقط (بدون +، 00، مسافات أو شرطات)
         $digitsOnly = preg_replace('/\D/', '', $this->justApprovedPhone);
 
-        $message = "مرحباً بكم في نظام إدارة المدارس\n\n"
-            . "تمت الموافقة على طلب تسجيل مدرسة \"{$this->justApprovedSchoolName}\" وتم تفعيل حسابكم بنجاح.\n\n"
-            . "بيانات الدخول الخاصة بكم:\n"
-            . "البريد الإلكتروني: {$this->justApprovedEmail}\n"
-            . "كلمة المرور المؤقتة: {$this->justApprovedPassword}\n\n"
-            . "رابط تسجيل الدخول إلى المنصة (بوابة موحدة لجميع المستخدمين):\n"
-            . $this->justApprovedLoginUrl() . "\n\n"
-            . 'يرجى تغيير كلمة المرور فور تسجيل الدخول لأول مرة لضمان أمان الحساب.';
+        // القالب قابل للتخصيص من قِبل منشئ المنصة عبر إعدادات المنصة العامة (platform_settings)؛
+        // نستخدم القالب الافتراضي فقط إذا لم يُحدِّد منشئ المنصة قالباً مخصصاً بعد
+        $template = PlatformSetting::get('whatsapp_welcome_template', PlatformSetting::DEFAULT_WHATSAPP_TEMPLATE);
+
+        $message = str_replace(
+            ['{school_name}', '{email}', '{password}', '{login_url}'],
+            [$this->justApprovedSchoolName, $this->justApprovedEmail, $this->justApprovedPassword, $this->justApprovedLoginUrl()],
+            $template
+        );
 
         return 'https://api.whatsapp.com/send?phone=' . $digitsOnly . '&text=' . rawurlencode($message);
     }

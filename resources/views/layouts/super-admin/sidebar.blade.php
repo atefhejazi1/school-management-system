@@ -200,7 +200,8 @@
     <span class="pf-sb-label">{{ __('super_dash.system_section') }}</span>
     <ul class="pf-sb-list">
         <li>
-            <a href="#" class="pf-sb-link">
+            <a href="{{ route('super-admin.settings.index') }}"
+               class="pf-sb-link {{ request()->routeIs('super-admin.settings.*') ? 'pf-sb-active' : '' }}">
                 <span class="pf-sb-icon"><i class="fas fa-gear"></i></span>
                 <span class="pf-sb-text">{{ __('super_dash.settings') }}</span>
             </a>
