@@ -17,6 +17,7 @@ class Attendance extends Model
         'teacher_id',
         'attendence_date',
         'attendence_status',
+        'school_id',
     ];
 
     public function students()
@@ -24,11 +25,6 @@ class Attendance extends Model
         return $this->belongsTo(students::class, 'student_id');
     }
 
-
-    public function gender()
-    {
-        return $this->belongsTo(Gender::class, 'gender_id');
-    }
 
     public function grade()
     {

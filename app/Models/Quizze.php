@@ -12,17 +12,18 @@ class Quizze extends Model
     // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
     use BelongsToSchool;
     public $translatable = ['name'];
+    protected $guarded = [];
 
     public function teacher()
     {
-        return $this->belongsTo(teachers::class, 'teacher_id');
+        return $this->belongsTo(Teachers::class, 'teacher_id');
     }
 
 
 
     public function subject()
     {
-        return $this->belongsTo(subject::class, 'subject_id');
+        return $this->belongsTo(Subject::class, 'subject_id');
     }
 
 
@@ -34,7 +35,7 @@ class Quizze extends Model
 
     public function classroom()
     {
-        return $this->belongsTo(classroom::class, 'classroom_id');
+        return $this->belongsTo(Classroom::class, 'classroom_id');
     }
 
 

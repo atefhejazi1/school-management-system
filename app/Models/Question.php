@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
+    protected $guarded = [];
+
     public function quizze()
     {
-        return $this->belongsTo(quizze::class);
+        return $this->belongsTo(Quizze::class);
     }
 }

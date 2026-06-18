@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Library extends Model
 {
     protected $table = "library";
+    protected $guarded = [];
 
     public function grade()
     {

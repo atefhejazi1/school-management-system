@@ -47,6 +47,6 @@ class Teachers extends Authenticatable
     // علاقة المعلمين مع الاقسام
     public function Sections()
     {
-        return $this->belongsToMany(Sections::class, 'teacher_section', 'teacher_id', 'section_id');
+        return $this->belongsToMany(sections::class, 'teacher_section', 'teacher_id', 'section_id');
     }
 }

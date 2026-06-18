@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProcessingFee extends Model
 {
+    protected $guarded = [];
+
     public function student()
     {
         return $this->belongsTo(students::class, 'student_id');

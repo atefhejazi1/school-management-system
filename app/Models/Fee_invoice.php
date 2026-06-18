@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Fee_invoice extends Model
 {
+    protected $guarded = [];
+
     public function grade()
     {
         return $this->belongsTo(Grade::class, 'Grade_id');
@@ -18,11 +20,6 @@ class Fee_invoice extends Model
     }
 
 
-    public function section()
-    {
-        return $this->belongsTo(Sections::class, 'section_id');
-    }
-
     public function student()
     {
         return $this->belongsTo(students::class, 'student_id');
@@ -30,6 +27,6 @@ class Fee_invoice extends Model
 
     public function fees()
     {
-        return $this->belongsTo(fees::class, 'fee_id');
+        return $this->belongsTo(Fees::class, 'fee_id');
     }
 }

@@ -12,7 +12,7 @@ class sections extends Model
     // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
     use BelongsToSchool;
     public $translatable = ['Name_Section'];
-    protected $fillable = ['Name_Section', 'Grade_id', 'Class_id'];
+    protected $fillable = ['Name_Section', 'Grade_id', 'Class_id', 'school_id'];
 
     protected $table = 'sections';
     public $timestamps = true;

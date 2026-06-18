@@ -13,13 +13,13 @@ class Grade extends Model
     use BelongsToSchool;
 
     public $translatable = ['Name']; // translatable attributes
-    protected $fillable = ['Name', 'Notes'];
+    protected $fillable = ['Name', 'Notes', 'school_id'];
     protected $table = 'Grades';
     public $timestamps = true;
 
 
     public function Sections()
     {
-        return $this->hasMany(Sections::class, 'Grade_id');
+        return $this->hasMany(sections::class, 'Grade_id');
     }
 }
