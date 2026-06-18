@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToSchool;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class sections extends Model
 {
     use HasTranslations;
+    // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
+    use BelongsToSchool;
     public $translatable = ['Name_Section'];
     protected $fillable = ['Name_Section', 'Grade_id', 'Class_id'];
 

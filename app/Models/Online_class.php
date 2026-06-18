@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToSchool;
 use Illuminate\Database\Eloquent\Model;
 
 class Online_class extends Model
 {
+    // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
+    use BelongsToSchool;
     // protected $guarded=[];
     public $fillable = ['integration', 'Grade_id', 'Classroom_id', 'section_id', 'created_by', 'meeting_id', 'topic', 'start_at', 'duration', 'password', 'start_url', 'join_url'];
 

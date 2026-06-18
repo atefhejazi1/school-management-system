@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Classroom;
 use App\Models\Grade;
+use App\Models\School;
 use App\Models\sections;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,9 +15,10 @@ class SectionsTableSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run()
+    public function run(School $school)
     {
-        DB::table('sections')->delete();
+        // نحذف فقط أقسام هذه المدرسة، حتى لا تُمحى بيانات مدرسة أخرى تمت إضافتها عبر SchoolSaaSSeeder
+        DB::table('sections')->where('school_id', $school->id)->delete();
 
         $Sections = [
             ['en' => 'a', 'ar' => 'ا'],
@@ -24,12 +26,17 @@ class SectionsTableSeeder extends Seeder
             ['en' => 'c', 'ar' => 'ت'],
         ];
 
+        // نختار الصف والفصل الدراسي من نفس المدرسة فقط، لمنع تسرب بيانات مدرسة أخرى داخل العلاقات
+        $gradeIds = Grade::where('school_id', $school->id)->pluck('id');
+        $classroomIds = Classroom::where('school_id', $school->id)->pluck('id');
+
         foreach ($Sections as $section) {
             sections::create([
                 'Name_Section' => $section,
                 'Status' => 1,
-                'Grade_id' => Grade::all()->unique()->random()->id,
-                'Class_id' => Classroom::all()->unique()->random()->id
+                'Grade_id' => $gradeIds->random(),
+                'Class_id' => $classroomIds->random(),
+                'school_id' => $school->id, // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية
             ]);
         }
     }
