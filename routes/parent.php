@@ -24,7 +24,7 @@ Route::group(
             $sons = students::where('parent_id', Auth::user()->id)->get();
 
             return view('pages.parents.dashboard', compact('sons'));
-        })->name('dashboard');
+        })->name('parent.dashboard');
 
         Route::group([], function () {
             Route::get('children', [ChildrenController::class, 'index'])->name('sons.index');

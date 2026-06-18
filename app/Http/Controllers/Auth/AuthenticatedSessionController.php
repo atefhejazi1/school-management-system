@@ -62,13 +62,22 @@ class AuthenticatedSessionController extends Controller
         $credentials = $request->only('email', 'password');
         $remember = $request->boolean('remember');
 
+        // نختبر الحراس الأربعة بالتتابع بالترتيب التالي: web (منشئ المنصة/مدير المدرسة)،
+        // ثم teacher، ثم student، ثم parent — لأن المستخدم نفسه قد يكون أياً منهم،
+        // وكلٌّ منهم محفوظ في جدول مستقل خاص به (Multi-Guard).
         foreach (['web', 'teacher', 'student', 'parent'] as $guard) {
             if (Auth::guard($guard)->attempt($credentials, $remember)) {
+                // إعادة توليد معرّف الجلسة فوراً عند أول نجاح لمنع ثبات الجلسة
+                // (Session Fixation) قبل أي إعادة توجيه نحو لوحة التحكم المخصصة
+                $request->session()->regenerate();
+
                 return $this->redirectAfterLogin($guard);
             }
         }
 
-        return redirect()->back()->with('message', 'يوجد خطا في كلمة المرور او اسم المستخدم');
+        // فشلت المحاولة على الحراس الأربعة معاً: رسالة خطأ موحّدة واحدة بصرف النظر عن السبب الحقيقي
+        // (لا نكشف للمستخدم أي تفصيل عن أي حارس بالتحديد فشل، لتفادي تسريب معلومات عن نوع الحساب)
+        return redirect()->back()->with('message', 'بيانات الدخول غير صحيحة، يرجى التحقق من البريد الإلكتروني وكلمة المرور.');
     }
 
     /**

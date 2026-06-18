@@ -2,7 +2,7 @@
     <ul class="nav navbar-nav side-menu" id="sidebarnav">
         <!-- menu item Dashboard-->
         <li>
-            <a href="{{ route('dashboard') }}">
+            <a href="{{ route('parent.dashboard') }}">
                 <div class="pull-left"><i class="ti-home"></i><span
                         class="right-nav-text">{{ trans('main_trans.Dashboard') }}</span>
                 </div>
