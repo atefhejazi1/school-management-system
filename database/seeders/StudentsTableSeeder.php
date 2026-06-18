@@ -10,7 +10,6 @@ use App\Models\School;
 use App\Models\sections;
 use App\Models\students;
 use App\Models\Type_Blood;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -22,23 +21,45 @@ class StudentsTableSeeder extends Seeder
      */
     public function run(School $school): void
     {
-        // نحذف فقط طلاب هذه المدرسة، حتى لا تُمحى بيانات مدرسة أخرى تمت إضافتها عبر SchoolSaaSSeeder
+        // نحذف فقط طلاب هذه المدرسة، حتى لا تُمحى بيانات مدرسة أخرى
         DB::table('students')->where('school_id', $school->id)->delete();
-        $students = new students();
-        $students->name = ['ar' => 'احمد ابراهيم', 'en' => 'Ahmed Ibrahim'];
-        $students->email = 'Ahmed_Ibrahim@yahoo.com';
-        $students->password = Hash::make('12345678');
-        $students->gender_id = 1;
-        $students->nationalitie_id = Nationalities::all()->unique()->random()->id;
-        $students->blood_id = Type_Blood::all()->unique()->random()->id;
-        $students->Date_Birth = date('1995-01-01');
-        // نختار الصف والفصل والقسم وولي الأمر من نفس المدرسة فقط، لمنع تسرب بيانات مدرسة أخرى داخل العلاقات
-        $students->Grade_id = Grade::where('school_id', $school->id)->pluck('id')->random();
-        $students->Classroom_id = Classroom::where('school_id', $school->id)->pluck('id')->random();
-        $students->section_id = sections::where('school_id', $school->id)->pluck('id')->random();
-        $students->parent_id = My_Parent::where('school_id', $school->id)->pluck('id')->random();
-        $students->academic_year = '2021';
-        $students->school_id = $school->id; // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية
-        $students->save();
+
+        $nationalityIds = Nationalities::pluck('id');
+        $bloodTypeIds = Type_Blood::pluck('id');
+        $gradeIds = Grade::where('school_id', $school->id)->pluck('id');
+        $classroomIds = Classroom::where('school_id', $school->id)->pluck('id');
+        $sectionIds = sections::where('school_id', $school->id)->pluck('id');
+        $parentIds = My_Parent::where('school_id', $school->id)->pluck('id');
+
+        if ($parentIds->isEmpty()) {
+            return;
+        }
+
+        $students = [
+            ['ar' => 'أحمد إبراهيم', 'en' => 'Ahmed Ibrahim'],
+            ['ar' => 'يوسف خالد', 'en' => 'Youssef Khaled'],
+            ['ar' => 'مريم سامي', 'en' => 'Mariam Samy'],
+            ['ar' => 'نور الدين عادل', 'en' => 'Nour Eldin Adel'],
+            ['ar' => 'هنا وليد', 'en' => 'Hana Walid'],
+        ];
+
+        foreach ($students as $index => $name) {
+            $student = new students();
+            $student->name = $name;
+            $student->email = 'student' . ($index + 1) . '.' . $school->slug . '@example.test';
+            $student->password = Hash::make('12345678'); // لا يوجد cast('hashed') في هذا النموذج، فالتشفير اليدوي إلزامي
+            $student->gender_id = ($index % 2) + 1; // تبديل بين أول جنسين موجودين لتنويع البيانات
+            $student->nationalitie_id = $nationalityIds->random();
+            $student->blood_id = $bloodTypeIds->random();
+            $student->Date_Birth = now()->subYears(10)->subDays($index)->toDateString();
+            // نختار الصف والفصل والقسم وولي الأمر من نفس المدرسة فقط، لمنع تسرب بيانات مدرسة أخرى داخل العلاقات
+            $student->Grade_id = $gradeIds->random();
+            $student->Classroom_id = $classroomIds->random();
+            $student->section_id = $sectionIds->random();
+            $student->parent_id = $parentIds->random();
+            $student->academic_year = now()->year . '-' . (now()->year + 1);
+            $student->school_id = $school->id; // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية
+            $student->save();
+        }
     }
 }

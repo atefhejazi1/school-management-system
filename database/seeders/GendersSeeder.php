@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Gender;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class GendersSeeder extends Seeder
 {
@@ -14,7 +12,11 @@ class GendersSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('genders')->delete();
+        // حماية من حذف بيانات حقيقية: genders.id مرتبط بـ students/teachers بقيد cascade،
+        // فإعادة تشغيل هذا السيدر بعد وجود بيانات فعلية سيحذف كل الطلاب والمعلمين المرتبطين!
+        if (Gender::count() > 0) {
+            return;
+        }
 
         $genders = [
             ['en' => 'Male', 'ar' => 'ذكر'],

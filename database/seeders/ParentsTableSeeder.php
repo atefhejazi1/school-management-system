@@ -7,39 +7,51 @@ use App\Models\Nationalities;
 use App\Models\Religions;
 use App\Models\School;
 use App\Models\Type_Blood;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ParentsTableSeeder extends Seeder
 {
-    public function run(School $school)
+    public function run(School $school): void
     {
-        // نحذف فقط أولياء أمور هذه المدرسة، حتى لا تُمحى بيانات مدرسة أخرى تمت إضافتها عبر SchoolSaaSSeeder
+        // نحذف فقط أولياء أمور هذه المدرسة، حتى لا تُمحى بيانات مدرسة أخرى
         DB::table('my__parents')->where('school_id', $school->id)->delete();
-        $my_parents = new My_Parent();
-        $my_parents->email = 'parent@gmail.com';
-        $my_parents->password = Hash::make('12345678');
-        $my_parents->Name_Father = ['en' => 'mohammed mohammed', 'ar' => 'محمد محمد'];
-        $my_parents->National_ID_Father = '1234567810';
-        $my_parents->Passport_ID_Father = '1234567810';
-        $my_parents->Phone_Father = '1234567810';
-        $my_parents->Job_Father = ['en' => 'programmer', 'ar' => 'مبرمج'];
-        $my_parents->Nationality_Father_id = Nationalities::all()->unique()->random()->id;
-        $my_parents->Blood_Type_Father_id = Type_Blood::all()->unique()->random()->id;
-        $my_parents->Religion_Father_id = Religions::all()->unique()->random()->id;
-        $my_parents->Address_Father = 'القاهرة';
-        $my_parents->Name_Mother = ['en' => 'SS', 'ar' => 'سس'];
-        $my_parents->National_ID_Mother = '1234567810';
-        $my_parents->Passport_ID_Mother = '1234567810';
-        $my_parents->Phone_Mother = '1234567810';
-        $my_parents->Job_Mother = ['en' => 'Teacher', 'ar' => 'معلمة'];
-        $my_parents->Nationality_Mother_id = Nationalities::all()->unique()->random()->id;
-        $my_parents->Blood_Type_Mother_id = Type_Blood::all()->unique()->random()->id;
-        $my_parents->Religion_Mother_id = Religions::all()->unique()->random()->id;
-        $my_parents->Address_Mother = 'القاهرة';
-        $my_parents->school_id = $school->id; // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية
-        $my_parents->save();
+
+        $nationalityIds = Nationalities::pluck('id');
+        $bloodTypeIds = Type_Blood::pluck('id');
+        $religionIds = Religions::pluck('id');
+
+        $parents = [
+            ['ar' => 'محمد محمد', 'en' => 'Mohamed Mohamed'],
+            ['ar' => 'إبراهيم سعيد', 'en' => 'Ibrahim Saeed'],
+            ['ar' => 'طارق فؤاد', 'en' => 'Tarek Fouad'],
+        ];
+
+        foreach ($parents as $index => $name) {
+            $parent = new My_Parent();
+            $parent->email = 'parent' . ($index + 1) . '.' . $school->slug . '@example.test';
+            $parent->password = Hash::make('12345678'); // لا يوجد cast('hashed') في هذا النموذج، فالتشفير اليدوي إلزامي
+            $parent->Name_Father = $name;
+            $parent->National_ID_Father = '2990101123456' . $index;
+            $parent->Passport_ID_Father = 'A123456' . $index;
+            $parent->Phone_Father = '0100000000' . $index;
+            $parent->Job_Father = ['en' => 'Employee', 'ar' => 'موظف'];
+            $parent->Nationality_Father_id = $nationalityIds->random();
+            $parent->Blood_Type_Father_id = $bloodTypeIds->random();
+            $parent->Religion_Father_id = $religionIds->random();
+            $parent->Address_Father = 'القاهرة';
+            $parent->Name_Mother = ['ar' => 'زوجة ' . $name['ar'], 'en' => 'Wife of ' . $name['en']];
+            $parent->National_ID_Mother = '2990101123457' . $index;
+            $parent->Passport_ID_Mother = 'A123457' . $index;
+            $parent->Phone_Mother = '0100000001' . $index;
+            $parent->Job_Mother = ['en' => 'Housewife', 'ar' => 'ربة منزل'];
+            $parent->Nationality_Mother_id = $nationalityIds->random();
+            $parent->Blood_Type_Mother_id = $bloodTypeIds->random();
+            $parent->Religion_Mother_id = $religionIds->random();
+            $parent->Address_Mother = 'القاهرة';
+            $parent->school_id = $school->id; // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية
+            $parent->save();
+        }
     }
 }

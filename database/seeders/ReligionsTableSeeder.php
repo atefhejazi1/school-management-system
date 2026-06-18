@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Religions;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ReligionsTableSeeder extends Seeder
 {
@@ -14,7 +12,11 @@ class ReligionsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('religions')->delete();
+        // حماية من حذف بيانات حقيقية: religions.id مرتبط بـ my__parents بقيد cascade،
+        // فإعادة تشغيل هذا السيدر بعد وجود بيانات فعلية سيحذف كل السجلات المرتبطة!
+        if (Religions::count() > 0) {
+            return;
+        }
 
         $religions = [
 

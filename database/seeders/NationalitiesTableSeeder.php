@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Nationalities;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class NationalitiesTableSeeder extends Seeder
 {
@@ -14,7 +12,11 @@ class NationalitiesTableSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('nationalities')->delete();
+        // حماية من حذف بيانات حقيقية: nationalities.id مرتبط بـ students/my__parents بقيد cascade،
+        // فإعادة تشغيل هذا السيدر بعد وجود بيانات فعلية سيحذف كل السجلات المرتبطة!
+        if (Nationalities::count() > 0) {
+            return;
+        }
 
         $nationals = [
 

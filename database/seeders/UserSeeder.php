@@ -2,22 +2,28 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
+     *
+     * firstOrCreate بدلاً من DB::table()->insert() المباشر، حتى يكون تشغيل السيدنج
+     * أكثر من مرة على قاعدة بيانات تحتوي على هذا المستخدم بالفعل أمراً آمناً (idempotent)
+     * بدلاً من فشله بخطأ تكرار البريد الإلكتروني الفريد (unique).
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name' => 'Atef Hejazi',
-            'email' => 'atefhejazi10@gmail.com',
-            'password' => Hash::make('123456789'),
-        ]);
+        // school_id يبقى NULL عمداً: هذا هو منشئ المنصة العام (Super Admin)، راجع User::isSuperAdmin()
+        User::firstOrCreate(
+            ['email' => 'atefhejazi10@gmail.com'],
+            [
+                'name' => 'Atef Hejazi',
+                'password' => '123456789', // يُشفَّر تلقائياً بفضل cast('hashed') في نموذج User
+                'school_id' => null,
+            ]
+        );
     }
 }

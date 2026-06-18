@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\specializations;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class SpecializationsSeeder extends Seeder
 {
@@ -14,7 +12,12 @@ class SpecializationsSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('specializations')->delete();
+        // حماية من حذف بيانات حقيقية: specializations.id مرتبط بـ teachers بقيد cascade،
+        // فإعادة تشغيل هذا السيدر بعد وجود بيانات فعلية سيحذف كل المعلمين المرتبطين!
+        if (specializations::count() > 0) {
+            return;
+        }
+
         $specializations = [
             ['en' => 'Arabic', 'ar' => 'عربي'],
             ['en' => 'Sciences', 'ar' => 'علوم'],
