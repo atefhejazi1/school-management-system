@@ -23,6 +23,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\ImpersonationController;
 use App\Http\Controllers\SuperAdmin\PlanSelectionController;
 use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
@@ -70,6 +71,11 @@ Route::group(
         Route::get('/dashboard', function () {
             return view('dashboard');
         })->middleware(['auth', 'verified'])->name('dashboard');
+
+        // ── الخروج من جلسة معاينة حساب مدير مدرسة (Impersonation) — يجب أن يبقى هذا المسار
+        // خارج مجموعة /super-admin لأن منشئ المنصة، خلال المعاينة، مسجَّل دخوله فعلياً
+        // بهوية مدير مدرسة (school_id محدد)، فلا يستطيع الوصول لمسارات /super-admin/* أصلاً.
+        Route::post('/leave-impersonation', [ImpersonationController::class, 'leave'])->name('leave_impersonation');
 
 
         // 🔐 مسارات الطلاب
@@ -155,6 +161,9 @@ Route::group(
             // ── بطاقات اختيار/تجديد باقة الاشتراك لمدرسة محددة ──
             Route::get('/schools/{school}/plan-selection', [PlanSelectionController::class, 'index'])->name('plan-selection.index');
             Route::post('/schools/{school}/plan-selection', [PlanSelectionController::class, 'store'])->name('plan-selection.store');
+
+            // ── الدخول كمدير مدرسة محدد لمعاينة لوحته (Impersonation) ──
+            Route::post('/impersonate/{schoolAdminId}', [ImpersonationController::class, 'impersonate'])->name('impersonate');
         });
     }
 );

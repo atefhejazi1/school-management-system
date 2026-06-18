@@ -667,6 +667,9 @@
 </head>
 <body>
 
+    {{-- ══ شريط معاينة منشئ المنصة (يظهر فقط أثناء جلسة Impersonation) ══ --}}
+    @include('layouts.partials.impersonation-banner')
+
     {{-- ══ SIDEBAR — Offcanvas (always visible on desktop, slide-in on mobile) ══ --}}
     <div class="offcanvas offcanvas-start"
          id="adminSidebar"

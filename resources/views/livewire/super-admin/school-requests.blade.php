@@ -305,6 +305,15 @@
                                                title="تجديد الاشتراك">
                                                 <i class="fas fa-rotate"></i>
                                             </a>
+                                            {{-- معاينة لوحة تحكم المدرسة بهوية مديرها (Impersonation) --}}
+                                            @if ($adminUserId = $reg->school->users()->value('id'))
+                                                <form method="POST" action="{{ route('super-admin.impersonate', $adminUserId) }}" style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-sm btn-emerald-outline" title="معاينة لوحة المدرسة">
+                                                        <i class="fas fa-user-secret"></i>
+                                                    </button>
+                                                </form>
+                                            @endif
                                             @if ($reg->school->isActive())
                                                 <button type="button"
                                                         class="btn btn-sm"
