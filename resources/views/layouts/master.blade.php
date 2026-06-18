@@ -764,16 +764,29 @@
 
         // NOTE: fullscreen is handled by POTENZA.Fullscreenwindow() in custom.js above.
 
+        // يملأ قائمة منسدلة (select) ببيانات قادمة من AJAX، ويضمن وجود خيار مرئي دائماً
+        // (سواء "اختر..." أو "لا توجد نتائج") بدلاً من ترك القائمة بلا أي خيارات على الإطلاق،
+        // وهي الحالة التي تبدو للمستخدم كأن القائمة "لا تظهر" بينما هي فعلياً فارغة من الداخل.
+        function fillCascadeSelect($select, data, emptyLabel) {
+            $select.empty();
+
+            const hasData = data && Object.keys(data).length > 0;
+
+            $select.append($('<option>', { value: '', selected: true, disabled: true })
+                .text(hasData ? '{{ trans('Parent_trans.Choose') }}...' : emptyLabel));
+
+            $.each(data || {}, function (key, val) {
+                $select.append($('<option>', { value: key, text: val }));
+            });
+        }
+
         // ── Grade → Classroom AJAX ──
         function bindCascade(gradeField, classroomField) {
             $(gradeField).on('change', function () {
                 const id = $(this).val();
                 if (!id) return;
                 $.getJSON('{{ URL::to("Get_classrooms") }}/' + id, function (data) {
-                    const $cls = $(classroomField).empty();
-                    $.each(data, function (key, val) {
-                        $cls.append($('<option>', { value: key, text: val }));
-                    });
+                    fillCascadeSelect($(classroomField), data, 'لا توجد فصول مضافة لهذا الصف بعد');
                 });
             });
         }
@@ -784,10 +797,7 @@
                 const id = $(this).val();
                 if (!id) return;
                 $.getJSON('{{ URL::to("Get_Sections") }}/' + id, function (data) {
-                    const $sec = $(sectionField).empty();
-                    $.each(data, function (key, val) {
-                        $sec.append($('<option>', { value: key, text: val }));
-                    });
+                    fillCascadeSelect($(sectionField), data, 'لا توجد شعب مضافة لهذا الفصل بعد');
                 });
             });
         }
