@@ -32,30 +32,45 @@
                     </button>
                 </div>
 
-                <div class="row g-3 mb-3">
-                    <div class="col-md-4">
-                        <div class="text-muted" style="font-size:.75rem;">البريد الإلكتروني</div>
-                        <div id="justApprovedEmailText" class="fw-semibold" dir="ltr" style="font-size:.9rem; color:#0f172a;">
-                            {{ $justApprovedEmail }}
+                <div class="cred-list mb-3">
+                    <div class="cred-row d-flex justify-content-between align-items-center gap-3">
+                        <div>
+                            <div class="text-muted" style="font-size:.72rem;">البريد الإلكتروني</div>
+                            <div id="justApprovedEmailText" class="fw-semibold" dir="ltr" style="font-size:.92rem; color:#0f172a;">
+                                {{ $justApprovedEmail }}
+                            </div>
                         </div>
+                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedEmailText', 'البريد الإلكتروني')">
+                            نسخ
+                        </button>
                     </div>
-                    <div class="col-md-4">
-                        <div class="text-muted" style="font-size:.75rem;">كلمة المرور المؤقتة</div>
-                        <div id="justApprovedPasswordText" class="fw-semibold" dir="ltr" style="font-size:.9rem; color:#0f172a;">
-                            {{ $justApprovedPassword }}
+                    <div class="cred-row d-flex justify-content-between align-items-center gap-3">
+                        <div>
+                            <div class="text-muted" style="font-size:.72rem;">كلمة المرور المؤقتة</div>
+                            <div id="justApprovedPasswordText" class="fw-semibold" dir="ltr" style="font-size:.92rem; color:#0f172a;">
+                                {{ $justApprovedPassword }}
+                            </div>
                         </div>
+                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedPasswordText', 'كلمة المرور')">
+                            نسخ
+                        </button>
                     </div>
-                    <div class="col-md-4">
-                        <div class="text-muted" style="font-size:.75rem;">رابط بوابة تسجيل الدخول الموحدة</div>
-                        <div id="justApprovedLoginUrlText" class="fw-semibold" dir="ltr" style="font-size:.9rem; color:#0f172a;">
-                            {{ $this->justApprovedLoginUrl() }}
+                    <div class="cred-row d-flex justify-content-between align-items-center gap-3">
+                        <div>
+                            <div class="text-muted" style="font-size:.72rem;">رابط بوابة تسجيل الدخول الموحدة</div>
+                            <div id="justApprovedLoginUrlText" class="fw-semibold" dir="ltr" style="font-size:.92rem; color:#0f172a;">
+                                {{ $this->justApprovedLoginUrl() }}
+                            </div>
                         </div>
+                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedLoginUrlText', 'رابط تسجيل الدخول')">
+                            نسخ
+                        </button>
                     </div>
                 </div>
 
                 <div class="d-flex flex-wrap gap-4">
                     <button type="button" class="lp-text-link" onclick="copyApprovedLoginInfo()">
-                        نسخ بيانات الدخول
+                        نسخ كل البيانات
                     </button>
 
                     @if ($this->justApprovedWhatsappUrl())
@@ -72,6 +87,22 @@
         </div>
 
         <script>
+            // نسخ قيمة حقل واحد فقط (البريد أو كلمة المرور أو الرابط) إلى الحافظة
+            function copyCredentialField(elementId, label) {
+                const value = document.getElementById(elementId)?.innerText.trim();
+
+                if (!value) {
+                    return;
+                }
+
+                navigator.clipboard.writeText(value).then(function () {
+                    if (window.showToast) {
+                        window.showToast('success', 'تم نسخ ' + label + ' إلى الحافظة');
+                    }
+                });
+            }
+
+            // نسخ كل بيانات الدخول دفعة واحدة (البريد + كلمة المرور + رابط الدخول)
             function copyApprovedLoginInfo() {
                 const email    = document.getElementById('justApprovedEmailText')?.innerText.trim();
                 const password = document.getElementById('justApprovedPasswordText')?.innerText.trim();
@@ -94,6 +125,29 @@
         </script>
 
         <style>
+            .cred-row {
+                padding: 10px 2px;
+                border-bottom: 1px solid #f1f5f9;
+            }
+            .cred-row:last-child {
+                border-bottom: none;
+            }
+            .lp-copy-btn {
+                background: #f0fdf4;
+                border: 1px solid #bbf7d0;
+                color: #059669;
+                font-family: 'Cairo', sans-serif;
+                font-size: .78rem;
+                font-weight: 700;
+                padding: 6px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+                white-space: nowrap;
+                flex-shrink: 0;
+            }
+            .lp-copy-btn:hover {
+                background: #dcfce7;
+            }
             .lp-text-link {
                 background: none;
                 border: none;
@@ -154,6 +208,7 @@
                             <th>المسؤول</th>
                             <th>البريد الإلكتروني</th>
                             <th>المدينة</th>
+                            <th>عدد الطلاب</th>
                             <th>حالة الطلب</th>
                             <th>حالة المدرسة</th>
                             <th>التاريخ</th>
@@ -168,6 +223,11 @@
                                 <td>{{ $reg->contact_name }}</td>
                                 <td><span dir="ltr" style="font-size:.85rem;">{{ $reg->email }}</span></td>
                                 <td>{{ $reg->city }}</td>
+                                <td>
+                                    <span class="pill" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">
+                                        {{ $reg->studentCountLabel() }}
+                                    </span>
+                                </td>
                                 <td>
                                     @if ($reg->status === 'pending')
                                         <span class="pill pill-warning"><i class="fas fa-clock"></i> قيد المراجعة</span>
@@ -191,6 +251,14 @@
                                 <td><span style="font-size:.8rem; color:#94a3b8;">{{ $reg->created_at->format('Y/m/d') }}</span></td>
                                 <td>
                                     <div class="d-flex gap-2">
+                                        {{-- تفاصيل الطلب الكاملة: الهاتف، عدد الطلاب، رسالة مقدّم الطلب، ملاحظات الإدارة --}}
+                                        <button type="button"
+                                                class="btn btn-sm"
+                                                style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px;"
+                                                title="تفاصيل"
+                                                wire:click="openDetails({{ $reg->id }})">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
                                         @if ($reg->status === 'pending')
                                             {{-- موافقة → تمر عبر نافذة التأكيد العامة --}}
                                             <button type="button"
@@ -215,6 +283,22 @@
                                                 <i class="fas fa-xmark"></i>
                                             </button>
                                         @elseif ($reg->school)
+                                            {{-- عرض / إعادة إرسال بيانات الدخول: يولّد كلمة مرور مؤقتة جديدة ويعرض اللوحة من جديد --}}
+                                            <button type="button"
+                                                    class="btn btn-sm btn-emerald-outline"
+                                                    title="بيانات الدخول"
+                                                    wire:click="$dispatch('confirm-action', [{
+                                                        title:       'إعادة تعيين كلمة مرور المدير',
+                                                        message:     'سيتم إنشاء كلمة مرور مؤقتة جديدة لمدير مدرسة &quot;{{ addslashes($reg->school_name) }}&quot; وعرضها هنا.',
+                                                        sub:         'كلمة المرور الحالية لن تعمل بعد هذه الخطوة، تأكد من إرسال الكلمة الجديدة لمدير المدرسة.',
+                                                        event:       'doResetAdminPassword',
+                                                        params:      { registrationId: {{ $reg->id }} },
+                                                        type:        'default',
+                                                        confirmLabel:'{{ __('super_dash.confirm_btn') }}',
+                                                        componentId: '{{ $this->getId() }}'
+                                                    }])">
+                                                <i class="fas fa-key"></i>
+                                            </button>
                                             @if ($reg->school->isActive())
                                                 <button type="button"
                                                         class="btn btn-sm"
@@ -300,14 +384,120 @@
         </div>
     @endif
 
+    {{-- ══════════════════════════════════════════
+         نافذة تفاصيل الطلب الكاملة — مدمجة من صفحة "طلبات التسجيل" القديمة
+         (الهاتف، عدد الطلاب، رسالة مقدّم الطلب، ملاحظات الإدارة)
+    ══════════════════════════════════════════ --}}
+    @if ($showDetailsModal && $detailsRecord)
+        <div class="pf-reject-backdrop" wire:click.self="closeDetails">
+            <div class="pf-reject-modal pf-details-modal">
+                <div class="pf-reject-header">
+                    <h5 class="mb-0 fw-bold" style="color:#0f172a;">
+                        تفاصيل طلب مدرسة "{{ $detailsRecord->school_name }}"
+                    </h5>
+                    <button wire:click="closeDetails" class="pf-reject-close">&times;</button>
+                </div>
+                <div class="pf-reject-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">اسم المدرسة</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->school_name }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">اسم المسؤول</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->contact_name }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">البريد الإلكتروني</span>
+                                <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->email }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">رقم الهاتف</span>
+                                <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->phone ?: 'غير مسجَّل' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">المدينة</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->city ?: 'غير مسجَّلة' }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">عدد الطلاب</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->studentCountLabel() }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">حالة الطلب</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->statusLabel() }}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="pf-detail-item">
+                                <span class="pf-detail-label">تاريخ الطلب</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->created_at->format('Y/m/d H:i') }}</span>
+                            </div>
+                        </div>
+                        @if ($detailsRecord->school)
+                            <div class="col-md-6">
+                                <div class="pf-detail-item">
+                                    <span class="pf-detail-label">حالة المدرسة على المنصة</span>
+                                    <span class="pf-detail-value">{{ $detailsRecord->school->isActive() ? 'نشطة' : 'معلّقة' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pf-detail-item">
+                                    <span class="pf-detail-label">رابط المدرسة (Slug)</span>
+                                    <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->school->slug }}</span>
+                                </div>
+                            </div>
+                        @endif
+                        @if ($detailsRecord->message)
+                            <div class="col-12">
+                                <div class="pf-detail-item">
+                                    <span class="pf-detail-label">رسالة مقدّم الطلب</span>
+                                    <span class="pf-detail-value">{{ $detailsRecord->message }}</span>
+                                </div>
+                            </div>
+                        @endif
+                        @if ($detailsRecord->admin_notes)
+                            <div class="col-12">
+                                <div class="pf-detail-item" style="background:#fff5f5; border-color:#fecaca;">
+                                    <span class="pf-detail-label" style="color:#b91c1c;">ملاحظات الإدارة (سبب الرفض)</span>
+                                    <span class="pf-detail-value">{{ $detailsRecord->admin_notes }}</span>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+                <div class="pf-reject-footer">
+                    <button wire:click="closeDetails" class="btn btn-outline-secondary">إغلاق</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <style>
         .pf-reject-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,.55); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
         .pf-reject-modal { background: white; border-radius: 18px; width: 100%; max-width: 460px; box-shadow: 0 25px 80px rgba(0,0,0,.25); overflow: hidden; }
+        .pf-details-modal { max-width: 720px; }
         .pf-reject-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px 14px; border-bottom: 1px solid #f1f5f9; }
         .pf-reject-body { padding: 18px 22px; }
         .pf-reject-footer { display: flex; justify-content: flex-end; gap: 10px; padding: 14px 22px; border-top: 1px solid #f1f5f9; background: #f9fafb; }
         .pf-reject-close { background: none; border: none; font-size: 1.3rem; color: #94a3b8; cursor: pointer; line-height: 1; }
         .pf-reject-close:hover { color: #475569; }
+        .pf-detail-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; display: block; }
+        .pf-detail-label { display: block; font-size: .75rem; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
+        .pf-detail-value { font-size: .9rem; color: #0f172a; font-weight: 600; }
     </style>
 
 </div>

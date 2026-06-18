@@ -25,6 +25,10 @@ class SchoolRequests extends Component
     public ?int   $rejectingId     = null;
     public string $rejectReason    = '';
 
+    // ── نافذة عرض كامل تفاصيل الطلب (الهاتف، عدد الطلاب، الرسالة، ملاحظات الإدارة) ──
+    public bool                $showDetailsModal = false;
+    public ?SchoolRegistration $detailsRecord    = null;
+
     // ── بيانات اعتماد المدرسة التي تمت الموافقة عليها للتو ──────────────
     // تُعرض مرة واحدة فقط مباشرة في الواجهة فور الموافقة (بدلاً من الاعتماد فقط على
     // سجلّ البريد)، ولا تُخزَّن بشكل دائم في قاعدة البيانات؛ هي خصائص عامة (Public Properties)
@@ -252,6 +256,65 @@ class SchoolRequests extends Component
         $registration->school->update(['status' => 'active']);
 
         session()->flash('success', 'تمت إعادة تفعيل مدرسة "' . $registration->school_name . '" بنجاح.');
+    }
+
+    /**
+     * إعادة تعيين كلمة مرور مدير المدرسة وإظهار لوحة بيانات الاعتماد من جديد.
+     * كلمة المرور الأصلية لا تُخزَّن أبداً بصيغة قابلة للقراءة (فقط بصيغة bcrypt)،
+     * فلا توجد طريقة "لاستعادتها"؛ الحل الوحيد الآمن هو توليد كلمة مرور مؤقتة جديدة
+     * كل مرة يحتاج فيها المسؤول لمشاركة بيانات الدخول مجدداً مع مدير المدرسة.
+     */
+    #[On('doResetAdminPassword')]
+    public function doResetAdminPassword(int $registrationId): void
+    {
+        $registration = SchoolRegistration::with('school')->findOrFail($registrationId);
+
+        if (! $registration->school) {
+            session()->flash('error', 'لا يوجد سجل مدرسة مرتبط بهذا الطلب.');
+
+            return;
+        }
+
+        $adminUser = User::where('school_id', $registration->school->id)->first();
+
+        if (! $adminUser) {
+            session()->flash('error', 'لا يوجد حساب مدير مرتبط بهذه المدرسة.');
+
+            return;
+        }
+
+        $temporaryPassword = $this->generateSecureTemporaryPassword();
+        $adminUser->update(['password' => bcrypt($temporaryPassword)]);
+
+        try {
+            Mail::to($adminUser->email)->send(new SchoolApproved($registration->school, $adminUser->email, $temporaryPassword));
+        } catch (\Exception) {
+            // فشل إرسال البريد لا يجب أن يمنع إظهار بيانات الاعتماد في الواجهة
+        }
+
+        $this->justApprovedId         = $registration->school->id;
+        $this->justApprovedSchoolName = $registration->school->name;
+        $this->justApprovedEmail      = $adminUser->email;
+        $this->justApprovedPassword   = $temporaryPassword;
+        $this->justApprovedPhone      = $registration->phone;
+
+        session()->flash('success', 'تم إنشاء كلمة مرور مؤقتة جديدة لمدير مدرسة "' . $registration->school_name . '" بنجاح.');
+    }
+
+    /**
+     * عرض كامل تفاصيل طلب التسجيل (الهاتف، عدد الطلاب، رسالة مقدّم الطلب، ملاحظات الإدارة)
+     * — بيانات كانت متاحة سابقاً فقط في صفحة "طلبات التسجيل" القديمة (مدير المدرسة)، ودُمجت هنا.
+     */
+    public function openDetails(int $id): void
+    {
+        $this->detailsRecord    = SchoolRegistration::with('school')->findOrFail($id);
+        $this->showDetailsModal = true;
+    }
+
+    public function closeDetails(): void
+    {
+        $this->showDetailsModal = false;
+        $this->detailsRecord    = null;
     }
 
     // ── الرفض (نافذة مخصصة بحقل سبب الرفض) ──────────────────

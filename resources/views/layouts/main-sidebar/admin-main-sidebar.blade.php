@@ -457,20 +457,6 @@
         </li>
 
         <li>
-            <a href="{{ route('admin.registrations.index') }}"
-               class="sb-link {{ request()->routeIs('admin.registrations.*') ? 'sb-active' : '' }}">
-                <span class="sb-icon"><i class="fas fa-clipboard-list"></i></span>
-                <span class="sb-text">{{ trans('main_trans.registrations') }}</span>
-                @php $__pendReg = \App\Models\SchoolRegistration::pending()->count(); @endphp
-                @if ($__pendReg > 0)
-                    <span style="margin-inline-start:auto; background:#ef4444; color:white; font-size:10px; font-weight:700; padding:2px 8px; border-radius:50px; line-height:1.7; flex-shrink:0;">
-                        {{ $__pendReg }}
-                    </span>
-                @endif
-            </a>
-        </li>
-
-        <li>
             <button data-bs-toggle="collapse"
                     data-bs-target="#sub-users"
                     class="sb-link"

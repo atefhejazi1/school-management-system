@@ -131,11 +131,6 @@ Route::group(
 
         //==============================Setting============================
         Route::resource('settings', SettingController::class);
-
-        //==============================School Registrations============================
-        Route::get('/admin/registrations', function () {
-            return view('admin.registrations.index');
-        })->name('admin.registrations.index');
     }
 );
 
