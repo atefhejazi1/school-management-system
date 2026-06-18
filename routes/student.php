@@ -19,7 +19,7 @@ Route::group(
         // 🔐 مسارات الطلاب
         Route::get('/student/dashboard', function () {
             return view('pages.students.dashboard');
-        })->name('dashboard');
+        })->name('student.dashboard');
 
         Route::group([], function () {
             // Livewire::setUpdateRoute(function ($handle) {

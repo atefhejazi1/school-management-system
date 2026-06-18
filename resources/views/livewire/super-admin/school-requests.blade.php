@@ -11,6 +11,104 @@
         </div>
     </div>
 
+    {{-- ══════════════════════════════════════════════════════════
+         لوحة بيانات الاعتماد — تظهر مرة واحدة فقط فوراً بعد الموافقة على طلب
+         (بدلاً من إجبار المسؤول على فتح سجلّ البريد الإلكتروني للحصول عليها)
+    ══════════════════════════════════════════════════════════ --}}
+    @if ($justApprovedId)
+        <div class="admin-card mb-3" style="border:1px solid #059669;">
+            <div class="p-4">
+                <div class="d-flex justify-content-between align-items-start mb-3 gap-3">
+                    <div>
+                        <h5 class="mb-1" style="color:#047857; font-weight:700; font-size:1rem;">
+                            تم تفعيل حساب مدرسة "{{ $justApprovedSchoolName }}" بنجاح
+                        </h5>
+                        <p class="mb-0 text-muted" style="font-size:.82rem;">
+                            بيانات الدخول التالية مخصّصة لمرة واحدة، يُرجى نسخها أو إرسالها إلى مدير المدرسة الآن.
+                        </p>
+                    </div>
+                    <button type="button" wire:click="dismissApprovedCredentials" class="btn btn-sm btn-outline-secondary">
+                        إغلاق
+                    </button>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-4">
+                        <div class="text-muted" style="font-size:.75rem;">البريد الإلكتروني</div>
+                        <div id="justApprovedEmailText" class="fw-semibold" dir="ltr" style="font-size:.9rem; color:#0f172a;">
+                            {{ $justApprovedEmail }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-muted" style="font-size:.75rem;">كلمة المرور المؤقتة</div>
+                        <div id="justApprovedPasswordText" class="fw-semibold" dir="ltr" style="font-size:.9rem; color:#0f172a;">
+                            {{ $justApprovedPassword }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-muted" style="font-size:.75rem;">رابط بوابة تسجيل الدخول الموحدة</div>
+                        <div id="justApprovedLoginUrlText" class="fw-semibold" dir="ltr" style="font-size:.9rem; color:#0f172a;">
+                            {{ $this->justApprovedLoginUrl() }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-4">
+                    <button type="button" class="lp-text-link" onclick="copyApprovedLoginInfo()">
+                        نسخ بيانات الدخول
+                    </button>
+
+                    @if ($this->justApprovedWhatsappUrl())
+                        <a href="{{ $this->justApprovedWhatsappUrl() }}" target="_blank" rel="noopener" class="lp-text-link">
+                            إرسال عبر واتساب
+                        </a>
+                    @else
+                        <span class="text-muted" style="font-size:.85rem;">
+                            لا يوجد رقم هاتف مسجَّل لإرسال الرسالة عبر واتساب
+                        </span>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function copyApprovedLoginInfo() {
+                const email    = document.getElementById('justApprovedEmailText')?.innerText.trim();
+                const password = document.getElementById('justApprovedPasswordText')?.innerText.trim();
+                const loginUrl = document.getElementById('justApprovedLoginUrlText')?.innerText.trim();
+
+                if (!email || !password || !loginUrl) {
+                    return;
+                }
+
+                const text = 'البريد الإلكتروني: ' + email
+                    + '\nكلمة المرور: ' + password
+                    + '\nرابط تسجيل الدخول: ' + loginUrl;
+
+                navigator.clipboard.writeText(text).then(function () {
+                    if (window.showToast) {
+                        window.showToast('success', 'تم نسخ بيانات الدخول إلى الحافظة');
+                    }
+                });
+            }
+        </script>
+
+        <style>
+            .lp-text-link {
+                background: none;
+                border: none;
+                padding: 0;
+                font-family: 'Cairo', sans-serif;
+                font-size: .85rem;
+                font-weight: 700;
+                color: #059669;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .lp-text-link:hover { color: #047857; }
+        </style>
+    @endif
+
     {{-- ── Filters ── --}}
     <div class="admin-card mb-3">
         <div class="admin-card-header" style="border-bottom:none;">

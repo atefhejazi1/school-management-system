@@ -28,7 +28,7 @@ Route::group(
             $data['count_sections'] = $ids->count();
             $data['count_students'] = \App\Models\students::whereIn('section_id', $ids)->count();
             return view('pages.Teachers.Dashboard.dashboard', $data);
-        })->name('dashboard');
+        })->name('teacher.dashboard');
 
         // Route::group(['namespace' => 'Teachers\dashboard'], function () { laravel 8
         //==============================students============================
