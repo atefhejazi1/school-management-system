@@ -78,7 +78,7 @@
                             <td class="text-muted" style="font-size:.8rem;">{{ $admin->id }}</td>
                             <td><span class="fw-semibold" style="color:#334155;">{{ $admin->name }}</span></td>
                             <td><span dir="ltr" style="font-size:.85rem;">{{ $admin->email }}</span></td>
-                            <td><span style="font-size:.8rem; color:#94a3b8;">{{ $admin->created_at->format('Y/m/d') }}</span></td>
+                            <td><span style="font-size:.8rem; color:#94a3b8;">{{ $admin->created_at?->format('Y/m/d') ?? '—' }}</span></td>
                         </tr>
                     @endforeach
                 </tbody>
