@@ -96,10 +96,10 @@ class SchoolSaaSSeeder extends Seeder
         );
 
         // ── الخطوة 4: إنشاء ولي أمر مستقل لكل مدرسة (مطلوب لاستيفاء FK: students.parent_id) ──
-        // ملاحظة: جدول my__parents لا يملك عمود school_id بعد (خارج نطاق هذا التحديث)،
-        // لذلك يبقى هذا الجدول مشتركاً غير معزول حالياً.
-        $parentA = $this->createParent('parent.amal@gmail.com', 'ولي أمر مدرسة الأمل', 'Al-Amal Guardian', $nationality, $bloodType, $religion);
-        $parentB = $this->createParent('parent.najah@gmail.com', 'ولي أمر أكاديمية النجاح', 'Al-Najah Guardian', $nationality, $bloodType, $religion);
+        // جدول my__parents يملك عمود school_id ويستخدم BelongsToSchool، لذلك يُحقن school_id يدوياً
+        // هنا لأن السيدنج لا يعمل تحت جلسة auth حقيقية لمدير المدرسة.
+        $parentA = $this->createParent('parent.amal@gmail.com', 'ولي أمر مدرسة الأمل', 'Al-Amal Guardian', $nationality, $bloodType, $religion, $schoolA->id);
+        $parentB = $this->createParent('parent.najah@gmail.com', 'ولي أمر أكاديمية النجاح', 'Al-Najah Guardian', $nationality, $bloodType, $religion, $schoolB->id);
 
         // ── الخطوة 5: معلمون تجريبيون لكل مدرسة (school_id يُحقن صراحةً لعدم وجود جلسة auth وقت السيدنج) ──
         $this->createTeacher('teacher1.amal@gmail.com', 'أحمد محمود', 'Ahmed Mahmoud', $specialization, $maleGender, $schoolA->id);
@@ -118,8 +118,23 @@ class SchoolSaaSSeeder extends Seeder
         // ── الخطوة 7: تصحيح البيانات القديمة اليتيمة (school_id IS NULL) لتتبع المدرسة الافتراضية (أ) ──
         // هذه الخطوة ضرورية لكي لا تنكسر بيانات الاختبار القديمة التي أُدخلت قبل تفعيل تعدد المستأجرين.
         // تحذير: لا يجوز تطبيق هذا التحديث على جدول users، لأن school_id = NULL فيه إشارة مقصودة لحساب Super Admin.
-        DB::table('students')->whereNull('school_id')->update(['school_id' => $schoolA->id]);
-        DB::table('teachers')->whereNull('school_id')->update(['school_id' => $schoolA->id]);
+        $orphanedTables = [
+            'students',
+            'teachers',
+            'my__parents',
+            'Classrooms',
+            'sections',
+            'subjects',
+            'quizzes',
+            'Grades',
+            'degrees',
+            'attendances',
+            'online_classes',
+        ];
+
+        foreach ($orphanedTables as $tableName) {
+            DB::table($tableName)->whereNull('school_id')->update(['school_id' => $schoolA->id]);
+        }
     }
 
     private function createParent(
@@ -128,7 +143,8 @@ class SchoolSaaSSeeder extends Seeder
         string $nameEn,
         Nationalities $nationality,
         Type_Blood $bloodType,
-        Religions $religion
+        Religions $religion,
+        int $schoolId
     ): My_Parent {
         $existing = My_Parent::where('email', $email)->first();
         if ($existing) {
@@ -156,6 +172,7 @@ class SchoolSaaSSeeder extends Seeder
         $parent->Blood_Type_Mother_id = $bloodType->id;
         $parent->Religion_Mother_id = $religion->id;
         $parent->Address_Mother = 'القاهرة';
+        $parent->school_id = $schoolId; // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية لمدير المدرسة
         $parent->save();
 
         return $parent;

@@ -17,10 +17,10 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
-
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+    // ملاحظة: مساري /login المعرّفين أصلياً هنا ضمن Breeze scaffolding أُزيلا عمداً، لأنهما
+    // كانا يتشاركان نفس الرابط (URI) مع البوابة الموحدة المعرّفة في routes/web.php، وكانا
+    // يطغيان عليها بصمت في RouteCollection لأن هذا الملف يُحمَّل لاحقاً (overwrite بالاسم/الرابط).
+    // البوابة الموحدة الحقيقية (login / login.attempt) موجودة في routes/web.php.
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');

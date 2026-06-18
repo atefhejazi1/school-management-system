@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title>
-        @if($type == 'student') دخول الطالب
+        @if($type === null) تسجيل الدخول
+        @elseif($type == 'student') دخول الطالب
         @elseif($type == 'parent') دخول ولي الأمر
         @elseif($type == 'teacher') دخول المعلم
         @else دخول المسؤول
@@ -451,7 +452,8 @@
                         دخول آمن ومشفر
                     </div>
                     <h3>
-                        @if($type == 'student') تسجيل دخول الطالب
+                        @if($type === null) تسجيل الدخول
+                        @elseif($type == 'student') تسجيل دخول الطالب
                         @elseif($type == 'parent') تسجيل دخول ولي الأمر
                         @elseif($type == 'teacher') تسجيل دخول المعلم
                         @else تسجيل دخول المسؤول
@@ -467,9 +469,12 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('login.store', ['type' => $type]) }}">
+                {{-- بدون $type (البوابة الموحدة): نُرسل المحاولة لمسار /login الذي يختبر كل الحراس بالتتابع --}}
+                <form method="POST" action="{{ $type ? route('login.store', ['type' => $type]) : route('login.attempt') }}">
                     @csrf
-                    <input type="hidden" name="type" value="{{ $type }}">
+                    @if($type)
+                        <input type="hidden" name="type" value="{{ $type }}">
+                    @endif
 
                     <!-- Email -->
                     <div class="lp-field">

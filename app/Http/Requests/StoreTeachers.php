@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTeachers extends FormRequest
 {
@@ -22,7 +23,13 @@ class StoreTeachers extends FormRequest
     public function rules(): array
     {
         return [
-                'Email' => 'required|unique:teachers,Email,'.$this->id,
+                // البريد الإلكتروني فريد فقط ضمن نفس المدرسة، وليس عبر كل المدارس على المنصة
+                'Email' => [
+                    'required',
+                    Rule::unique('teachers', 'Email')
+                        ->where('school_id', auth()->user()->school_id)
+                        ->ignore($this->id),
+                ],
                 'Password' => 'required',
                 'Name_ar' => 'required',
                 'Name_en' => 'required',

@@ -21,6 +21,7 @@ class RedirectBasedOnRole
 {
     public function handle(Request $request, Closure $next): Response
     {
+        /** @var \App\Models\User|null $user */
         $user = Auth::guard('web')->user();
 
         // المسارات الأخرى (تسجيل دخول الطلاب/المعلمين/أولياء الأمور) لا تخص هذا الميدلوير
@@ -35,8 +36,8 @@ class RedirectBasedOnRole
             $request->session()->regenerateToken();
 
             return redirect()
-                ->route('login.show', 'web')
-                ->with('message', 'تم تعليق وصول مدرستكم إلى المنصة من قِبل الإدارة. يرجى التواصل مع الدعم الفني.');
+                ->route('login')
+                ->with('message', 'تم تعليق حساب هذه المدرسة، يرجى التواصل مع الإدارة.');
         }
 
         $isSuperAdminArea = $request->is('super-admin*') || $request->is('*/super-admin*');
