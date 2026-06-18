@@ -15,7 +15,9 @@ use Symfony\Component\HttpFoundation\Response;
  *   - NOT NULL  → مستخدم تابع لمدرسة، ولا يجوز له الوصول لمسارات لوحة المنصة (/super-admin/*).
  *
  * كما يقوم هذا الميدلوير بقطع الوصول فوراً عن أي مستخدم تكون مدرسته معلّقة
- * (status = suspended) حتى لو كانت جلسته (session) قائمة من قبل تعليق المدرسة.
+ * (status = suspended) حتى لو كانت جلسته (session) قائمة من قبل تعليق المدرسة،
+ * وبتعليق أي مدرسة انتهت صلاحية اشتراكها (subscription_expires_at) تلقائياً في الخلفية
+ * فور رصد ذلك، دون انتظار أي مهمة مجدولة (Scheduled Task).
  */
 class RedirectBasedOnRole
 {
@@ -29,7 +31,29 @@ class RedirectBasedOnRole
             return $next($request);
         }
 
-        // ── قطع الوصول الفوري عن المدارس المعلّقة ──
+        // ── تعليق المدرسة تلقائياً عند انتهاء صلاحية الاشتراك ──
+        // المقارنة تتم داخل isSubscriptionExpired() بين subscription_expires_at والوقت الحالي now()؛
+        // نتحقق من هذه الحالة قبل فحص "معلّقة" التالي لإظهار رسالة انتهاء الاشتراك المحددة
+        // بدلاً من رسالة التعليق العامة، ولأن المدرسة لم تكن معلّقة بعد عند أول رصد لانتهاء الاشتراك.
+        if (
+            ! is_null($user->school_id)
+            && $user->school
+            && ! $user->school->isSuspended()
+            && $user->school->isSubscriptionExpired()
+        ) {
+            // تعليق المدرسة في الخلفية فوراً، دون انتظار أي إجراء يدوي من منشئ المنصة
+            $user->school->update(['status' => 'suspended']);
+
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()
+                ->route('login')
+                ->with('message', 'عذراً، انتهت صلاحية اشتراك هذه المدرسة. يرجى التواصل مع الإدارة العليا لتجديد الباقة.');
+        }
+
+        // ── قطع الوصول الفوري عن المدارس المعلّقة (لأي سبب، بما فيه انتهاء الاشتراك سابقاً) ──
         if (! is_null($user->school_id) && $user->school?->isSuspended()) {
             Auth::guard('web')->logout();
             $request->session()->invalidate();

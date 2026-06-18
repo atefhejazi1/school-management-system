@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\students;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -44,5 +46,39 @@ class StoreStudents extends FormRequest
             'parent_id' => 'required',
             'academic_year' => 'required',
         ];
+    }
+
+    /**
+     * تطبيق حد السعة (Capacity Limit) الخاص بالباقة قبل اعتماد الطالب الجديد.
+     * يتم هذا الفحص فقط عند إنشاء طالب جديد (لا يوجد id في الطلب)، لأن تعديل طالب
+     * موجود مسبقاً لا يزيد العدد الإجمالي للطلاب ضمن المدرسة.
+     */
+    public function withValidator(Validator $validator): void
+    {
+        $validator->after(function (Validator $validator) {
+            // هذا الفحص خاص فقط بإنشاء طالب جديد، وليس بتحديث بيانات طالب موجود
+            if ($this->id) {
+                return;
+            }
+
+            $school = auth()->user()->school;
+
+            // لا يوجد ربط بمدرسة (مثلاً منشئ المنصة)، أو المدرسة بدون باقة محددة بعد:
+            // لا يمكن تطبيق حد لا وجود له، فيتم تجاوز الفحص بأمان
+            if (! $school || ! $school->plan) {
+                return;
+            }
+
+            // عدد الطلاب الحالي يُحسب تلقائياً ضمن نطاق المدرسة الحالية فقط
+            // عبر Global Scope المعرّف في BelongsToSchool، دون أي شرط إضافي على school_id هنا
+            $currentStudentsCount = students::count();
+
+            if ($currentStudentsCount >= $school->plan->max_students) {
+                $validator->errors()->add(
+                    'capacity',
+                    'عذراً، لقد وصلت المدرسة إلى الحد الأقصى المسموح به من الطلاب لهذه الباقة. يرجى ترقية الاشتراك.'
+                );
+            }
+        });
     }
 }

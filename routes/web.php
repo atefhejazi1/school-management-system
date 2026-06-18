@@ -23,6 +23,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Subjects\SubjectController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
+use App\Http\Controllers\SuperAdmin\PlanSelectionController;
 use App\Http\Controllers\Teachers\TeachersController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
@@ -150,6 +151,10 @@ Route::group(
             Route::get('/school-requests', function () {
                 return view('super-admin.school-requests.index');
             })->name('school-requests.index');
+
+            // ── بطاقات اختيار/تجديد باقة الاشتراك لمدرسة محددة ──
+            Route::get('/schools/{school}/plan-selection', [PlanSelectionController::class, 'index'])->name('plan-selection.index');
+            Route::post('/schools/{school}/plan-selection', [PlanSelectionController::class, 'store'])->name('plan-selection.store');
         });
     }
 );

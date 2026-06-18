@@ -299,6 +299,12 @@
                                                     }])">
                                                 <i class="fas fa-key"></i>
                                             </button>
+                                            {{-- تجديد أو تغيير باقة الاشتراك: ينتقل إلى صفحة بطاقات الباقات (بدون قوائم منسدلة) --}}
+                                            <a href="{{ route('super-admin.plan-selection.index', $reg->school->id) }}"
+                                               class="btn btn-sm btn-emerald-outline"
+                                               title="تجديد الاشتراك">
+                                                <i class="fas fa-rotate"></i>
+                                            </a>
                                             @if ($reg->school->isActive())
                                                 <button type="button"
                                                         class="btn btn-sm"
@@ -458,6 +464,25 @@
                                 <div class="pf-detail-item">
                                     <span class="pf-detail-label">رابط المدرسة (Slug)</span>
                                     <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->school->slug }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pf-detail-item">
+                                    <span class="pf-detail-label">باقة الاشتراك الحالية</span>
+                                    <span class="pf-detail-value">{{ $detailsRecord->school->plan?->name ?? 'لا توجد باقة محددة' }}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pf-detail-item">
+                                    <span class="pf-detail-label">تاريخ انتهاء الاشتراك</span>
+                                    @if ($detailsRecord->school->subscription_expires_at)
+                                        <span class="pf-detail-value" style="{{ $detailsRecord->school->isSubscriptionExpired() ? 'color:#b91c1c;' : '' }}">
+                                            {{ $detailsRecord->school->subscription_expires_at->format('Y/m/d') }}
+                                            {{ $detailsRecord->school->isSubscriptionExpired() ? '(منتهي)' : '' }}
+                                        </span>
+                                    @else
+                                        <span class="pf-detail-value">غير محدد</span>
+                                    @endif
                                 </div>
                             </div>
                         @endif
