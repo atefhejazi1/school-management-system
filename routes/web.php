@@ -33,33 +33,48 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 require __DIR__ . '/ajax.php';
 
-// Public landing page — accessible by everyone
-Route::get('/', [LandingController::class, 'index'])->name('landing');
+// Bare root has no locale segment — detect/redirect into the prefixed landing route below.
+Route::get('/', function () {
+    return redirect('/' . LaravelLocalization::setLocale());
+});
 
+// Kept outside the locale group: would otherwise collide with teacher.php's own
+// locale-prefixed '/profile' route (Teachers\Dashboard\ProfileController) at the same URI.
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// only for guests
-Route::group(['middleware' => ['guest']], function () {
-    Route::get('/select', function () {
-        return view('auth.selection');
-    })->name('selection');
+// Public landing page + guest/auth routes — locale-prefixed so AR/EN switching works everywhere
+Route::group(
+    [
+        'prefix' => LaravelLocalization::setLocale(),
+        'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
+    ],
+    function () {
+        Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-    // ── البوابة الموحدة لتسجيل الدخول: نفس الرابط ونفس النموذج لكل المستخدمين ──
-    // (منشئ المنصة، مدير المدرسة، المعلم، الطالب، ولي الأمر). التمييز بين الأدوار
-    // يحدث صامتاً في الباك-إند بعد المصادقة عبر AuthenticatedSessionController::storeUnified().
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'storeUnified'])->name('login.attempt');
+        // only for guests
+        Route::group(['middleware' => ['guest']], function () {
+            Route::get('/select', function () {
+                return view('auth.selection');
+            })->name('selection');
 
-    // المسارات القديمة الخاصة بكل نوع مستخدم — تبقى متاحة للتوافق مع الروابط الحالية في الواجهات
-    Route::get('/login/{type}', [AuthenticatedSessionController::class, 'create'])->name('login.show');
-    Route::post('/login/{type}', [AuthenticatedSessionController::class, 'store'])->name('login.store');
-});
+            // ── البوابة الموحدة لتسجيل الدخول: نفس الرابط ونفس النموذج لكل المستخدمين ──
+            // (منشئ المنصة، مدير المدرسة، المعلم، الطالب، ولي الأمر). التمييز بين الأدوار
+            // يحدث صامتاً في الباك-إند بعد المصادقة عبر AuthenticatedSessionController::storeUnified().
+            Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+            Route::post('/login', [AuthenticatedSessionController::class, 'storeUnified'])->name('login.attempt');
 
-Route::post('/logout/{type}', [AuthenticatedSessionController::class, 'destroy'])->name('custom.logout');
+            // المسارات القديمة الخاصة بكل نوع مستخدم — تبقى متاحة للتوافق مع الروابط الحالية في الواجهات
+            Route::get('/login/{type}', [AuthenticatedSessionController::class, 'create'])->name('login.show');
+            Route::post('/login/{type}', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+        });
+
+        Route::post('/logout/{type}', [AuthenticatedSessionController::class, 'destroy'])->name('custom.logout');
+    }
+);
 
 
 // routes/web.php

@@ -313,17 +313,17 @@
                                             @if($att->status === 'present')
                                                 <span class="pill pill-success">
                                                     <i class="fas fa-check" style="font-size:.7rem;"></i>
-                                                    حاضر
+                                                    {{ trans('main_trans.attendance_status_present') }}
                                                 </span>
                                             @elseif($att->status === 'absent')
                                                 <span class="pill pill-danger">
                                                     <i class="fas fa-xmark" style="font-size:.7rem;"></i>
-                                                    غائب
+                                                    {{ trans('main_trans.attendance_status_absent') }}
                                                 </span>
                                             @else
                                                 <span class="pill pill-warning">
                                                     <i class="fas fa-clock" style="font-size:.7rem;"></i>
-                                                    متأخر
+                                                    {{ trans('main_trans.attendance_status_late') }}
                                                 </span>
                                             @endif
                                         </td>
@@ -374,13 +374,13 @@
                                         <td class="text-center">
                                             @php $pct = $result->max_score ? ($result->score / $result->max_score) * 100 : 0; @endphp
                                             @if($pct >= 85)
-                                                <span class="pill pill-success">ممتاز</span>
+                                                <span class="pill pill-success">{{ trans('main_trans.grade_excellent') }}</span>
                                             @elseif($pct >= 70)
-                                                <span class="pill pill-info">جيد</span>
+                                                <span class="pill pill-info">{{ trans('main_trans.grade_good') }}</span>
                                             @elseif($pct >= 50)
-                                                <span class="pill pill-warning">مقبول</span>
+                                                <span class="pill pill-warning">{{ trans('main_trans.grade_pass') }}</span>
                                             @else
-                                                <span class="pill pill-danger">راسب</span>
+                                                <span class="pill pill-danger">{{ trans('main_trans.grade_fail') }}</span>
                                             @endif
                                         </td>
                                     </tr>
@@ -425,9 +425,9 @@
                                         </td>
                                         <td class="text-center">
                                             @if($invoice->is_paid)
-                                                <span class="pill pill-success">مدفوع</span>
+                                                <span class="pill pill-success">{{ trans('main_trans.invoice_paid') }}</span>
                                             @else
-                                                <span class="pill pill-danger">غير مدفوع</span>
+                                                <span class="pill pill-danger">{{ trans('main_trans.invoice_unpaid') }}</span>
                                             @endif
                                         </td>
                                         <td class="text-muted" style="font-size:.82rem;">

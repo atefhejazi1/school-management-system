@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تمت الموافقة على طلبكم</title>
+    <title>{{ trans('Emails_trans.registration_approved_title') }}</title>
     <style>
         body { margin: 0; padding: 0; background: #f1f5f9; font-family: Arial, sans-serif; direction: rtl; }
         .wrapper { max-width: 600px; margin: 40px auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
@@ -35,68 +35,68 @@
 <div class="wrapper">
     <div class="header">
         <div class="header-icon">🎉</div>
-        <h1 class="header-title">تمت الموافقة على طلبكم!</h1>
-        <p class="header-sub">مرحباً بكم في نظام إدارة المدارس</p>
+        <h1 class="header-title">{{ trans('Emails_trans.registration_approved_header') }}</h1>
+        <p class="header-sub">{{ trans('Emails_trans.registration_approved_subheader') }}</p>
     </div>
 
     <div class="body">
         <p class="greeting">
-            مرحباً <strong>{{ $registration->contact_name }}</strong>،
+            {{ trans('Emails_trans.registration_approved_greeting', ['name' => $registration->contact_name]) }}
         </p>
 
         <div class="congrats-box">
             <div class="congrats-icon">✅</div>
             <div class="congrats-text">
-                تمت الموافقة على طلب مدرسة <strong>{{ $registration->school_name }}</strong>
+                {{ trans('Emails_trans.registration_approved_congrats', ['schoolName' => $registration->school_name]) }}
             </div>
         </div>
 
         @if ($password)
         <p style="color:#475569; font-size:.92rem; line-height:1.7; margin-bottom:16px;">
-            تم إنشاء حسابكم في النظام. فيما يلي بيانات الدخول الخاصة بكم:
+            {{ trans('Emails_trans.registration_approved_account_created') }}
         </p>
 
         <div class="credentials-box">
-            <div class="cred-title">🔐 بيانات الدخول</div>
+            <div class="cred-title">🔐 {{ trans('Emails_trans.registration_approved_credentials_title') }}</div>
             <div class="cred-row">
-                <span class="cred-label">البريد الإلكتروني</span>
+                <span class="cred-label">{{ trans('Emails_trans.email_label') }}</span>
                 <span class="cred-value" dir="ltr">{{ $registration->email }}</span>
             </div>
             <div class="cred-row">
-                <span class="cred-label">كلمة المرور المؤقتة</span>
+                <span class="cred-label">{{ trans('Emails_trans.temporary_password_label') }}</span>
                 <span class="cred-value" dir="ltr">{{ $password }}</span>
             </div>
         </div>
 
         <div class="warning-box">
-            ⚠️ <strong>مهم:</strong> يُرجى تغيير كلمة المرور فور تسجيل الدخول لأول مرة لضمان أمان حسابكم.
+            ⚠️ <strong>{{ trans('Emails_trans.registration_approved_warning') }}</strong>
         </div>
         @else
         <p style="color:#475569; font-size:.92rem; line-height:1.7;">
-            سيتواصل معكم فريقنا قريباً لإرسال بيانات الدخول وبدء إعداد النظام لمدرستكم.
+            {{ trans('Emails_trans.registration_approved_contact_soon') }}
         </p>
         @endif
 
         <div class="steps-box">
-            <p style="font-weight:bold; color:#1e293b; margin-bottom:14px;">خطوات البدء:</p>
+            <p style="font-weight:bold; color:#1e293b; margin-bottom:14px;">{{ trans('Emails_trans.getting_started_steps_title') }}</p>
             <div class="step">
                 <div class="step-num">1</div>
-                <div class="step-text">سجّل الدخول إلى النظام باستخدام البيانات أعلاه</div>
+                <div class="step-text">{{ trans('Emails_trans.getting_started_step_1') }}</div>
             </div>
             <div class="step">
                 <div class="step-num">2</div>
-                <div class="step-text">أضف بيانات مدرستك من قسم الإعدادات</div>
+                <div class="step-text">{{ trans('Emails_trans.getting_started_step_2') }}</div>
             </div>
             <div class="step">
                 <div class="step-num">3</div>
-                <div class="step-text">ابدأ بإضافة المعلمين والطلاب وإعداد الصفوف</div>
+                <div class="step-text">{{ trans('Emails_trans.getting_started_step_3') }}</div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <p class="footer-text">بحاجة إلى مساعدة؟ تواصل مع فريق الدعم عبر البريد الإلكتروني.</p>
-        <p class="footer-text">© {{ date('Y') }} نظام إدارة المدارس — تطوير عاطف حجازي</p>
+        <p class="footer-text">{{ trans('Emails_trans.registration_approved_footer_help') }}</p>
+        <p class="footer-text">© {{ date('Y') }} {{ trans('Emails_trans.registration_approved_footer_copyright') }}</p>
     </div>
 </div>
 </body>

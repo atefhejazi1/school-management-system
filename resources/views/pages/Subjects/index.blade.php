@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    قائمة المواد الدراسية
+    {{ trans('Subjects_trans.list_subjects_title') }}
 @stop
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
 @section('PageTitle')
-    قائمة المواد الدراسية
+    {{ trans('Subjects_trans.list_subjects_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -21,7 +21,7 @@
                         <div class="card card-statistics h-100">
                             <div class="card-body">
                                 <a href="{{route('subjects.create')}}" class="btn btn-success btn-sm" role="button"
-                                   aria-pressed="true">اضافة مادة جديدة</a><br><br>
+                                   aria-pressed="true">{{ trans('Subjects_trans.add_new_subject') }}</a><br><br>
                                 <div class="table-responsive">
                                     <table id="datatable" class="table  table-hover table-sm table-bordered p-0"
                                            data-page-length="50"
@@ -29,11 +29,11 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>اسم المادة</th>
-                                            <th>المرحلة الدراسية</th>
-                                            <th>الصف الدراسي</th>
-                                            <th>اسم المعلم</th>
-                                            <th>العمليات</th>
+                                            <th>{{ trans('Subjects_trans.subject_name_column') }}</th>
+                                            <th>{{ trans('Subjects_trans.grade_stage_column') }}</th>
+                                            <th>{{ trans('Subjects_trans.classroom_column') }}</th>
+                                            <th>{{ trans('Subjects_trans.teacher_name_column') }}</th>
+                                            <th>{{ trans('Subjects_trans.processes_column') }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -46,7 +46,7 @@
                                             <td>{{$subject->teacher->Name}}</td>
                                                 <td>
                                                     <a href="{{route('subjects.edit',$subject->id)}}" class="btn btn-info btn-sm" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
-                                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_subject{{ $subject->id }}" title="حذف"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#delete_subject{{ $subject->id }}" title="{{ trans('Subjects_trans.delete') }}"><i class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
 
@@ -57,7 +57,7 @@
                                                         {{csrf_field()}}
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">حذف مادة دراسية</h5>
+                                                            <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">{{ trans('Subjects_trans.delete_subject_title') }}</h5>
                                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
                                                             </button>

@@ -8,10 +8,10 @@
                     <path class="checkmark-check" fill="none" d="M14 27l8 8 16-16"/>
                 </svg>
             </div>
-            <h3 class="mt-4 fw-bold" style="color:#1e3a8a; font-size:1.6rem;" data-i18n="reg_success_title">شكراً! تم استلام طلبكم بنجاح</h3>
-            <p class="text-muted mt-2" style="font-size:1.05rem;" data-i18n="reg_success_sub">سيتواصل معكم فريقنا خلال <strong>24 ساعة</strong> لتفعيل حسابكم</p>
+            <h3 class="mt-4 fw-bold" style="color:#1e3a8a; font-size:1.6rem;">{{ trans('landing_trans.reg_success_title') }}</h3>
+            <p class="text-muted mt-2" style="font-size:1.05rem;">{!! trans('landing_trans.reg_success_sub') !!}</p>
             <div class="mt-4 p-3 rounded-3" style="background:#f0f7ff; border:1px solid #bfdbfe; display:inline-block; min-width:260px;">
-                <div class="text-muted" style="font-size:.85rem;" data-i18n="reg_success_email_label">البريد الإلكتروني المسجّل</div>
+                <div class="text-muted" style="font-size:.85rem;">{{ trans('landing_trans.reg_success_email_label') }}</div>
                 <div class="fw-bold" style="color:#1e3a8a;">{{ $email }}</div>
             </div>
         </div>
@@ -30,14 +30,13 @@
                 {{-- School Name --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">🏫</span> <span data-i18n="reg_label_school_name">اسم المدرسة</span>
+                        <span class="field-icon">🏫</span> <span>{{ trans('landing_trans.reg_label_school_name') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
                            wire:model.live.debounce.400ms="school_name"
                            class="form-control reg-input @error('school_name') is-invalid @enderror"
-                           data-i18n-placeholder="reg_ph_school_name"
-                           placeholder="مثال: مدرسة الأمل الأهلية">
+                           placeholder="{{ trans('landing_trans.reg_ph_school_name') }}">
                     @error('school_name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -46,14 +45,13 @@
                 {{-- Contact Name --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">👤</span> <span data-i18n="reg_label_contact_name">اسم المسؤول</span>
+                        <span class="field-icon">👤</span> <span>{{ trans('landing_trans.reg_label_contact_name') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
                            wire:model.live.debounce.400ms="contact_name"
                            class="form-control reg-input @error('contact_name') is-invalid @enderror"
-                           data-i18n-placeholder="reg_ph_contact_name"
-                           placeholder="الاسم الكامل للمسؤول">
+                           placeholder="{{ trans('landing_trans.reg_ph_contact_name') }}">
                     @error('contact_name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -62,7 +60,7 @@
                 {{-- Email --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">📧</span> <span data-i18n="reg_label_email">البريد الإلكتروني</span>
+                        <span class="field-icon">📧</span> <span>{{ trans('landing_trans.reg_label_email') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="email"
@@ -78,7 +76,7 @@
                 {{-- Phone --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">📱</span> <span data-i18n="reg_label_phone">رقم الهاتف</span>
+                        <span class="field-icon">📱</span> <span>{{ trans('landing_trans.reg_label_phone') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
@@ -94,14 +92,13 @@
                 {{-- City --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">🏙️</span> <span data-i18n="reg_label_city">المدينة</span>
+                        <span class="field-icon">🏙️</span> <span>{{ trans('landing_trans.reg_label_city') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
                            wire:model.live.debounce.400ms="city"
                            class="form-control reg-input @error('city') is-invalid @enderror"
-                           data-i18n-placeholder="reg_ph_city"
-                           placeholder="مثال: الرياض">
+                           placeholder="{{ trans('landing_trans.reg_ph_city') }}">
                     @error('city')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -110,15 +107,15 @@
                 {{-- Student Count --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">🎓</span> <span data-i18n="reg_label_student_count">عدد الطلاب المتوقع</span>
+                        <span class="field-icon">🎓</span> <span>{{ trans('landing_trans.reg_label_student_count') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <select wire:model="student_count"
                             class="form-select reg-input @error('student_count') is-invalid @enderror">
-                        <option value="" data-i18n="reg_opt_choose">— اختر —</option>
-                        <option value="less_100" data-i18n="reg_opt_less_100">أقل من 100 طالب</option>
-                        <option value="100_300" data-i18n="reg_opt_100_300">من 100 إلى 300 طالب</option>
-                        <option value="more_300" data-i18n="reg_opt_more_300">أكثر من 300 طالب</option>
+                        <option value="">{{ trans('landing_trans.reg_opt_choose') }}</option>
+                        <option value="less_100">{{ trans('landing_trans.reg_opt_less_100') }}</option>
+                        <option value="100_300">{{ trans('landing_trans.reg_opt_100_300') }}</option>
+                        <option value="more_300">{{ trans('landing_trans.reg_opt_more_300') }}</option>
                     </select>
                     @error('student_count')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -128,13 +125,12 @@
                 {{-- Message --}}
                 <div class="col-12">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">💬</span> <span data-i18n="reg_label_message">ملاحظات إضافية</span>
+                        <span class="field-icon">💬</span> <span>{{ trans('landing_trans.reg_label_message') }}</span>
                     </label>
                     <textarea wire:model="message"
                               class="form-control reg-input"
                               rows="3"
-                              data-i18n-placeholder="reg_ph_message"
-                              placeholder="أي معلومات إضافية تودّ مشاركتها مع فريقنا..."></textarea>
+                              placeholder="{{ trans('landing_trans.reg_ph_message') }}"></textarea>
                 </div>
 
                 {{-- Terms --}}
@@ -144,9 +140,8 @@
                                wire:model="terms"
                                class="form-check-input @error('terms') is-invalid @enderror"
                                id="reg-terms">
-                        <label class="form-check-label me-2" for="reg-terms" style="font-size:.95rem;" data-i18n="reg_terms_text">
-                            أوافق على <a href="#" class="text-primary fw-semibold">الشروط والأحكام</a>
-                            وسياسة الخصوصية
+                        <label class="form-check-label me-2" for="reg-terms" style="font-size:.95rem;">
+                            {!! trans('landing_trans.reg_terms_text') !!}
                         </label>
                         @error('terms')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -160,16 +155,16 @@
                             class="btn btn-primary btn-lg px-5 py-3 reg-submit-btn"
                             wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="submit">
-                            <i class="fas fa-paper-plane me-2"></i> <span data-i18n="reg_submit_btn">إرسال طلب التسجيل</span>
+                            <i class="fas fa-paper-plane me-2"></i> <span>{{ trans('landing_trans.reg_submit_btn') }}</span>
                         </span>
                         <span wire:loading wire:target="submit">
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                            <span data-i18n="reg_submitting">جاري الإرسال...</span>
+                            <span>{{ trans('landing_trans.reg_submitting') }}</span>
                         </span>
                     </button>
                     <p class="mt-3 text-muted" style="font-size:.85rem;">
                         <i class="fas fa-shield-halved me-1" style="color:#22c55e;"></i>
-                        <span data-i18n="reg_secure_note">بياناتك آمنة ومشفّرة — لن نشاركها مع أي طرف ثالث</span>
+                        <span>{{ trans('landing_trans.reg_secure_note') }}</span>
                     </p>
                 </div>
 

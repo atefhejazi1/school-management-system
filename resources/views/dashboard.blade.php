@@ -197,7 +197,7 @@
     <div class="td-welcome">
         <div>
             <div class="td-welcome-name">
-                {{ __('أهلاً،') }} <span>{{ auth()->user()->name ?? trans('main_trans.role_admin') }}</span>
+                {{ trans('main_trans.dash_welcome_greeting') }} <span>{{ auth()->user()->name ?? trans('main_trans.role_admin') }}</span>
             </div>
             <div class="td-welcome-date" id="currentDate"></div>
         </div>
@@ -210,24 +210,24 @@
     </div>
 
     {{-- ══ KPI CARDS ══ --}}
-    <div class="td-sec-title">{{ __('نظرة عامة على النظام') }}</div>
+    <div class="td-sec-title">{{ trans('main_trans.dash_system_overview') }}</div>
     <div class="td-kpi-grid">
 
         <div class="td-kpi-card flat-card">
-            <div class="td-kpi-lbl">{{ __('إجمالي الطلاب المسجلين') }}</div>
+            <div class="td-kpi-lbl">{{ trans('main_trans.dash_total_students') }}</div>
             <div class="td-kpi-num">{{ \App\Models\students::count() }}</div>
             <div class="td-kpi-foot">
-                <a href="{{ route('Students.index') }}" class="td-kpi-link">{{ __('عرض الكل') }}</a>
-                <span class="td-kpi-sub">{{ \App\Models\students::whereDate('created_at', today())->count() }} {{ __('اليوم') }}</span>
+                <a href="{{ route('Students.index') }}" class="td-kpi-link">{{ trans('main_trans.dash_view_all') }}</a>
+                <span class="td-kpi-sub">{{ \App\Models\students::whereDate('created_at', today())->count() }} {{ trans('main_trans.dash_today') }}</span>
             </div>
         </div>
 
         <div class="td-kpi-card flat-card">
-            <div class="td-kpi-lbl">{{ __('إجمالي المعلمين') }}</div>
+            <div class="td-kpi-lbl">{{ trans('main_trans.dash_total_teachers') }}</div>
             <div class="td-kpi-num">{{ \App\Models\Teachers::count() }}</div>
             <div class="td-kpi-foot">
-                <a href="{{ route('Teachers.index') }}" class="td-kpi-link">{{ __('عرض الكل') }}</a>
-                <span class="td-kpi-sub">{{ \App\Models\Teachers::whereDate('created_at', today())->count() }} {{ __('اليوم') }}</span>
+                <a href="{{ route('Teachers.index') }}" class="td-kpi-link">{{ trans('main_trans.dash_view_all') }}</a>
+                <span class="td-kpi-sub">{{ \App\Models\Teachers::whereDate('created_at', today())->count() }} {{ trans('main_trans.dash_today') }}</span>
             </div>
         </div>
 
@@ -235,17 +235,17 @@
             <div class="td-kpi-lbl">{{ trans('main_trans.Parents') }}</div>
             <div class="td-kpi-num">{{ \App\Models\My_Parent::count() }}</div>
             <div class="td-kpi-foot">
-                <a href="{{ url('add_parent') }}" class="td-kpi-link">{{ __('عرض الكل') }}</a>
-                <span class="td-kpi-sub">{{ \App\Models\My_Parent::whereDate('created_at', today())->count() }} {{ __('اليوم') }}</span>
+                <a href="{{ url('add_parent') }}" class="td-kpi-link">{{ trans('main_trans.dash_view_all') }}</a>
+                <span class="td-kpi-sub">{{ \App\Models\My_Parent::whereDate('created_at', today())->count() }} {{ trans('main_trans.dash_today') }}</span>
             </div>
         </div>
 
         <div class="td-kpi-card flat-card">
-            <div class="td-kpi-lbl">{{ __('الأقسام الدراسية') }}</div>
+            <div class="td-kpi-lbl">{{ trans('main_trans.dash_academic_sections') }}</div>
             <div class="td-kpi-num">{{ \App\Models\sections::count() }}</div>
             <div class="td-kpi-foot">
-                <a href="{{ route('Sections.index') }}" class="td-kpi-link">{{ __('عرض الكل') }}</a>
-                <span class="td-kpi-sub">{{ \App\Models\Classroom::count() }} {{ __('صف') }}</span>
+                <a href="{{ route('Sections.index') }}" class="td-kpi-link">{{ trans('main_trans.dash_view_all') }}</a>
+                <span class="td-kpi-sub">{{ \App\Models\Classroom::count() }} {{ trans('main_trans.dash_class_unit') }}</span>
             </div>
         </div>
 
@@ -257,8 +257,8 @@
         {{-- LEFT: Recent activity tabs --}}
         <div class="admin-card flat-card">
             <div class="td-panel-hd">
-                <span class="td-panel-title">{{ __('سجل العمليات الأخيرة') }}</span>
-                <a href="{{ route('Students.index') }}" class="td-panel-link">{{ __('عرض الكل') }}</a>
+                <span class="td-panel-title">{{ trans('main_trans.dash_recent_activity') }}</span>
+                <a href="{{ route('Students.index') }}" class="td-panel-link">{{ trans('main_trans.dash_view_all') }}</a>
             </div>
 
             <div class="td-tabs" id="actTabs">
@@ -274,9 +274,9 @@
                 <div class="tab-pane fade show active" id="tab-s">
                     <table class="td-table">
                         <thead><tr>
-                            <th>#</th><th>{{ __('الطالب') }}</th><th>{{ __('البريد') }}</th>
-                            <th>{{ __('النوع') }}</th><th>{{ __('المرحلة') }}</th>
-                            <th>{{ __('الصف') }}</th><th>{{ __('القسم') }}</th><th>{{ __('التاريخ') }}</th>
+                            <th>#</th><th>{{ trans('main_trans.dash_col_student') }}</th><th>{{ trans('main_trans.dash_col_email') }}</th>
+                            <th>{{ trans('main_trans.dash_col_gender') }}</th><th>{{ trans('main_trans.dash_col_grade') }}</th>
+                            <th>{{ trans('main_trans.dash_col_class') }}</th><th>{{ trans('main_trans.dash_col_section') }}</th><th>{{ trans('main_trans.dash_col_date') }}</th>
                         </tr></thead>
                         <tbody>
                             @forelse(\App\Models\Students::latest()->take(5)->get() as $s)
@@ -300,7 +300,7 @@
                                     <td><span class="td-pill ok">{{ $s->created_at->format('d/m/Y') }}</span></td>
                                 </tr>
                             @empty
-                                <tr><td colspan="8" class="td-empty">{{ __('لا يوجد طلاب مسجلون بعد') }}</td></tr>
+                                <tr><td colspan="8" class="td-empty">{{ trans('main_trans.dash_no_students') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -310,8 +310,8 @@
                 <div class="tab-pane fade" id="tab-t">
                     <table class="td-table">
                         <thead><tr>
-                            <th>#</th><th>{{ __('المعلم') }}</th><th>{{ __('النوع') }}</th>
-                            <th>{{ __('تاريخ التعيين') }}</th><th>{{ __('التخصص') }}</th><th>{{ __('التاريخ') }}</th>
+                            <th>#</th><th>{{ trans('main_trans.dash_col_teacher') }}</th><th>{{ trans('main_trans.dash_col_gender') }}</th>
+                            <th>{{ trans('main_trans.dash_col_joining_date') }}</th><th>{{ trans('main_trans.dash_col_specialization') }}</th><th>{{ trans('main_trans.dash_col_date') }}</th>
                         </tr></thead>
                         <tbody>
                             @forelse(\App\Models\Teachers::latest()->take(5)->get() as $t)
@@ -329,7 +329,7 @@
                                     <td><span class="td-pill ok">{{ $t->created_at->format('d/m/Y') }}</span></td>
                                 </tr>
                             @empty
-                                <tr><td colspan="6" class="td-empty">{{ __('لا يوجد معلمون مسجلون بعد') }}</td></tr>
+                                <tr><td colspan="6" class="td-empty">{{ trans('main_trans.dash_no_teachers') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -339,8 +339,8 @@
                 <div class="tab-pane fade" id="tab-p">
                     <table class="td-table">
                         <thead><tr>
-                            <th>#</th><th>{{ __('ولي الأمر') }}</th><th>{{ __('البريد') }}</th>
-                            <th>{{ __('رقم الهوية') }}</th><th>{{ __('الهاتف') }}</th><th>{{ __('التاريخ') }}</th>
+                            <th>#</th><th>{{ trans('main_trans.dash_col_parent') }}</th><th>{{ trans('main_trans.dash_col_email') }}</th>
+                            <th>{{ trans('main_trans.dash_col_national_id') }}</th><th>{{ trans('main_trans.dash_col_phone') }}</th><th>{{ trans('main_trans.dash_col_date') }}</th>
                         </tr></thead>
                         <tbody>
                             @forelse(\App\Models\My_Parent::latest()->take(5)->get() as $p)
@@ -358,7 +358,7 @@
                                     <td><span class="td-pill ok">{{ $p->created_at->format('d/m/Y') }}</span></td>
                                 </tr>
                             @empty
-                                <tr><td colspan="6" class="td-empty">{{ __('لا يوجد أولياء أمور مسجلون بعد') }}</td></tr>
+                                <tr><td colspan="6" class="td-empty">{{ trans('main_trans.dash_no_parents') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -368,8 +368,8 @@
                 <div class="tab-pane fade" id="tab-i">
                     <table class="td-table">
                         <thead><tr>
-                            <th>#</th><th>{{ __('تاريخ الفاتورة') }}</th><th>{{ __('الصف') }}</th>
-                            <th>{{ __('المرحلة') }}</th><th>{{ __('الحالة') }}</th>
+                            <th>#</th><th>{{ trans('main_trans.dash_col_invoice_date') }}</th><th>{{ trans('main_trans.dash_col_class') }}</th>
+                            <th>{{ trans('main_trans.dash_col_grade') }}</th><th>{{ trans('main_trans.status') }}</th>
                         </tr></thead>
                         <tbody>
                             @forelse(\App\Models\Fee_invoice::latest()->take(5)->get() as $inv)
@@ -378,10 +378,10 @@
                                     <td><span class="td-pill ok">{{ $inv->invoice_date ?? '—' }}</span></td>
                                     <td>{{ $inv->classroom->Name_Class ?? '—' }}</td>
                                     <td>{{ $inv->classroom->grade->Name ?? '—' }}</td>
-                                    <td><span class="td-pill ok">{{ __('نشطة') }}</span></td>
+                                    <td><span class="td-pill ok">{{ trans('main_trans.dash_status_active') }}</span></td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="td-empty">{{ __('لا توجد فواتير حتى الآن') }}</td></tr>
+                                <tr><td colspan="5" class="td-empty">{{ trans('main_trans.dash_no_invoices') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -395,59 +395,59 @@
 
             <div class="admin-card flat-card">
                 <div class="td-panel-hd">
-                    <span class="td-panel-title">{{ __('وصول سريع') }}</span>
+                    <span class="td-panel-title">{{ trans('main_trans.dash_quick_access') }}</span>
                 </div>
                 <div class="td-qa-grid">
                     <a href="{{ route('Students.create') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.add_student') }}</span>
-                        <span class="td-qa-sub">{{ __('تسجيل جديد') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_new_registration') }}</span>
                     </a>
                     <a href="{{ route('Teachers.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.Teachers') }}</span>
-                        <span class="td-qa-sub">{{ __('الهيئة التدريسية') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_teaching_staff') }}</span>
                     </a>
                     <a href="{{ route('Fees_Invoices.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.invoices') }}</span>
-                        <span class="td-qa-sub">{{ __('الرسوم الدراسية') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_tuition_fees') }}</span>
                     </a>
                     <a href="{{ route('Attendance.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.Attendance') }}</span>
-                        <span class="td-qa-sub">{{ __('متابعة الغياب') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_attendance_tracking') }}</span>
                     </a>
                     <a href="{{ route('Grades.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.Grades') }}</span>
-                        <span class="td-qa-sub">{{ __('الصفوف الدراسية') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_academic_grades') }}</span>
                     </a>
                     <a href="{{ route('Sections.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.sections') }}</span>
-                        <span class="td-qa-sub">{{ __('الفصول') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_classes') }}</span>
                     </a>
                     <a href="{{ route('Quizzes.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.quizzes') }}</span>
-                        <span class="td-qa-sub">{{ __('إدارة الأسئلة') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_question_mgmt') }}</span>
                     </a>
                     <a href="{{ route('settings.index') }}" class="td-qa-btn">
                         <span class="td-qa-lbl">{{ trans('main_trans.Settings') }}</span>
-                        <span class="td-qa-sub">{{ __('ضبط النظام') }}</span>
+                        <span class="td-qa-sub">{{ trans('main_trans.dash_qa_system_settings') }}</span>
                     </a>
                 </div>
             </div>
 
             <div class="admin-card flat-card">
                 <div class="td-panel-hd">
-                    <span class="td-panel-title">{{ __('حالة النظام') }}</span>
+                    <span class="td-panel-title">{{ trans('main_trans.dash_system_status') }}</span>
                 </div>
                 <div class="td-status-list">
                     <div class="td-status-row">
-                        <span class="td-status-name">{{ __('قاعدة البيانات') }}</span>
-                        <span class="td-status-val ok">{{ __('متصلة') }}</span>
+                        <span class="td-status-name">{{ trans('main_trans.dash_status_database') }}</span>
+                        <span class="td-status-val ok">{{ trans('main_trans.dash_status_connected') }}</span>
                     </div>
                     <div class="td-status-row">
-                        <span class="td-status-name">{{ __('خادم الموقع') }}</span>
-                        <span class="td-status-val ok">{{ __('يعمل') }}</span>
+                        <span class="td-status-name">{{ trans('main_trans.dash_status_webserver') }}</span>
+                        <span class="td-status-val ok">{{ trans('main_trans.dash_status_running') }}</span>
                     </div>
                     <div class="td-status-row">
-                        <span class="td-status-name">{{ __('إصدار النظام') }}</span>
+                        <span class="td-status-name">{{ trans('main_trans.dash_status_version') }}</span>
                         <span class="td-status-val">v2.0</span>
                     </div>
                 </div>
@@ -458,7 +458,7 @@
     </div>
 
     {{-- ══ CALENDAR ══ --}}
-    <div class="td-sec-title">{{ __('التقويم الدراسي') }}</div>
+    <div class="td-sec-title">{{ trans('main_trans.dash_academic_calendar') }}</div>
     <div class="admin-card flat-card td-calendar-wrap">
         @livewire('calendar')
     </div>
@@ -468,10 +468,10 @@
 
 @section('js')
 <script>
-    // Arabic date
+    // Locale-aware date
     const dateEl = document.getElementById('currentDate');
     if (dateEl) {
-        dateEl.textContent = new Date().toLocaleDateString('ar-SA', {
+        dateEl.textContent = new Date().toLocaleDateString('{{ app()->getLocale() === 'ar' ? 'ar-SA' : 'en-US' }}', {
             weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
         });
     }

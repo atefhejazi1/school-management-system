@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'delete_title_prefix' => 'Delete',
+    'confirm_delete_warning' => 'Are you sure you want to delete?',
+    'list_title' => 'Online Classes',
+    'add_online_class' => 'Add New Online Class',
+    'add_offline_class' => 'Add New Offline Class',
+    'grade_stage_column' => 'Grade Stage',
+    'classroom_column' => 'Classroom',
+    'section_column' => 'Section',
+    'teacher_column' => 'Teacher',
+    'class_title_column' => 'Class Title',
+    'start_date_column' => 'Start Date',
+    'class_time_column' => 'Class Duration',
+    'class_link_column' => 'Class Link',
+    'processes_column' => 'Processes',
+    'join_now' => 'Join Now',
+    'add_new_offline_class_title' => 'Add New Offline Class',
+    'meeting_id_label' => 'Meeting ID',
+    'class_title_label' => 'Class Title',
+    'class_datetime_label' => 'Class Date and Time',
+    'class_duration_minutes_label' => 'Class Duration (Minutes)',
+    'meeting_password_label' => 'Meeting Password',
+    'start_link_label' => 'Start Link',
+    'join_link_label' => 'Join Link for Students',
+    'add_new_class_title' => 'Add New Class',
+];

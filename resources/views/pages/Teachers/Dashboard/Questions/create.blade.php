@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    اضافة سؤال جديد
+    {{ trans('Teacher_trans.add_new_question_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    اضافة سؤال جديد
+    {{ trans('Teacher_trans.add_new_question_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -34,7 +34,7 @@
                             <div class="form-row">
 
                                 <div class="col">
-                                    <label for="title">اسم السؤال</label>
+                                    <label for="title">{{ trans('Teacher_trans.question_name_label') }}</label>
                                     <input type="text" name="title" id="input-name"
                                         class="form-control form-control-alternative" autofocus>
                                     <input type="hidden" value="{{ $quizz_id }}" name="quizz_id">
@@ -44,8 +44,7 @@
 
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="title"> الاجابات <span style="color: red; font-size: smaller"> يجب
-                                            فصل بعلامه - بين الأجوبة</span> </label>
+                                    <label for="title"> {{ trans('Teacher_trans.answers_label') }} <span style="color: red; font-size: smaller">{{ trans('Teacher_trans.answers_separator_hint') }}</span> </label>
                                     <textarea name="answers" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
                                 </div>
                             </div>
@@ -53,7 +52,7 @@
 
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="title">الاجابة الصحيحة</label>
+                                    <label for="title">{{ trans('Teacher_trans.correct_answer_label') }}</label>
                                     <input type="text" name="right_answer" id="input-name"
                                         class="form-control form-control-alternative" autofocus>
                                 </div>
@@ -63,9 +62,9 @@
                             <div class="form-row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <label for="Grade_id">الدرجة : <span class="text-danger">*</span></label>
+                                        <label for="Grade_id">{{ trans('Teacher_trans.score_label') }}<span class="text-danger">*</span></label>
                                         <select class="custom-select mr-sm-2" name="score">
-                                            <option selected disabled> حدد الدرجة...</option>
+                                            <option selected disabled>{{ trans('Teacher_trans.choose_score_placeholder') }}</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="15">15</option>
@@ -75,8 +74,7 @@
                                 </div>
                             </div>
                             <br>
-                            <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">حفظ
-                                البيانات</button>
+                            <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">{{ trans('Teacher_trans.save_data_button') }}</button>
                         </form>
                     </div>
                 </div>

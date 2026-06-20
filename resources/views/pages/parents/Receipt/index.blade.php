@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    سندات القبض
+    {{ trans('Parent_trans.receipts_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    سندات القبض
+    {{ trans('Parent_trans.receipts_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -26,9 +26,9 @@
                                     <thead>
                                         <tr class="alert-success">
                                             <th>#</th>
-                                            <th>الاسم</th>
-                                            <th>المبلغ</th>
-                                            <th>البيان</th>
+                                            <th>{{ trans('Parent_trans.name') }}</th>
+                                            <th>{{ trans('Parent_trans.amount') }}</th>
+                                            <th>{{ trans('Parent_trans.statement') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>

@@ -210,7 +210,7 @@
             <a href="{{ route('super-admin.admins.index') }}"
                class="pf-sb-link {{ request()->routeIs('super-admin.admins.*') ? 'pf-sb-active' : '' }}">
                 <span class="pf-sb-icon"><i class="fas fa-user-shield"></i></span>
-                <span class="pf-sb-text">منشئو المنصة</span>
+                <span class="pf-sb-text">{{ trans('super_dash.platform_creators_heading') }}</span>
             </a>
         </li>
     </ul>

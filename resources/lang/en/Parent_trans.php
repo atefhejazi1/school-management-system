@@ -36,5 +36,55 @@ return [
     'Attachments' => 'Attachments',
     'Processes' => 'Processes',
 
+    'profile_title' => 'My Profile',
+    'parent_role_label' => 'Parent',
+    'username_arabic_label' => 'Username in Arabic',
+    'username_english_label' => 'Username in English',
+    'show_password' => 'Show password',
+    'update_data' => 'Update data',
+
+    'fee_invoices_title' => 'Fee Invoices',
+    'name' => 'Name',
+    'fee_type' => 'Fee Type',
+    'amount' => 'Amount',
+    'academic_stage' => 'Academic Stage',
+    'academic_grade' => 'Academic Grade',
+    'statement' => 'Statement',
+    'payments' => 'Payments',
+
+    'quiz_results_title' => 'Quiz Results List',
+    'student_name' => 'Student Name',
+    'quiz_name' => 'Quiz Name',
+    'grade_score' => 'Grade',
+    'quiz_date' => 'Quiz Date',
+
+    'children_list_title' => 'Children List',
+    'view_quiz_results' => 'View Quiz Results',
+
+    'welcome_colon' => 'Welcome :',
+    'student_info' => 'Student Information',
+    'stage_label' => 'Stage',
+    'classroom_label' => 'Classroom',
+    'section_label' => 'Section',
+
+    'attendance_report_title' => 'Attendance Report',
+    'attendance_reports_title' => 'Attendance Reports',
+    'search_info' => 'Search Information',
+    'students_label' => 'Students',
+    'all_label' => 'All',
+    'start_date_placeholder' => 'Start Date',
+    'to_date_label' => 'To Date',
+    'end_date_placeholder' => 'End Date',
+    'date_label' => 'Date',
+    'status_label' => 'Status',
+    'absent' => 'Absent',
+    'present' => 'Present',
+
+    'receipts_title' => 'Receipts',
+
+    'sidebar_children' => 'Children',
+    'sidebar_attendance_report' => 'Attendance Report',
+    'sidebar_financial_report' => 'Financial Report',
+    'sidebar_profile' => 'My Profile',
 
 ];

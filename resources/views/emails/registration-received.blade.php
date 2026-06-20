@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تم استلام طلبكم</title>
+    <title>{{ trans('Emails_trans.registration_received_title') }}</title>
     <style>
         body { margin: 0; padding: 0; background: #f1f5f9; font-family: Arial, sans-serif; direction: rtl; }
         .wrapper { max-width: 600px; margin: 40px auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,.08); }
@@ -28,52 +28,50 @@
 <div class="wrapper">
     <div class="header">
         <div class="header-icon">✅</div>
-        <h1 class="header-title">تم استلام طلبكم بنجاح</h1>
-        <p class="header-sub">نظام إدارة المدارس الذكي</p>
+        <h1 class="header-title">{{ trans('Emails_trans.registration_received_header') }}</h1>
+        <p class="header-sub">{{ trans('Emails_trans.registration_received_subheader') }}</p>
     </div>
 
     <div class="body">
         <p class="greeting">
-            مرحباً <strong>{{ $registration->contact_name }}</strong>،
+            {{ trans('Emails_trans.registration_received_greeting', ['name' => $registration->contact_name]) }}
         </p>
         <p style="color:#475569; font-size:.92rem; line-height:1.7;">
-            شكراً لتسجيلكم في نظام إدارة المدارس. لقد استلمنا طلب مدرسة
-            <strong>{{ $registration->school_name }}</strong> بنجاح.
+            {{ trans('Emails_trans.registration_received_thanks', ['schoolName' => $registration->school_name]) }}
         </p>
 
         <div class="info-box">
             <div class="info-row">
-                <span class="info-label">اسم المدرسة</span>
+                <span class="info-label">{{ trans('Emails_trans.school_name_label') }}</span>
                 <span class="info-value">{{ $registration->school_name }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">اسم المسؤول</span>
+                <span class="info-label">{{ trans('Emails_trans.contact_person_label') }}</span>
                 <span class="info-value">{{ $registration->contact_name }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">البريد الإلكتروني</span>
+                <span class="info-label">{{ trans('Emails_trans.email_label') }}</span>
                 <span class="info-value" dir="ltr">{{ $registration->email }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">المدينة</span>
+                <span class="info-label">{{ trans('Emails_trans.city_label') }}</span>
                 <span class="info-value">{{ $registration->city }}</span>
             </div>
             <div class="info-row">
-                <span class="info-label">رقم الطلب</span>
+                <span class="info-label">{{ trans('Emails_trans.request_number_label') }}</span>
                 <span class="info-value">#{{ $registration->id }}</span>
             </div>
         </div>
 
         <div class="notice">
-            <strong>⏰ ما الذي سيحدث بعد ذلك؟</strong><br><br>
-            سيتواصل معكم فريقنا خلال <strong>24 ساعة</strong> لمراجعة طلبكم وتفعيل حسابكم.
-            يُرجى التحقق من بريدكم الإلكتروني بانتظام.
+            <strong>⏰ {{ trans('Emails_trans.whats_next_title') }}</strong><br><br>
+            {!! trans('Emails_trans.registration_received_notice') !!}
         </div>
     </div>
 
     <div class="footer">
-        <p class="footer-text">هذا البريد أُرسل تلقائياً، يُرجى عدم الرد عليه مباشرةً.</p>
-        <p class="footer-text">© {{ date('Y') }} نظام إدارة المدارس — تطوير عاطف حجازي</p>
+        <p class="footer-text">{{ trans('Emails_trans.registration_received_footer_auto') }}</p>
+        <p class="footer-text">© {{ date('Y') }} {{ trans('Emails_trans.registration_received_footer_copyright') }}</p>
     </div>
 </div>
 </body>

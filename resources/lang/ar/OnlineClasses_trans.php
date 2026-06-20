@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'delete_title_prefix' => 'حذف',
+    'confirm_delete_warning' => 'هل انت متاكد مع عملية الحذف ؟',
+    'list_title' => 'حصص اونلاين',
+    'add_online_class' => 'اضافة حصة اونلاين جديدة',
+    'add_offline_class' => 'اضافة حصة اوفلاين جديدة',
+    'grade_stage_column' => 'المرحلة',
+    'classroom_column' => 'الصف',
+    'section_column' => 'القسم',
+    'teacher_column' => 'المعلم',
+    'class_title_column' => 'عنوان الحصة',
+    'start_date_column' => 'تاريخ البداية',
+    'class_time_column' => 'وقت الحصة',
+    'class_link_column' => 'رابط الحصة',
+    'processes_column' => 'العمليات',
+    'join_now' => 'انضم الان',
+    'add_new_offline_class_title' => 'اضافة حصة جديدة اوفلاين',
+    'meeting_id_label' => 'رقم الاجتماع',
+    'class_title_label' => 'عنوان الحصة',
+    'class_datetime_label' => 'تاريخ ووقت الحصة',
+    'class_duration_minutes_label' => 'مدة الحصة بالدقائق',
+    'meeting_password_label' => 'كلمة المرور الاجتماع',
+    'start_link_label' => 'لينك البدء',
+    'join_link_label' => 'لينك الدخول للطلاب',
+    'add_new_class_title' => 'اضافة حصة جديدة',
+];

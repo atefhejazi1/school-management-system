@@ -3,8 +3,8 @@
     <div class="ph-wrap">
         <div class="ph-title-group">
             <div>
-                <h1 class="ph-title">إعدادات المنصة العامة</h1>
-                <p class="ph-subtitle">متغيرات عامة تخص المنصة بالكامل، مستقلة عن إعدادات أي مدرسة بعينها</p>
+                <h1 class="ph-title">{{ trans('super_dash.general_platform_settings_title') }}</h1>
+                <p class="ph-subtitle">{{ trans('super_dash.general_platform_settings_subtitle') }}</p>
             </div>
         </div>
     </div>
@@ -13,26 +13,26 @@
 
         <div class="admin-card flat-card mb-4">
             <div class="admin-card-header" style="border-bottom:none;">
-                <span class="admin-card-title">التسجيل العام</span>
+                <span class="admin-card-title">{{ trans('super_dash.public_registration_label') }}</span>
             </div>
             <div class="p-4 pt-0">
                 <label class="settings-toggle-row">
                     <input type="checkbox" wire:model="allowPublicRegistration" class="settings-toggle-input">
-                    <span>السماح بظهور نموذج تسجيل المدارس في الصفحة الرئيسية العامة</span>
+                    <span>{{ trans('super_dash.allow_public_registration_form') }}</span>
                 </label>
                 <p class="text-muted mt-2 mb-0" style="font-size:.8rem;">
-                    عند إلغاء التفعيل، يظهر للزوار نص يطلب التواصل المباشر بدلاً من نموذج التسجيل.
+                    {{ trans('super_dash.public_registration_disabled_hint') }}
                 </p>
             </div>
         </div>
 
         <div class="admin-card flat-card mb-4">
             <div class="admin-card-header" style="border-bottom:none;">
-                <span class="admin-card-title">قالب رسالة ترحيب واتساب</span>
+                <span class="admin-card-title">{{ trans('super_dash.whatsapp_welcome_template_title') }}</span>
             </div>
             <div class="p-4 pt-0">
                 <p class="text-muted mb-2" style="font-size:.8rem;">
-                    المتغيرات المتاحة لاستخدامها داخل القالب: {school_name} ، {email} ، {password} ، {login_url}
+                    {{ trans('super_dash.whatsapp_template_variables_hint') }}
                 </p>
                 <textarea wire:model="whatsappWelcomeTemplate"
                           class="form-control @error('whatsappWelcomeTemplate') is-invalid @enderror"
@@ -42,14 +42,14 @@
                 @enderror
 
                 <button type="button" wire:click="resetWhatsappTemplate" class="btn-flat-outline mt-3">
-                    استعادة النص الافتراضي
+                    {{ trans('super_dash.restore_default_text') }}
                 </button>
             </div>
         </div>
 
         <button type="submit" class="btn-flat-emerald" wire:loading.attr="disabled">
-            <span wire:loading.remove wire:target="save">حفظ التغييرات</span>
-            <span wire:loading wire:target="save">جاري الحفظ...</span>
+            <span wire:loading.remove wire:target="save">{{ trans('super_dash.save_changes_btn') }}</span>
+            <span wire:loading wire:target="save">{{ trans('super_dash.saving_dots') }}</span>
         </button>
 
     </form>

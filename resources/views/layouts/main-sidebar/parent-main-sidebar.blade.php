@@ -10,33 +10,33 @@
             </a>
         </li>
         <!-- menu title -->
-        <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">{{ trans('main_trans.Programname') }} </li>
+        <li class="mt-10 mb-10 text-muted ps-4 font-medium menu-title">{{ trans('main_trans.Programname') }} </li>
 
 
         <!-- الابناء-->
         <li>
             <a href="{{ route('sons.index') }}"><i class="fas fa-book-open"></i><span
-                    class="right-nav-text">الابناء</span></a>
+                    class="right-nav-text">{{ trans('Parent_trans.sidebar_children') }}</span></a>
         </li>
 
         <!-- تقرير الحضور والغياب-->
         <li>
             <a href="{{route('sons.attendances')}}"><i class="fas fa-book-open"></i><span
-                    class="right-nav-text">تقرير الحضور والغياب</span></a>
+                    class="right-nav-text">{{ trans('Parent_trans.sidebar_attendance_report') }}</span></a>
         </li>
 
 
         <!-- تقرير المالية-->
         <li>
             <a href="{{route('sons.fees')}}"><i class="fas fa-book-open"></i><span
-                    class="right-nav-text">تقرير المالية</span></a>
+                    class="right-nav-text">{{ trans('Parent_trans.sidebar_financial_report') }}</span></a>
         </li>
 
 
         <!-- Settings-->
         <li>
             <a href="{{route('profile.show.parent')}}"><i class="fas fa-id-card-alt"></i><span
-                    class="right-nav-text">الملف الشخصي</span></a>
+                    class="right-nav-text">{{ trans('Parent_trans.sidebar_profile') }}</span></a>
         </li>
 
     </ul>

@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    قائمة الاختبارات
+    {{ trans('Quizzes_trans.list_quizzes_title') }}
 @stop
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
 @section('PageTitle')
-    قائمة الاختبارات
+    {{ trans('Quizzes_trans.list_quizzes_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -21,7 +21,7 @@
                         <div class="card card-statistics h-100">
                             <div class="card-body">
                                 <a href="{{route('Quizzes.create')}}" class="btn btn-success btn-sm" role="button"
-                                   aria-pressed="true">اضافة اختبار جديد</a><br><br>
+                                   aria-pressed="true">{{ trans('Quizzes_trans.add_new_quiz') }}</a><br><br>
                                 <div class="table-responsive">
                                     <table id="datatable" class="table  table-hover table-sm table-bordered p-0"
                                            data-page-length="50"
@@ -29,12 +29,12 @@
                                         <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>اسم الاختبار</th>
-                                            <th>اسم المعلم</th>
-                                            <th>المرحلة الدراسية</th>
-                                            <th>الصف الدراسي</th>
-                                            <th>القسم</th>
-                                            <th>العمليات</th>
+                                            <th>{{ trans('Quizzes_trans.quiz_name') }}</th>
+                                            <th>{{ trans('Quizzes_trans.teacher_name') }}</th>
+                                            <th>{{ trans('Quizzes_trans.grade_stage') }}</th>
+                                            <th>{{ trans('Quizzes_trans.classroom') }}</th>
+                                            <th>{{ trans('Quizzes_trans.section') }}</th>
+                                            <th>{{ trans('Quizzes_trans.processes') }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -52,7 +52,7 @@
                                                             class="fa fa-edit"></i></a>
                                                     <button type="button" class="btn btn-danger btn-sm"
                                                             data-toggle="modal"
-                                                            data-target="#delete_exam{{ $quizze->id }}" title="حذف"><i
+                                                            data-target="#delete_exam{{ $quizze->id }}" title="{{ trans('Quizzes_trans.delete') }}"><i
                                                             class="fa fa-trash"></i></button>
                                                 </td>
                                             </tr>
@@ -66,7 +66,7 @@
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 style="font-family: 'Cairo', sans-serif;"
-                                                                    class="modal-title" id="exampleModalLabel">حذف اختبار</h5>
+                                                                    class="modal-title" id="exampleModalLabel">{{ trans('Quizzes_trans.delete_quiz_title') }}</h5>
                                                                 <button type="button" class="close" data-dismiss="modal"
                                                                         aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>

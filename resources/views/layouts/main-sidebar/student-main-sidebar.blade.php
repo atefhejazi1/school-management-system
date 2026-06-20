@@ -10,20 +10,20 @@
             </a>
         </li>
         <!-- menu title -->
-        <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">{{ trans('main_trans.Programname') }} </li>
+        <li class="mt-10 mb-10 text-muted ps-4 font-medium menu-title">{{ trans('main_trans.Programname') }} </li>
 
 
         <!-- الامتحانات-->
         <li>
             <a href="{{ route('student_exams.index') }}"><i class="fas fa-book-open"></i><span
-                    class="right-nav-text">الامتحانات</span></a>
+                    class="right-nav-text">{{ trans('Students_trans.Exams') }}</span></a>
         </li>
 
 
         <!-- Settings-->
         <li>
             <a href="{{ route('profile-student.index') }}"><i class="fas fa-id-card-alt"></i><span
-                    class="right-nav-text">الملف الشخصي</span></a>
+                    class="right-nav-text">{{ trans('Students_trans.Personal_profile') }}</span></a>
         </li>
 
     </ul>

@@ -283,7 +283,7 @@ class AddParent extends Component
                 'National_ID_Father' => $this->National_ID_Father,
             ]);
         }
-        return redirect()->to('/add_parent');
+        return redirect()->route('add_parent');
     }
 
     public function delete($id)
@@ -294,6 +294,6 @@ class AddParent extends Component
 
         File::deleteDirectory($folderPath);
         $p->delete();
-        return redirect()->to('/add_parent');
+        return redirect()->route('add_parent');
     }
 }

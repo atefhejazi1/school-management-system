@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    اضافة حصة جديدة
+    {{ trans('OnlineClasses_trans.add_new_class_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    اضافة حصة جديدة
+    {{ trans('OnlineClasses_trans.add_new_class_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -68,20 +68,20 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>عنوان الحصة : <span class="text-danger">*</span></label>
+                                <label>{{ trans('OnlineClasses_trans.class_title_label') }} : <span class="text-danger">*</span></label>
                                 <input class="form-control" name="topic" type="text">
                             </div>
                         </div>
 
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>تاريخ ووقت الحصة : <span class="text-danger">*</span></label>
+                                <label>{{ trans('OnlineClasses_trans.class_datetime_label') }} : <span class="text-danger">*</span></label>
                                 <input class="form-control" type="datetime-local" name="start_time">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label>مدة الحصة بالدقائق : <span class="text-danger">*</span></label>
+                                <label>{{ trans('OnlineClasses_trans.class_duration_minutes_label') }} : <span class="text-danger">*</span></label>
                                 <input class="form-control" name="duration" type="text">
                             </div>
                         </div>

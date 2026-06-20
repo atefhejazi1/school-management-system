@@ -6,7 +6,7 @@
             <div class="ph-icon-wrap"><i class="fas fa-clipboard-list"></i></div>
             <div>
                 <h1 class="ph-title">{{ __('super_dash.school_requests') }}</h1>
-                <p class="ph-subtitle">إجمالي النتائج: {{ $registrations->total() }}</p>
+                <p class="ph-subtitle">{{ trans('super_dash.total_results_label') }}: {{ $registrations->total() }}</p>
             </div>
         </div>
     </div>
@@ -21,65 +21,65 @@
                 <div class="d-flex justify-content-between align-items-start mb-3 gap-3">
                     <div>
                         <h5 class="mb-1" style="color:#047857; font-weight:700; font-size:1rem;">
-                            تم تفعيل حساب مدرسة "{{ $justApprovedSchoolName }}" بنجاح
+                            {{ trans('super_dash.school_account_activated_success', ['name' => $justApprovedSchoolName]) }}
                         </h5>
                         <p class="mb-0 text-muted" style="font-size:.82rem;">
-                            بيانات الدخول التالية مخصّصة لمرة واحدة، يُرجى نسخها أو إرسالها إلى مدير المدرسة الآن.
+                            {{ trans('super_dash.one_time_credentials_hint') }}
                         </p>
                     </div>
                     <button type="button" wire:click="dismissApprovedCredentials" class="btn btn-sm btn-outline-secondary">
-                        إغلاق
+                        {{ trans('super_dash.close_btn') }}
                     </button>
                 </div>
 
                 <div class="cred-list mb-3">
                     <div class="cred-row d-flex justify-content-between align-items-center gap-3">
                         <div>
-                            <div class="text-muted" style="font-size:.72rem;">البريد الإلكتروني</div>
+                            <div class="text-muted" style="font-size:.72rem;">{{ trans('super_dash.email_address_label') }}</div>
                             <div id="justApprovedEmailText" class="fw-semibold" dir="ltr" style="font-size:.92rem; color:#0f172a;">
                                 {{ $justApprovedEmail }}
                             </div>
                         </div>
-                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedEmailText', 'البريد الإلكتروني')">
-                            نسخ
+                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedEmailText', '{{ trans('super_dash.email_address_label') }}')">
+                            {{ trans('super_dash.copy_btn') }}
                         </button>
                     </div>
                     <div class="cred-row d-flex justify-content-between align-items-center gap-3">
                         <div>
-                            <div class="text-muted" style="font-size:.72rem;">كلمة المرور المؤقتة</div>
+                            <div class="text-muted" style="font-size:.72rem;">{{ trans('super_dash.password_label') }}</div>
                             <div id="justApprovedPasswordText" class="fw-semibold" dir="ltr" style="font-size:.92rem; color:#0f172a;">
                                 {{ $justApprovedPassword }}
                             </div>
                         </div>
-                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedPasswordText', 'كلمة المرور')">
-                            نسخ
+                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedPasswordText', '{{ trans('super_dash.password_label') }}')">
+                            {{ trans('super_dash.copy_btn') }}
                         </button>
                     </div>
                     <div class="cred-row d-flex justify-content-between align-items-center gap-3">
                         <div>
-                            <div class="text-muted" style="font-size:.72rem;">رابط بوابة تسجيل الدخول الموحدة</div>
+                            <div class="text-muted" style="font-size:.72rem;">{{ trans('super_dash.unified_login_portal_url') }}</div>
                             <div id="justApprovedLoginUrlText" class="fw-semibold" dir="ltr" style="font-size:.92rem; color:#0f172a;">
                                 {{ $this->justApprovedLoginUrl() }}
                             </div>
                         </div>
-                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedLoginUrlText', 'رابط تسجيل الدخول')">
-                            نسخ
+                        <button type="button" class="lp-copy-btn" onclick="copyCredentialField('justApprovedLoginUrlText', '{{ trans('super_dash.login_url_label') }}')">
+                            {{ trans('super_dash.copy_btn') }}
                         </button>
                     </div>
                 </div>
 
                 <div class="d-flex flex-wrap gap-4">
                     <button type="button" class="lp-text-link" onclick="copyApprovedLoginInfo()">
-                        نسخ كل البيانات
+                        {{ trans('super_dash.copy_all_data') }}
                     </button>
 
                     @if ($this->justApprovedWhatsappUrl())
                         <a href="{{ $this->justApprovedWhatsappUrl() }}" target="_blank" rel="noopener" class="lp-text-link">
-                            إرسال عبر واتساب
+                            {{ trans('super_dash.send_via_whatsapp') }}
                         </a>
                     @else
                         <span class="text-muted" style="font-size:.85rem;">
-                            لا يوجد رقم هاتف مسجَّل لإرسال الرسالة عبر واتساب
+                            {{ trans('super_dash.no_phone_for_whatsapp') }}
                         </span>
                     @endif
                 </div>
@@ -87,7 +87,6 @@
         </div>
 
         <script>
-            // نسخ قيمة حقل واحد فقط (البريد أو كلمة المرور أو الرابط) إلى الحافظة
             function copyCredentialField(elementId, label) {
                 const value = document.getElementById(elementId)?.innerText.trim();
 
@@ -97,12 +96,11 @@
 
                 navigator.clipboard.writeText(value).then(function () {
                     if (window.showToast) {
-                        window.showToast('success', 'تم نسخ ' + label + ' إلى الحافظة');
+                        window.showToast('success', @js(trans('super_dash.copied_field_to_clipboard')) + label + @js(trans('super_dash.to_clipboard_suffix')));
                     }
                 });
             }
 
-            // نسخ كل بيانات الدخول دفعة واحدة (البريد + كلمة المرور + رابط الدخول)
             function copyApprovedLoginInfo() {
                 const email    = document.getElementById('justApprovedEmailText')?.innerText.trim();
                 const password = document.getElementById('justApprovedPasswordText')?.innerText.trim();
@@ -112,13 +110,13 @@
                     return;
                 }
 
-                const text = 'البريد الإلكتروني: ' + email
-                    + '\nكلمة المرور: ' + password
-                    + '\nرابط تسجيل الدخول: ' + loginUrl;
+                const text = @js(trans('super_dash.email_address_label')) + ': ' + email
+                    + '\n' + @js(trans('super_dash.password_label')) + ': ' + password
+                    + '\n' + @js(trans('super_dash.login_url_label')) + ': ' + loginUrl;
 
                 navigator.clipboard.writeText(text).then(function () {
                     if (window.showToast) {
-                        window.showToast('success', 'تم نسخ بيانات الدخول إلى الحافظة');
+                        window.showToast('success', @js(trans('super_dash.login_credentials_copied')));
                     }
                 });
             }
@@ -181,10 +179,10 @@
                 </div>
                 <div class="col-md-3">
                     <select wire:model.live="filterStatus" class="form-select">
-                        <option value="">كل الحالات</option>
-                        <option value="pending">قيد المراجعة</option>
-                        <option value="approved">مقبول</option>
-                        <option value="rejected">مرفوض</option>
+                        <option value="">{{ trans('super_dash.all_statuses') }}</option>
+                        <option value="pending">{{ trans('super_dash.status_pending') }}</option>
+                        <option value="approved">{{ trans('super_dash.status_approved') }}</option>
+                        <option value="rejected">{{ trans('super_dash.status_rejected') }}</option>
                     </select>
                 </div>
             </div>
@@ -196,7 +194,7 @@
         @if ($registrations->isEmpty())
             <div class="text-center py-5">
                 <i class="fas fa-inbox" style="font-size:2.6rem; color:#cbd5e1;"></i>
-                <p class="text-muted mt-3 mb-0">لا توجد نتائج مطابقة</p>
+                <p class="text-muted mt-3 mb-0">{{ trans('super_dash.no_matching_results') }}</p>
             </div>
         @else
             <div class="table-responsive">
@@ -204,14 +202,14 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>اسم المدرسة</th>
-                            <th>المسؤول</th>
-                            <th>البريد الإلكتروني</th>
-                            <th>المدينة</th>
-                            <th>عدد الطلاب</th>
-                            <th>حالة الطلب</th>
-                            <th>حالة المدرسة</th>
-                            <th>التاريخ</th>
+                            <th>{{ trans('super_dash.school_name_th') }}</th>
+                            <th>{{ trans('super_dash.contact_person_th') }}</th>
+                            <th>{{ trans('super_dash.email_address_label') }}</th>
+                            <th>{{ trans('super_dash.city_th') }}</th>
+                            <th>{{ trans('super_dash.student_count_th') }}</th>
+                            <th>{{ trans('super_dash.request_status_th') }}</th>
+                            <th>{{ trans('super_dash.school_status_th') }}</th>
+                            <th>{{ trans('super_dash.date_th') }}</th>
                             <th>{{ __('super_dash.confirm_btn') }}</th>
                         </tr>
                     </thead>
@@ -230,19 +228,19 @@
                                 </td>
                                 <td>
                                     @if ($reg->status === 'pending')
-                                        <span class="pill pill-warning"><i class="fas fa-clock"></i> قيد المراجعة</span>
+                                        <span class="pill pill-warning"><i class="fas fa-clock"></i> {{ trans('super_dash.status_pending') }}</span>
                                     @elseif ($reg->status === 'approved')
-                                        <span class="pill pill-success"><i class="fas fa-check"></i> مقبول</span>
+                                        <span class="pill pill-success"><i class="fas fa-check"></i> {{ trans('super_dash.status_approved') }}</span>
                                     @else
-                                        <span class="pill pill-danger"><i class="fas fa-xmark"></i> مرفوض</span>
+                                        <span class="pill pill-danger"><i class="fas fa-xmark"></i> {{ trans('super_dash.status_rejected') }}</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if ($reg->school)
                                         @if ($reg->school->isActive())
-                                            <span class="pill pill-success"><i class="fas fa-circle-check"></i> نشطة</span>
+                                            <span class="pill pill-success"><i class="fas fa-circle-check"></i> {{ trans('super_dash.school_status_active') }}</span>
                                         @else
-                                            <span class="pill pill-danger"><i class="fas fa-ban"></i> معلّقة</span>
+                                            <span class="pill pill-danger"><i class="fas fa-ban"></i> {{ trans('super_dash.school_status_suspended') }}</span>
                                         @endif
                                     @else
                                         <span class="text-muted" style="font-size:.78rem;">—</span>
@@ -251,23 +249,21 @@
                                 <td><span style="font-size:.8rem; color:#94a3b8;">{{ $reg->created_at->format('Y/m/d') }}</span></td>
                                 <td>
                                     <div class="d-flex gap-2">
-                                        {{-- تفاصيل الطلب الكاملة: الهاتف، عدد الطلاب، رسالة مقدّم الطلب، ملاحظات الإدارة --}}
                                         <button type="button"
                                                 class="btn btn-sm"
                                                 style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe; border-radius:8px;"
-                                                title="تفاصيل"
+                                                title="{{ trans('super_dash.details_title') }}"
                                                 wire:click="openDetails({{ $reg->id }})">
                                             <i class="fas fa-eye"></i>
                                         </button>
                                         @if ($reg->status === 'pending')
-                                            {{-- موافقة → تمر عبر نافذة التأكيد العامة --}}
                                             <button type="button"
                                                     class="btn btn-sm btn-emerald"
-                                                    title="موافقة"
+                                                    title="{{ trans('super_dash.approve_title') }}"
                                                     wire:click="$dispatch('confirm-action', [{
-                                                        title:       'الموافقة على طلب التسجيل',
-                                                        message:     'هل تريد الموافقة على طلب مدرسة &quot;{{ addslashes($reg->school_name) }}&quot;؟',
-                                                        sub:         'سيتم إنشاء حساب مدير للمدرسة وإرسال بيانات الدخول إلى بريده.',
+                                                        title:       '{{ trans('super_dash.approve_registration_title') }}',
+                                                        message:     '{{ trans('super_dash.approve_registration_message', ['name' => addslashes($reg->school_name)]) }}',
+                                                        sub:         '{{ trans('super_dash.approve_registration_sub') }}',
                                                         event:       'doApproveSchool',
                                                         params:      { id: {{ $reg->id }} },
                                                         type:        'default',
@@ -278,19 +274,18 @@
                                             </button>
                                             <button type="button"
                                                     class="btn btn-sm btn-emerald-outline"
-                                                    title="رفض"
+                                                    title="{{ trans('super_dash.reject_title') }}"
                                                     wire:click="openReject({{ $reg->id }})">
                                                 <i class="fas fa-xmark"></i>
                                             </button>
                                         @elseif ($reg->school)
-                                            {{-- عرض / إعادة إرسال بيانات الدخول: يولّد كلمة مرور مؤقتة جديدة ويعرض اللوحة من جديد --}}
                                             <button type="button"
                                                     class="btn btn-sm btn-emerald-outline"
-                                                    title="بيانات الدخول"
+                                                    title="{{ trans('super_dash.login_credentials_title') }}"
                                                     wire:click="$dispatch('confirm-action', [{
-                                                        title:       'إعادة تعيين كلمة مرور المدير',
-                                                        message:     'سيتم إنشاء كلمة مرور مؤقتة جديدة لمدير مدرسة &quot;{{ addslashes($reg->school_name) }}&quot; وعرضها هنا.',
-                                                        sub:         'كلمة المرور الحالية لن تعمل بعد هذه الخطوة، تأكد من إرسال الكلمة الجديدة لمدير المدرسة.',
+                                                        title:       '{{ trans('super_dash.reset_admin_password_title') }}',
+                                                        message:     '{{ trans('super_dash.reset_admin_password_message', ['name' => addslashes($reg->school_name)]) }}',
+                                                        sub:         '{{ trans('super_dash.reset_admin_password_sub') }}',
                                                         event:       'doResetAdminPassword',
                                                         params:      { registrationId: {{ $reg->id }} },
                                                         type:        'default',
@@ -299,17 +294,15 @@
                                                     }])">
                                                 <i class="fas fa-key"></i>
                                             </button>
-                                            {{-- تجديد أو تغيير باقة الاشتراك: ينتقل إلى صفحة بطاقات الباقات (بدون قوائم منسدلة) --}}
                                             <a href="{{ route('super-admin.plan-selection.index', $reg->school->id) }}"
                                                class="btn btn-sm btn-emerald-outline"
-                                               title="تجديد الاشتراك">
+                                               title="{{ trans('super_dash.renew_subscription_title') }}">
                                                 <i class="fas fa-rotate"></i>
                                             </a>
-                                            {{-- معاينة لوحة تحكم المدرسة بهوية مديرها (Impersonation) --}}
                                             @if ($adminUserId = $reg->school->users()->value('id'))
                                                 <form method="POST" action="{{ route('super-admin.impersonate', $adminUserId) }}" style="display:inline;">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-sm btn-emerald-outline" title="معاينة لوحة المدرسة">
+                                                    <button type="submit" class="btn btn-sm btn-emerald-outline" title="{{ trans('super_dash.preview_school_dashboard_title') }}">
                                                         <i class="fas fa-user-secret"></i>
                                                     </button>
                                                 </form>
@@ -318,11 +311,11 @@
                                                 <button type="button"
                                                         class="btn btn-sm"
                                                         style="background:#fff1f2; color:#be123c; border:1px solid #fecdd3; border-radius:8px;"
-                                                        title="تعليق"
+                                                        title="{{ trans('super_dash.suspend_title') }}"
                                                         wire:click="$dispatch('confirm-action', [{
-                                                            title:       'تعليق وصول المدرسة',
-                                                            message:     'هل تريد تعليق وصول مدرسة &quot;{{ addslashes($reg->school_name) }}&quot; إلى المنصة فوراً؟',
-                                                            sub:         'سيتم منع جميع مستخدمي هذه المدرسة من تسجيل الدخول.',
+                                                            title:       '{{ trans('super_dash.suspend_school_access_title') }}',
+                                                            message:     '{{ trans('super_dash.suspend_school_access_message', ['name' => addslashes($reg->school_name)]) }}',
+                                                            sub:         '{{ trans('super_dash.suspend_school_access_sub') }}',
                                                             event:       'doSuspendSchool',
                                                             params:      { registrationId: {{ $reg->id }} },
                                                             type:        'warning',
@@ -334,10 +327,10 @@
                                             @else
                                                 <button type="button"
                                                         class="btn btn-sm btn-emerald-outline"
-                                                        title="إعادة تفعيل"
+                                                        title="{{ trans('super_dash.reactivate_title') }}"
                                                         wire:click="$dispatch('confirm-action', [{
-                                                            title:       'إعادة تفعيل المدرسة',
-                                                            message:     'هل تريد إعادة تفعيل مدرسة &quot;{{ addslashes($reg->school_name) }}&quot;؟',
+                                                            title:       '{{ trans('super_dash.reactivate_school_title') }}',
+                                                            message:     '{{ trans('super_dash.reactivate_school_message', ['name' => addslashes($reg->school_name)]) }}',
                                                             event:       'doActivateSchool',
                                                             params:      { registrationId: {{ $reg->id }} },
                                                             type:        'default',
@@ -362,24 +355,21 @@
         @endif
     </div>
 
-    {{-- ══════════════════════════════════════════
-         نافذة الرفض — تحتاج حقلاً نصياً، لذا مخصّصة وليست عبر نافذة التأكيد العامة
-    ══════════════════════════════════════════ --}}
     @if ($showRejectModal)
         <div class="pf-reject-backdrop" wire:click.self="$set('showRejectModal', false)">
             <div class="pf-reject-modal">
                 <div class="pf-reject-header">
                     <h5 class="mb-0 fw-bold" style="color:#b91c1c;">
-                        <i class="fas fa-xmark-circle me-2"></i> رفض طلب التسجيل
+                        <i class="fas fa-xmark-circle me-2"></i> {{ trans('super_dash.reject_registration_title') }}
                     </h5>
                     <button wire:click="$set('showRejectModal', false)" class="pf-reject-close">&times;</button>
                 </div>
                 <div class="pf-reject-body">
-                    <label class="form-label fw-semibold">سبب الرفض <span class="text-danger">*</span></label>
+                    <label class="form-label fw-semibold">{{ trans('super_dash.rejection_reason_label') }} <span class="text-danger">*</span></label>
                     <textarea wire:model="rejectReason"
                               class="form-control @error('rejectReason') is-invalid @enderror"
                               rows="3"
-                              placeholder="اكتب سبب الرفض هنا..."></textarea>
+                              placeholder="{{ trans('super_dash.rejection_reason_placeholder') }}"></textarea>
                     @error('rejectReason')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -390,25 +380,21 @@
                     </button>
                     <button wire:click="confirmReject" class="btn btn-danger px-4" wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="confirmReject">
-                            <i class="fas fa-xmark me-1"></i> تأكيد الرفض
+                            <i class="fas fa-xmark me-1"></i> {{ trans('super_dash.confirm_rejection') }}
                         </span>
-                        <span wire:loading wire:target="confirmReject">جاري المعالجة...</span>
+                        <span wire:loading wire:target="confirmReject">{{ trans('super_dash.processing_dots') }}</span>
                     </button>
                 </div>
             </div>
         </div>
     @endif
 
-    {{-- ══════════════════════════════════════════
-         نافذة تفاصيل الطلب الكاملة — مدمجة من صفحة "طلبات التسجيل" القديمة
-         (الهاتف، عدد الطلاب، رسالة مقدّم الطلب، ملاحظات الإدارة)
-    ══════════════════════════════════════════ --}}
     @if ($showDetailsModal && $detailsRecord)
         <div class="pf-reject-backdrop" wire:click.self="closeDetails">
             <div class="pf-reject-modal pf-details-modal">
                 <div class="pf-reject-header">
                     <h5 class="mb-0 fw-bold" style="color:#0f172a;">
-                        تفاصيل طلب مدرسة "{{ $detailsRecord->school_name }}"
+                        {{ trans('super_dash.registration_details_for', ['name' => $detailsRecord->school_name]) }}
                     </h5>
                     <button wire:click="closeDetails" class="pf-reject-close">&times;</button>
                 </div>
@@ -416,81 +402,81 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">اسم المدرسة</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.school_name_th') }}</span>
                                 <span class="pf-detail-value">{{ $detailsRecord->school_name }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">اسم المسؤول</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.contact_person_name_label') }}</span>
                                 <span class="pf-detail-value">{{ $detailsRecord->contact_name }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">البريد الإلكتروني</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.email_address_label') }}</span>
                                 <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->email }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">رقم الهاتف</span>
-                                <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->phone ?: 'غير مسجَّل' }}</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.phone_number_label') }}</span>
+                                <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->phone ?: trans('super_dash.not_registered') }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">المدينة</span>
-                                <span class="pf-detail-value">{{ $detailsRecord->city ?: 'غير مسجَّلة' }}</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.city_th') }}</span>
+                                <span class="pf-detail-value">{{ $detailsRecord->city ?: trans('super_dash.not_registered_fem') }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">عدد الطلاب</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.student_count_th') }}</span>
                                 <span class="pf-detail-value">{{ $detailsRecord->studentCountLabel() }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">حالة الطلب</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.request_status_th') }}</span>
                                 <span class="pf-detail-value">{{ $detailsRecord->statusLabel() }}</span>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="pf-detail-item">
-                                <span class="pf-detail-label">تاريخ الطلب</span>
+                                <span class="pf-detail-label">{{ trans('super_dash.request_date_label') }}</span>
                                 <span class="pf-detail-value">{{ $detailsRecord->created_at->format('Y/m/d H:i') }}</span>
                             </div>
                         </div>
                         @if ($detailsRecord->school)
                             <div class="col-md-6">
                                 <div class="pf-detail-item">
-                                    <span class="pf-detail-label">حالة المدرسة على المنصة</span>
-                                    <span class="pf-detail-value">{{ $detailsRecord->school->isActive() ? 'نشطة' : 'معلّقة' }}</span>
+                                    <span class="pf-detail-label">{{ trans('super_dash.school_platform_status_label') }}</span>
+                                    <span class="pf-detail-value">{{ $detailsRecord->school->isActive() ? trans('super_dash.school_status_active') : trans('super_dash.school_status_suspended') }}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="pf-detail-item">
-                                    <span class="pf-detail-label">رابط المدرسة (Slug)</span>
+                                    <span class="pf-detail-label">{{ trans('super_dash.school_slug_label') }}</span>
                                     <span class="pf-detail-value" dir="ltr">{{ $detailsRecord->school->slug }}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="pf-detail-item">
-                                    <span class="pf-detail-label">باقة الاشتراك الحالية</span>
-                                    <span class="pf-detail-value">{{ $detailsRecord->school->plan?->name ?? 'لا توجد باقة محددة' }}</span>
+                                    <span class="pf-detail-label">{{ trans('super_dash.current_subscription_plan_label') }}</span>
+                                    <span class="pf-detail-value">{{ $detailsRecord->school->plan?->name ?? trans('super_dash.no_plan_specified') }}</span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="pf-detail-item">
-                                    <span class="pf-detail-label">تاريخ انتهاء الاشتراك</span>
+                                    <span class="pf-detail-label">{{ trans('super_dash.subscription_expiry_date_label') }}</span>
                                     @if ($detailsRecord->school->subscription_expires_at)
                                         <span class="pf-detail-value" style="{{ $detailsRecord->school->isSubscriptionExpired() ? 'color:#b91c1c;' : '' }}">
                                             {{ $detailsRecord->school->subscription_expires_at->format('Y/m/d') }}
-                                            {{ $detailsRecord->school->isSubscriptionExpired() ? '(منتهي)' : '' }}
+                                            {{ $detailsRecord->school->isSubscriptionExpired() ? trans('super_dash.expired_paren') : '' }}
                                         </span>
                                     @else
-                                        <span class="pf-detail-value">غير محدد</span>
+                                        <span class="pf-detail-value">{{ trans('super_dash.not_specified') }}</span>
                                     @endif
                                 </div>
                             </div>
@@ -498,7 +484,7 @@
                         @if ($detailsRecord->message)
                             <div class="col-12">
                                 <div class="pf-detail-item">
-                                    <span class="pf-detail-label">رسالة مقدّم الطلب</span>
+                                    <span class="pf-detail-label">{{ trans('super_dash.applicant_message_label') }}</span>
                                     <span class="pf-detail-value">{{ $detailsRecord->message }}</span>
                                 </div>
                             </div>
@@ -506,7 +492,7 @@
                         @if ($detailsRecord->admin_notes)
                             <div class="col-12">
                                 <div class="pf-detail-item" style="background:#fff5f5; border-color:#fecaca;">
-                                    <span class="pf-detail-label" style="color:#b91c1c;">ملاحظات الإدارة (سبب الرفض)</span>
+                                    <span class="pf-detail-label" style="color:#b91c1c;">{{ trans('super_dash.admin_notes_rejection_reason_label') }}</span>
                                     <span class="pf-detail-value">{{ $detailsRecord->admin_notes }}</span>
                                 </div>
                             </div>
@@ -514,7 +500,7 @@
                     </div>
                 </div>
                 <div class="pf-reject-footer">
-                    <button wire:click="closeDetails" class="btn btn-outline-secondary">إغلاق</button>
+                    <button wire:click="closeDetails" class="btn btn-outline-secondary">{{ trans('super_dash.close_btn') }}</button>
                 </div>
             </div>
         </div>

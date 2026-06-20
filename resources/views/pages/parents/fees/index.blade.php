@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-الفواتير الدراسية
+{{ trans('Parent_trans.fee_invoices_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-الفواتير الدراسية
+{{ trans('Parent_trans.fee_invoices_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -27,13 +27,13 @@
                                     <thead>
                                     <tr class="alert-success">
                                         <th>#</th>
-                                        <th>الاسم</th>
-                                        <th>نوع الرسوم</th>
-                                        <th>المبلغ</th>
-                                        <th>المرحلة الدراسية</th>
-                                        <th>الصف الدراسي</th>
-                                        <th>البيان</th>
-                                        <th>العمليات</th>
+                                        <th>{{ trans('Parent_trans.name') }}</th>
+                                        <th>{{ trans('Parent_trans.fee_type') }}</th>
+                                        <th>{{ trans('Parent_trans.amount') }}</th>
+                                        <th>{{ trans('Parent_trans.academic_stage') }}</th>
+                                        <th>{{ trans('Parent_trans.academic_grade') }}</th>
+                                        <th>{{ trans('Parent_trans.statement') }}</th>
+                                        <th>{{ trans('Parent_trans.Processes') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -47,7 +47,7 @@
                                         <td>{{$Fee_invoice->classroom->Name_Class}}</td>
                                         <td>{{$Fee_invoice->description}}</td>
                                         <td>
-                                            <a href="{{route('sons.receipt',$Fee_invoice->student_id)}}" title="المدفوعات" class="btn btn-info btn-sm" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
+                                            <a href="{{route('sons.receipt',$Fee_invoice->student_id)}}" title="{{ trans('Parent_trans.payments') }}" class="btn btn-info btn-sm" role="button" aria-pressed="true"><i class="fa fa-edit"></i></a>
                                         </td>
                                     </tr>
                                     @endforeach

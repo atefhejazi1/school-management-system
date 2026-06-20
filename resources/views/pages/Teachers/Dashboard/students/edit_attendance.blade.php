@@ -4,8 +4,7 @@
    <div class="modal-dialog">
        <div class="modal-content">
            <div class="modal-header">
-               <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">تعديل حضور
-                   وغياب الطالب : {{$student->name}}</h5>
+               <h5 style="font-family: 'Cairo', sans-serif;" class="modal-title" id="exampleModalLabel">{{ trans('Teacher_trans.attendance_edit_title') }}{{$student->name}}</h5>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                    <span aria-hidden="true">&times;</span>
                </button>
@@ -14,18 +13,18 @@
                <form action="{{route('attendance.edit','test')}}" method="post">
                    @csrf
                    <input type="hidden" name="id" value="{{$student->id}}">
-                   <label class="block text-gray-500 font-semibold sm:border-r sm:pr-4">
+                   <label class="block text-gray-500 font-semibold sm:border-e sm:pe-4">
                        <input name="attendences"
                               {{ $student->attendance()->first()->attendence_status == 1 ? 'checked' : '' }}
                               class="leading-tight" type="radio" value="presence">
-                       <span class="text-success">حضور</span>
+                       <span class="text-success">{{ trans('Teacher_trans.presence') }}</span>
                    </label>
 
-                   <label class="ml-4 block text-gray-500 font-semibold">
+                   <label class="ms-4 block text-gray-500 font-semibold">
                        <input name="attendences"
                               {{ $student->attendance()->first()->attendence_status == 0 ? 'checked' : '' }}
                               class="leading-tight" type="radio" value="absent">
-                       <span class="text-danger">غياب</span>
+                       <span class="text-danger">{{ trans('Teacher_trans.absence') }}</span>
                    </label>
                    <div class="modal-footer">
                        <button type="button" class="btn btn-secondary"

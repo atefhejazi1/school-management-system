@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}">
 @section('title')
     {{ trans('main_trans.Main_title') }}
 @stop
@@ -41,7 +41,7 @@
             <div class="page-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4 class="mb-0" style="font-family: 'Cairo', sans-serif">مرحبا بك :
+                        <h4 class="mb-0" style="font-family: 'Cairo', sans-serif">{{ trans('Parent_trans.welcome_colon') }}
                             {{ auth()->user()->Name_Father }}</h4>
                     </div><br><br>
                     <div class="col-sm-6">
@@ -63,17 +63,17 @@
                                             <div class="text-center">
                                                 <h5 style="font-family: 'Cairo', sans-serif" class="card-title">
                                                     {{ $son->name }}</h5>
-                                                <p class="text-muted mb-4">معلومات الطالب</p>
+                                                <p class="text-muted mb-4">{{ trans('Parent_trans.student_info') }}</p>
                                             </div>
                                             <div>
                                                 <div class="d-flex justify-content-between">
-                                                    <span>المرحلة</span><span>{{ $son->grade->Name }}</span>
+                                                    <span>{{ trans('Parent_trans.stage_label') }}</span><span>{{ $son->grade->Name }}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between">
-                                                    <span>الصف</span><span>{{ $son->classroom->Name_Class }}</span>
+                                                    <span>{{ trans('Parent_trans.classroom_label') }}</span><span>{{ $son->classroom->Name_Class }}</span>
                                                 </div>
                                                 <div class="d-flex justify-content-between">
-                                                    <span>القسم</span><span>{{ $son->section->Name_Section }}</span>
+                                                    <span>{{ trans('Parent_trans.section_label') }}</span><span>{{ $son->section->Name_Section }}</span>
                                                 </div>
 
                                                 <div class="d-flex justify-content-between">

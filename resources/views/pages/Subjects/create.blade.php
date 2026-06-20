@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    اضافة مادة دراسية
+    {{ trans('Subjects_trans.add_subject_title') }}
 @stop
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
 @section('PageTitle')
-    اضافة مادة دراسية
+    {{ trans('Subjects_trans.add_subject_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -34,11 +34,11 @@
 
                                 <div class="form-row">
                                     <div class="col">
-                                        <label for="title">اسم المادة باللغة العربية</label>
+                                        <label for="title">{{ trans('Subjects_trans.name_ar_label') }}</label>
                                         <input type="text" name="Name_ar" class="form-control">
                                     </div>
                                     <div class="col">
-                                        <label for="title">اسم المادة باللغة الانجليزية</label>
+                                        <label for="title">{{ trans('Subjects_trans.name_en_label') }}</label>
                                         <input type="text" name="Name_en" class="form-control">
                                     </div>
                                 </div>
@@ -46,7 +46,7 @@
 
                                 <div class="form-row">
                                     <div class="form-group col">
-                                        <label for="inputState">المرحلة الدراسية</label>
+                                        <label for="inputState">{{ trans('Subjects_trans.grade_stage_label') }}</label>
                                         <select class="custom-select my-1 mr-sm-2" name="Grade_id">
                                             <option selected disabled>{{trans('Parent_trans.Choose')}}...</option>
                                             @foreach($grades as $grade)
@@ -56,13 +56,13 @@
                                     </div>
 
                                     <div class="form-group col">
-                                        <label for="inputState">الصف الدراسي</label>
+                                        <label for="inputState">{{ trans('Subjects_trans.classroom_label') }}</label>
                                         <select name="Class_id" class="custom-select"></select>
                                     </div>
 
 
                                     <div class="form-group col">
-                                        <label for="inputState">اسم المعلم</label>
+                                        <label for="inputState">{{ trans('Subjects_trans.teacher_name_label') }}</label>
                                         <select class="custom-select my-1 mr-sm-2" name="teacher_id">
                                             <option selected disabled>{{trans('Parent_trans.Choose')}}...</option>
                                             @foreach($teachers as $teacher)
@@ -71,7 +71,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">حفظ البيانات</button>
+                                <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">{{ trans('Subjects_trans.submit_save') }}</button>
                             </form>
                         </div>
                     </div>

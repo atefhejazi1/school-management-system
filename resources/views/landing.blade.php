@@ -1,32 +1,23 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{ app()->getLocale() }}" dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title id="pageTitle" data-i18n="meta_title">نظام إدارة المدارس الذكي | منصة SaaS متكاملة للمدارس</title>
-    <meta id="pageDescription" name="description" data-i18n-content="meta_description" content="منصة SaaS متكاملة لإدارة المدارس: طلاب، معلمون، أولياء أمور، حضور، امتحانات، رسوم، حصص أونلاين، ومكتبة رقمية — كل مدرسة بمساحتها المعزولة الخاصة.">
+    <title>{{ trans('landing_trans.meta_title') }}</title>
+    <meta name="description" content="{{ trans('landing_trans.meta_description') }}">
 
     {{-- Cairo Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    {{-- Bootstrap 5 (RTL/LTR href swapped by JS on language toggle) --}}
-    <link id="bootstrapCss" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
-
-    {{-- Apply saved language choice before first paint to avoid a flash of the wrong direction --}}
-    <script>
-        (function () {
-            var lang = localStorage.getItem('siteLang') || 'ar';
-            document.documentElement.lang = lang;
-            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-            window.__initialLang = lang;
-            if (lang === 'en') {
-                document.getElementById('bootstrapCss').href = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css';
-            }
-        })();
-    </script>
+    {{-- Bootstrap 5 — RTL or LTR --}}
+    @if (LaravelLocalization::getCurrentLocaleDirection() === 'rtl')
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css">
+    @else
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    @endif
 
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -553,10 +544,10 @@
 ══════════════════════════════════════════ --}}
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav" style="background: transparent;">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center gap-3" href="{{ url('/') }}">
+        <a class="navbar-brand d-flex align-items-center gap-3" href="{{ route('landing') }}">
             <div class="nav-brand-icon"><i class="fas fa-graduation-cap"></i></div>
             <div>
-                <div class="nav-brand-text" data-i18n="brand_name">إدارة المدارس</div>
+                <div class="nav-brand-text">{{ trans('landing_trans.brand_name') }}</div>
                 <div class="nav-brand-sub">School Management SaaS</div>
             </div>
         </a>
@@ -567,19 +558,33 @@
 
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="#home" data-i18n="nav_home">الرئيسية</a></li>
-                <li class="nav-item"><a class="nav-link" href="#features" data-i18n="nav_features">المميزات</a></li>
-                <li class="nav-item"><a class="nav-link" href="#dashboard-preview" data-i18n="nav_dashboard">لوحة التحكم</a></li>
-                <li class="nav-item"><a class="nav-link" href="#roles" data-i18n="nav_roles">الأدوار</a></li>
-                <li class="nav-item"><a class="nav-link" href="#saas" data-i18n="nav_saas">منصة متعددة المدارس</a></li>
-                <li class="nav-item"><a class="nav-link" href="#register" data-i18n="nav_register">تسجيل مدرسة</a></li>
+                <li class="nav-item"><a class="nav-link" href="#home">{{ trans('landing_trans.nav_home') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#features">{{ trans('landing_trans.nav_features') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#dashboard-preview">{{ trans('landing_trans.nav_dashboard') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#roles">{{ trans('landing_trans.nav_roles') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#saas">{{ trans('landing_trans.nav_saas') }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#register">{{ trans('landing_trans.nav_register') }}</a></li>
             </ul>
             <div class="d-flex align-items-center gap-2">
-                <button type="button" id="langToggleBtn" class="btn-lang-toggle" onclick="toggleLanguage()">
-                    <i class="fas fa-globe"></i> <span id="langToggleLabel">English</span>
-                </button>
-                <a href="{{ url('/select') }}" class="btn-nav-login">
-                    <i class="fas fa-right-to-bracket me-2"></i> <span data-i18n="nav_login">تسجيل الدخول</span>
+                <div class="dropdown">
+                    <button type="button" class="btn-lang-toggle dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe"></i> <span>{{ LaravelLocalization::getSupportedLocales()[app()->getLocale()]['native'] }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                            <li>
+                                <a class="dropdown-item {{ app()->getLocale() === $localeCode ? 'active' : '' }}"
+                                   rel="alternate"
+                                   hreflang="{{ $localeCode }}"
+                                   href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                    {{ $properties['native'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <a href="{{ route('selection') }}" class="btn-nav-login">
+                    <i class="fas fa-right-to-bracket me-2"></i> <span>{{ trans('landing_trans.nav_login') }}</span>
                 </a>
             </div>
         </div>
@@ -595,26 +600,22 @@
             <div class="col-lg-6">
                 <div class="hero-eyebrow">
                     <span class="dot"></span>
-                    <span data-i18n="hero_eyebrow">منصة SaaS — كل مدرسة بمساحتها الخاصة والمعزولة بالكامل</span>
+                    <span>{{ trans('landing_trans.hero_eyebrow') }}</span>
                 </div>
 
                 <h1 class="hero-title">
-                    <span data-i18n="hero_title_line1">نظام إدارة</span><br>
-                    <span class="highlight" data-i18n="hero_title_line2">المدارس الذكي</span>
+                    <span>{{ trans('landing_trans.hero_title_line1') }}</span><br>
+                    <span class="highlight">{{ trans('landing_trans.hero_title_line2') }}</span>
                 </h1>
 
-                <p class="hero-subtitle" data-i18n="hero_subtitle">
-                    منصة متكاملة لإدارة الطلاب، المعلمين، أولياء الأمور، الحضور، الامتحانات،
-                    والرسوم في لوحة تحكم واحدة. سجّل مدرستك وابدأ العمل في دقائق — بياناتك معزولة
-                    وآمنة تماماً عن أي مدرسة أخرى على المنصة.
-                </p>
+                <p class="hero-subtitle">{{ trans('landing_trans.hero_subtitle') }}</p>
 
                 <div class="hero-btns">
                     <a href="#register" class="btn-hero-primary">
-                        <i class="fas fa-school me-2"></i> <span data-i18n="hero_btn_register">سجّل مدرستك الآن</span>
+                        <i class="fas fa-school me-2"></i> <span>{{ trans('landing_trans.hero_btn_register') }}</span>
                     </a>
-                    <a href="{{ url('/select') }}" class="btn-hero-outline">
-                        <i class="fas fa-arrow-right-to-bracket me-2"></i> <span data-i18n="nav_login">تسجيل الدخول</span>
+                    <a href="{{ route('selection') }}" class="btn-hero-outline">
+                        <i class="fas fa-arrow-right-to-bracket me-2"></i> <span>{{ trans('landing_trans.nav_login') }}</span>
                     </a>
                 </div>
 
@@ -622,25 +623,25 @@
                     <div class="stat-pill">
                         <div>
                             <div class="stat-num">12+</div>
-                            <div class="stat-label" data-i18n="stat_modules">وحدة إدارية متكاملة</div>
+                            <div class="stat-label">{{ trans('landing_trans.stat_modules') }}</div>
                         </div>
                     </div>
                     <div class="stat-pill">
                         <div>
                             <div class="stat-num">5</div>
-                            <div class="stat-label" data-i18n="stat_roles">أدوار مستخدمين</div>
+                            <div class="stat-label">{{ trans('landing_trans.stat_roles') }}</div>
                         </div>
                     </div>
                     <div class="stat-pill">
                         <div>
                             <div class="stat-num">100%</div>
-                            <div class="stat-label" data-i18n="stat_isolation">عزل بيانات بين المدارس</div>
+                            <div class="stat-label">{{ trans('landing_trans.stat_isolation') }}</div>
                         </div>
                     </div>
                     <div class="stat-pill">
                         <div>
                             <div class="stat-num">AR / EN</div>
-                            <div class="stat-label" data-i18n="stat_languages">دعم كامل للغتين</div>
+                            <div class="stat-label">{{ trans('landing_trans.stat_languages') }}</div>
                         </div>
                     </div>
                 </div>
@@ -650,29 +651,29 @@
                 <div class="hero-visual">
                     <div class="hero-panel">
                         <div class="hero-panel-head">
-                            <span class="hero-panel-title" data-i18n="hero_panel_title">نظرة لحظية</span>
-                            <span class="hero-panel-live"><span class="dot"></span> <span data-i18n="hero_panel_live">مباشر</span></span>
+                            <span class="hero-panel-title">{{ trans('landing_trans.hero_panel_title') }}</span>
+                            <span class="hero-panel-live"><span class="dot"></span> <span>{{ trans('landing_trans.hero_panel_live') }}</span></span>
                         </div>
 
                         <div class="hero-stat-row">
                             <div class="hero-stat-row-icon"><i class="fas fa-user-graduate"></i></div>
                             <div>
                                 <div class="hero-stat-row-num">+150</div>
-                                <div class="hero-stat-row-label" data-i18n="hc_active_students">طالب نشط لكل مدرسة</div>
+                                <div class="hero-stat-row-label">{{ trans('landing_trans.hc_active_students') }}</div>
                             </div>
                         </div>
                         <div class="hero-stat-row">
                             <div class="hero-stat-row-icon"><i class="fas fa-building-columns"></i></div>
                             <div>
                                 <div class="hero-stat-row-num">∞</div>
-                                <div class="hero-stat-row-label" data-i18n="hc_schools_count">عدد المدارس على بنية واحدة</div>
+                                <div class="hero-stat-row-label">{{ trans('landing_trans.hc_schools_count') }}</div>
                             </div>
                         </div>
                         <div class="hero-stat-row">
                             <div class="hero-stat-row-icon"><i class="fas fa-chart-line"></i></div>
                             <div>
-                                <div class="hero-stat-row-num" data-i18n="hc_live_reports">تقارير لحظية</div>
-                                <div class="hero-stat-row-label" data-i18n="hc_live_reports_sub">حضور · درجات · رسوم</div>
+                                <div class="hero-stat-row-num">{{ trans('landing_trans.hc_live_reports') }}</div>
+                                <div class="hero-stat-row-label">{{ trans('landing_trans.hc_live_reports_sub') }}</div>
                             </div>
                         </div>
 
@@ -694,96 +695,34 @@
 <section id="features" class="features-section">
     <div class="container">
         <div class="text-center mb-5">
-            <div class="section-tag" data-i18n="tag_features">المميزات</div>
-            <h2 class="section-title" data-i18n="features_title">كل ما تحتاجه مدرستك في مكان واحد</h2>
-            <p class="section-sub" data-i18n="features_sub">من أول يوم تسجيل لمدرستك على المنصة، تحصل على كل هذه الوحدات جاهزة للعمل فوراً</p>
+            <div class="section-tag">{{ trans('landing_trans.tag_features') }}</div>
+            <h2 class="section-title">{{ trans('landing_trans.features_title') }}</h2>
+            <p class="section-sub">{{ trans('landing_trans.features_sub') }}</p>
         </div>
 
         <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-user-graduate"></i></div>
-                    <h3 class="feat-title" data-i18n="feat1_title">إدارة الطلاب</h3>
-                    <p class="feat-desc" data-i18n="feat1_desc">ملفات شاملة لكل طالب: بيانات شخصية، صور ومرفقات، الصف والفصل والقسم، وربط مباشر بولي الأمر.</p>
+            @foreach ([
+                ['icon' => 'fa-user-graduate', 'key' => 'feat1'],
+                ['icon' => 'fa-chalkboard-user', 'key' => 'feat2'],
+                ['icon' => 'fa-people-roof', 'key' => 'feat3'],
+                ['icon' => 'fa-layer-group', 'key' => 'feat4'],
+                ['icon' => 'fa-calendar-check', 'key' => 'feat5'],
+                ['icon' => 'fa-file-pen', 'key' => 'feat6'],
+                ['icon' => 'fa-chart-line', 'key' => 'feat7'],
+                ['icon' => 'fa-sack-dollar', 'key' => 'feat8'],
+                ['icon' => 'fa-arrow-trend-up', 'key' => 'feat9'],
+                ['icon' => 'fa-video', 'key' => 'feat10'],
+                ['icon' => 'fa-book-open', 'key' => 'feat11'],
+                ['icon' => 'fa-language', 'key' => 'feat12'],
+            ] as $feature)
+                <div class="col-lg-3 col-md-6">
+                    <div class="feat-card">
+                        <div class="feat-icon"><i class="fas {{ $feature['icon'] }}"></i></div>
+                        <h3 class="feat-title">{{ trans("landing_trans.{$feature['key']}_title") }}</h3>
+                        <p class="feat-desc">{{ trans("landing_trans.{$feature['key']}_desc") }}</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-chalkboard-user"></i></div>
-                    <h3 class="feat-title" data-i18n="feat2_title">إدارة المعلمين</h3>
-                    <p class="feat-desc" data-i18n="feat2_desc">تخصصات، تواريخ التحاق، وربط كل معلم بالأقسام التي يُدرّسها مع صلاحيات مخصصة.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-people-roof"></i></div>
-                    <h3 class="feat-title" data-i18n="feat3_title">أولياء الأمور</h3>
-                    <p class="feat-desc" data-i18n="feat3_desc">بيانات كاملة للأب والأم، وحساب مستقل لكل ولي أمر لمتابعة أبنائه في أي وقت.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-layer-group"></i></div>
-                    <h3 class="feat-title" data-i18n="feat4_title">المراحل والفصول والأقسام</h3>
-                    <p class="feat-desc" data-i18n="feat4_desc">هيكل أكاديمي مرن: كل مدرسة تنشئ مراحلها وفصولها وأقسامها الخاصة بها بالكامل.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-calendar-check"></i></div>
-                    <h3 class="feat-title" data-i18n="feat5_title">الحضور والغياب</h3>
-                    <p class="feat-desc" data-i18n="feat5_desc">تسجيل يومي سريع لكل قسم، مع سجل تاريخي قابل للمراجعة في أي لحظة.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-file-pen"></i></div>
-                    <h3 class="feat-title" data-i18n="feat6_title">الاختبارات والأسئلة</h3>
-                    <p class="feat-desc" data-i18n="feat6_desc">إنشاء اختبارات إلكترونية مرتبطة بالمادة والمرحلة، مع بنك أسئلة وتصحيح تلقائي للدرجات.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3 class="feat-title" data-i18n="feat7_title">كشوف الدرجات والنتائج</h3>
-                    <p class="feat-desc" data-i18n="feat7_desc">رصد درجة كل طالب في كل اختبار تلقائياً، مع تقارير نتائج جاهزة للمراجعة والطباعة.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-sack-dollar"></i></div>
-                    <h3 class="feat-title" data-i18n="feat8_title">الرسوم والفواتير والمدفوعات</h3>
-                    <p class="feat-desc" data-i18n="feat8_desc">دورة مالية كاملة: فواتير رسوم، إيصالات استلام، متابعة المدفوعات، وحسابات الصندوق.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-arrow-trend-up"></i></div>
-                    <h3 class="feat-title" data-i18n="feat9_title">الترقية والتخرج</h3>
-                    <p class="feat-desc" data-i18n="feat9_desc">نقل الطلاب بين الصفوف الدراسية في نهاية العام بضغطة واحدة، وأرشفة دفعات التخرج.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-video"></i></div>
-                    <h3 class="feat-title" data-i18n="feat10_title">الحصص الأونلاين</h3>
-                    <p class="feat-desc" data-i18n="feat10_desc">جدولة حصص ومؤتمرات مباشرة عبر تكامل Zoom API، بروابط دخول فورية للمعلم والطلاب.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-book-open"></i></div>
-                    <h3 class="feat-title" data-i18n="feat11_title">المكتبة الرقمية</h3>
-                    <p class="feat-desc" data-i18n="feat11_desc">رفع وتحميل الملفات والمواد التعليمية لكل مرحلة، متاحة للطلاب والمعلمين في أي وقت.</p>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="feat-card">
-                    <div class="feat-icon"><i class="fas fa-language"></i></div>
-                    <h3 class="feat-title" data-i18n="feat12_title">دعم العربية والإنجليزية</h3>
-                    <p class="feat-desc" data-i18n="feat12_desc">واجهة كاملة باتجاه RTL/LTR تلقائياً حسب اللغة، لخدمة الفرق والطلاب بلغتهم المفضّلة.</p>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -794,9 +733,9 @@
 <section id="dashboard-preview" class="dash-section">
     <div class="container">
         <div class="text-center mb-5">
-            <div class="section-tag" data-i18n="tag_dashboard">لوحة التحكم</div>
-            <h2 class="section-title" data-i18n="dash_title">رؤية كاملة لمدرستك من شاشة واحدة</h2>
-            <p class="section-sub" data-i18n="dash_sub">إحصاءات لحظية، نسب الحضور، وآخر الأنشطة — كل ما يحتاجه المدير ليتخذ القرار الصحيح بسرعة</p>
+            <div class="section-tag">{{ trans('landing_trans.tag_dashboard') }}</div>
+            <h2 class="section-title">{{ trans('landing_trans.dash_title') }}</h2>
+            <p class="section-sub">{{ trans('landing_trans.dash_sub') }}</p>
         </div>
 
         <div class="dash-window">
@@ -808,14 +747,14 @@
             <div class="dash-window-body">
                 {{-- Mini sidebar --}}
                 <div class="dash-sidebar-mini">
-                    <div class="dsm-brand"><i class="fas fa-graduation-cap"></i> <span data-i18n="dsm_brand">مدرستي</span></div>
-                    <div class="dsm-item active"><i class="fas fa-gauge-high"></i> <span data-i18n="dsm_home">الرئيسية</span></div>
-                    <div class="dsm-item"><i class="fas fa-user-graduate"></i> <span data-i18n="dsm_students">الطلاب</span></div>
-                    <div class="dsm-item"><i class="fas fa-chalkboard-user"></i> <span data-i18n="dsm_teachers">المعلمون</span></div>
-                    <div class="dsm-item"><i class="fas fa-calendar-check"></i> <span data-i18n="dsm_attendance">الحضور</span></div>
-                    <div class="dsm-item"><i class="fas fa-file-pen"></i> <span data-i18n="dsm_exams">الاختبارات</span></div>
-                    <div class="dsm-item"><i class="fas fa-sack-dollar"></i> <span data-i18n="dsm_fees">الرسوم</span></div>
-                    <div class="dsm-item"><i class="fas fa-gear"></i> <span data-i18n="dsm_settings">الإعدادات</span></div>
+                    <div class="dsm-brand"><i class="fas fa-graduation-cap"></i> <span>{{ trans('landing_trans.dsm_brand') }}</span></div>
+                    <div class="dsm-item active"><i class="fas fa-gauge-high"></i> <span>{{ trans('landing_trans.dsm_home') }}</span></div>
+                    <div class="dsm-item"><i class="fas fa-user-graduate"></i> <span>{{ trans('landing_trans.dsm_students') }}</span></div>
+                    <div class="dsm-item"><i class="fas fa-chalkboard-user"></i> <span>{{ trans('landing_trans.dsm_teachers') }}</span></div>
+                    <div class="dsm-item"><i class="fas fa-calendar-check"></i> <span>{{ trans('landing_trans.dsm_attendance') }}</span></div>
+                    <div class="dsm-item"><i class="fas fa-file-pen"></i> <span>{{ trans('landing_trans.dsm_exams') }}</span></div>
+                    <div class="dsm-item"><i class="fas fa-sack-dollar"></i> <span>{{ trans('landing_trans.dsm_fees') }}</span></div>
+                    <div class="dsm-item"><i class="fas fa-gear"></i> <span>{{ trans('landing_trans.dsm_settings') }}</span></div>
                 </div>
 
                 {{-- Main mocked content --}}
@@ -827,7 +766,7 @@
                                 <span class="dstat-trend">+4.2%</span>
                             </div>
                             <div class="dstat-num">312</div>
-                            <div class="dstat-label" data-i18n="dstat_students">إجمالي الطلاب</div>
+                            <div class="dstat-label">{{ trans('landing_trans.dstat_students') }}</div>
                         </div>
                         <div class="dstat-card">
                             <div class="dstat-top">
@@ -835,7 +774,7 @@
                                 <span class="dstat-trend">+1.1%</span>
                             </div>
                             <div class="dstat-num">28</div>
-                            <div class="dstat-label" data-i18n="dstat_teachers">إجمالي المعلمين</div>
+                            <div class="dstat-label">{{ trans('landing_trans.dstat_teachers') }}</div>
                         </div>
                         <div class="dstat-card">
                             <div class="dstat-top">
@@ -843,7 +782,7 @@
                                 <span class="dstat-trend">+0.6%</span>
                             </div>
                             <div class="dstat-num">96%</div>
-                            <div class="dstat-label" data-i18n="dstat_attendance">نسبة الحضور اليوم</div>
+                            <div class="dstat-label">{{ trans('landing_trans.dstat_attendance') }}</div>
                         </div>
                         <div class="dstat-card">
                             <div class="dstat-top">
@@ -851,50 +790,50 @@
                                 <span class="dstat-trend">+8.4%</span>
                             </div>
                             <div class="dstat-num">42,500</div>
-                            <div class="dstat-label" data-i18n="dstat_fees">رسوم محصّلة هذا الشهر</div>
+                            <div class="dstat-label">{{ trans('landing_trans.dstat_fees') }}</div>
                         </div>
                     </div>
 
                     <div class="dash-panels-row">
                         <div class="dpanel-card">
-                            <div class="dpanel-title" data-i18n="dpanel_weekly_attendance">نسبة الحضور الأسبوعية</div>
+                            <div class="dpanel-title">{{ trans('landing_trans.dpanel_weekly_attendance') }}</div>
                             <div class="bar-chart">
-                                <div class="bar-col"><div class="bar-fill" style="height:70%"></div><span class="bar-day" data-i18n="day_sun">أحد</span></div>
-                                <div class="bar-col"><div class="bar-fill" style="height:88%"></div><span class="bar-day" data-i18n="day_mon">إثنين</span></div>
-                                <div class="bar-col"><div class="bar-fill" style="height:95%"></div><span class="bar-day" data-i18n="day_tue">ثلاثاء</span></div>
-                                <div class="bar-col"><div class="bar-fill" style="height:80%"></div><span class="bar-day" data-i18n="day_wed">أربعاء</span></div>
-                                <div class="bar-col"><div class="bar-fill" style="height:92%"></div><span class="bar-day" data-i18n="day_thu">خميس</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height:70%"></div><span class="bar-day">{{ trans('landing_trans.day_sun') }}</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height:88%"></div><span class="bar-day">{{ trans('landing_trans.day_mon') }}</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height:95%"></div><span class="bar-day">{{ trans('landing_trans.day_tue') }}</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height:80%"></div><span class="bar-day">{{ trans('landing_trans.day_wed') }}</span></div>
+                                <div class="bar-col"><div class="bar-fill" style="height:92%"></div><span class="bar-day">{{ trans('landing_trans.day_thu') }}</span></div>
                             </div>
                         </div>
                         <div class="dpanel-card">
-                            <div class="dpanel-title" data-i18n="dpanel_recent_activity">آخر الأنشطة</div>
+                            <div class="dpanel-title">{{ trans('landing_trans.dpanel_recent_activity') }}</div>
 
                             <div class="activity-item">
                                 <div class="activity-dot di-blue"><i class="fas fa-user-plus"></i></div>
                                 <div>
-                                    <div class="activity-text" data-i18n="activity1_text">تسجيل طالب جديد في الصف الأول</div>
-                                    <div class="activity-time" data-i18n="activity1_time">منذ 12 دقيقة</div>
+                                    <div class="activity-text">{{ trans('landing_trans.activity1_text') }}</div>
+                                    <div class="activity-time">{{ trans('landing_trans.activity1_time') }}</div>
                                 </div>
                             </div>
                             <div class="activity-item">
                                 <div class="activity-dot di-amber"><i class="fas fa-file-invoice-dollar"></i></div>
                                 <div>
-                                    <div class="activity-text" data-i18n="activity2_text">تم سداد فاتورة رسوم رقم #1042</div>
-                                    <div class="activity-time" data-i18n="activity2_time">منذ 40 دقيقة</div>
+                                    <div class="activity-text">{{ trans('landing_trans.activity2_text') }}</div>
+                                    <div class="activity-time">{{ trans('landing_trans.activity2_time') }}</div>
                                 </div>
                             </div>
                             <div class="activity-item">
                                 <div class="activity-dot di-purple"><i class="fas fa-file-pen"></i></div>
                                 <div>
-                                    <div class="activity-text" data-i18n="activity3_text">نشر درجات اختبار العلوم — الصف التاسع</div>
-                                    <div class="activity-time" data-i18n="activity3_time">منذ ساعة</div>
+                                    <div class="activity-text">{{ trans('landing_trans.activity3_text') }}</div>
+                                    <div class="activity-time">{{ trans('landing_trans.activity3_time') }}</div>
                                 </div>
                             </div>
                             <div class="activity-item">
                                 <div class="activity-dot di-green"><i class="fas fa-video"></i></div>
                                 <div>
-                                    <div class="activity-text" data-i18n="activity4_text">حصة أونلاين جديدة على Zoom للقسم (أ)</div>
-                                    <div class="activity-time" data-i18n="activity4_time">منذ 3 ساعات</div>
+                                    <div class="activity-text">{{ trans('landing_trans.activity4_text') }}</div>
+                                    <div class="activity-time">{{ trans('landing_trans.activity4_time') }}</div>
                                 </div>
                             </div>
                         </div>
@@ -911,44 +850,27 @@
 <section id="roles" class="roles-section">
     <div class="container">
         <div class="text-center mb-5">
-            <div class="section-tag" data-i18n="tag_roles">الأدوار</div>
-            <h2 class="section-title" data-i18n="roles_title">مصمّم لكل أفراد المدرسة</h2>
-            <p class="section-sub" data-i18n="roles_sub">واجهة مخصصة وصلاحيات دقيقة لكل دور داخل المنظومة التعليمية</p>
+            <div class="section-tag">{{ trans('landing_trans.tag_roles') }}</div>
+            <h2 class="section-title">{{ trans('landing_trans.roles_title') }}</h2>
+            <p class="section-sub">{{ trans('landing_trans.roles_sub') }}</p>
         </div>
 
         <div class="row g-4">
-            <div class="col-lg-3 col-md-6">
-                <div class="role-card role-card-admin">
-                    <div class="role-avatar ra-admin"><i class="fas fa-crown"></i></div>
-                    <h3 class="role-name" data-i18n="role_admin_name">المدير</h3>
-                    <p class="role-desc" data-i18n="role_admin_desc">يتحكم بكل جوانب مدرسته ويملك صلاحيات كاملة على جميع البيانات والتقارير والإعدادات.</p>
-                    <span class="role-badge rb-admin" data-i18n="role_admin_badge">صلاحيات كاملة</span>
+            @foreach ([
+                ['css' => 'admin', 'icon' => 'fa-crown', 'key' => 'role_admin'],
+                ['css' => 'teacher', 'icon' => 'fa-chalkboard-user', 'key' => 'role_teacher'],
+                ['css' => 'student', 'icon' => 'fa-user-graduate', 'key' => 'role_student'],
+                ['css' => 'parent', 'icon' => 'fa-people-roof', 'key' => 'role_parent'],
+            ] as $role)
+                <div class="col-lg-3 col-md-6">
+                    <div class="role-card role-card-{{ $role['css'] }}">
+                        <div class="role-avatar ra-{{ $role['css'] }}"><i class="fas {{ $role['icon'] }}"></i></div>
+                        <h3 class="role-name">{{ trans("landing_trans.{$role['key']}_name") }}</h3>
+                        <p class="role-desc">{{ trans("landing_trans.{$role['key']}_desc") }}</p>
+                        <span class="role-badge rb-{{ $role['css'] }}">{{ trans("landing_trans.{$role['key']}_badge") }}</span>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="role-card role-card-teacher">
-                    <div class="role-avatar ra-teacher"><i class="fas fa-chalkboard-user"></i></div>
-                    <h3 class="role-name" data-i18n="role_teacher_name">المعلم</h3>
-                    <p class="role-desc" data-i18n="role_teacher_desc">يدير صفوفه وطلابه، يُسجّل الحضور، يُنشئ الاختبارات، ويتابع أداء كل طالب.</p>
-                    <span class="role-badge rb-teacher" data-i18n="role_teacher_badge">إدارة الصفوف</span>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="role-card role-card-student">
-                    <div class="role-avatar ra-student"><i class="fas fa-user-graduate"></i></div>
-                    <h3 class="role-name" data-i18n="role_student_name">الطالب</h3>
-                    <p class="role-desc" data-i18n="role_student_desc">يتابع جدوله الدراسي، يطّلع على درجاته، يحضر الحصص الأونلاين، ويراجع المكتبة.</p>
-                    <span class="role-badge rb-student" data-i18n="role_student_badge">متابعة الأداء</span>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="role-card role-card-parent">
-                    <div class="role-avatar ra-parent"><i class="fas fa-people-roof"></i></div>
-                    <h3 class="role-name" data-i18n="role_parent_name">ولي الأمر</h3>
-                    <p class="role-desc" data-i18n="role_parent_desc">يتابع أداء أبنائه، يستلم إشعارات الغياب، يراجع الدرجات، ويطّلع على الرسوم.</p>
-                    <span class="role-badge rb-parent" data-i18n="role_parent_badge">متابعة الأبناء</span>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -960,53 +882,50 @@
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <div class="section-tag" data-i18n="tag_saas">المنصة</div>
-                <h2 class="section-title" data-i18n="saas_title">منصة واحدة... لا حدود لعدد المدارس</h2>
-                <p class="section-sub mb-4" style="margin:0 0 28px;" data-i18n="saas_sub">
-                    بُنيت المنصة من الأساس لتخدم عدداً غير محدود من المدارس على نفس البنية التقنية،
-                    مع فصل كامل وآمن لبيانات كل مدرسة عن غيرها.
-                </p>
+                <div class="section-tag">{{ trans('landing_trans.tag_saas') }}</div>
+                <h2 class="section-title">{{ trans('landing_trans.saas_title') }}</h2>
+                <p class="section-sub mb-4" style="margin:0 0 28px;">{{ trans('landing_trans.saas_sub') }}</p>
 
                 <div class="saas-check">
                     <div class="saas-check-icon"><i class="fas fa-check"></i></div>
-                    <div class="saas-check-text" data-i18n="saas_check1">عزل كامل لبيانات كل مدرسة (طلاب، معلمون، حضور، رسوم) عن باقي المدارس على المنصة.</div>
+                    <div class="saas-check-text">{{ trans('landing_trans.saas_check1') }}</div>
                 </div>
                 <div class="saas-check">
                     <div class="saas-check-icon"><i class="fas fa-check"></i></div>
-                    <div class="saas-check-text" data-i18n="saas_check2">لوحة تحكم مستقلة لكل مدير مدرسة، مع حساب Admin خاص بمدرسته فقط.</div>
+                    <div class="saas-check-text">{{ trans('landing_trans.saas_check2') }}</div>
                 </div>
                 <div class="saas-check">
                     <div class="saas-check-icon"><i class="fas fa-check"></i></div>
-                    <div class="saas-check-text" data-i18n="saas_check3">لوحة "مدير المنصة" العامة لمراجعة طلبات تسجيل المدارس وتفعيلها أو تعليقها.</div>
+                    <div class="saas-check-text">{{ trans('landing_trans.saas_check3') }}</div>
                 </div>
                 <div class="saas-check">
                     <div class="saas-check-icon"><i class="fas fa-check"></i></div>
-                    <div class="saas-check-text" data-i18n="saas_check4">قابلية توسّع حقيقية لخدمة آلاف المدارس دون الحاجة لأي تعديل في البنية الأساسية.</div>
+                    <div class="saas-check-text">{{ trans('landing_trans.saas_check4') }}</div>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="saas-diagram">
-                    <span class="saas-platform-box"><i class="fas fa-building-columns"></i> <span data-i18n="saas_platform_box">منصة إدارة المدارس</span></span>
+                    <span class="saas-platform-box"><i class="fas fa-building-columns"></i> <span>{{ trans('landing_trans.saas_platform_box') }}</span></span>
                     <div class="saas-connector"></div>
                     <div class="saas-tenants-row">
                         <div class="saas-tenant-box">
                             <div class="saas-tenant-icon"><i class="fas fa-school"></i></div>
-                            <div class="saas-tenant-name" data-i18n="saas_tenant_a">مدرسة الأمل</div>
+                            <div class="saas-tenant-name">{{ trans('landing_trans.saas_tenant_a') }}</div>
                             <div class="saas-tenant-sub">School A</div>
                         </div>
                         <div class="saas-tenant-box">
                             <div class="saas-tenant-icon"><i class="fas fa-school"></i></div>
-                            <div class="saas-tenant-name" data-i18n="saas_tenant_b">أكاديمية النجاح</div>
+                            <div class="saas-tenant-name">{{ trans('landing_trans.saas_tenant_b') }}</div>
                             <div class="saas-tenant-sub">School B</div>
                         </div>
                         <div class="saas-tenant-box">
                             <div class="saas-tenant-icon"><i class="fas fa-plus"></i></div>
-                            <div class="saas-tenant-name" data-i18n="saas_tenant_c">مدرستك القادمة</div>
+                            <div class="saas-tenant-name">{{ trans('landing_trans.saas_tenant_c') }}</div>
                             <div class="saas-tenant-sub">School C...</div>
                         </div>
                     </div>
-                    <div class="saas-lock-badge"><i class="fas fa-shield-halved"></i> <span data-i18n="saas_lock_badge">عزل بيانات 100% بين المدارس</span></div>
+                    <div class="saas-lock-badge"><i class="fas fa-shield-halved"></i> <span>{{ trans('landing_trans.saas_lock_badge') }}</span></div>
                 </div>
             </div>
         </div>
@@ -1018,9 +937,9 @@
 ══════════════════════════════════════════ --}}
 <section class="tech-section">
     <div class="container text-center">
-        <div class="section-tag" data-i18n="tag_tech">التقنية</div>
-        <h2 class="section-title" data-i18n="tech_title">مبني بأحدث التقنيات</h2>
-        <p class="section-sub mb-5" data-i18n="tech_sub">معمارية حديثة تضمن الأداء العالي والأمان وقابلية التوسع لخدمة آلاف المدارس</p>
+        <div class="section-tag">{{ trans('landing_trans.tag_tech') }}</div>
+        <h2 class="section-title">{{ trans('landing_trans.tech_title') }}</h2>
+        <p class="section-sub mb-5">{{ trans('landing_trans.tech_sub') }}</p>
 
         <div class="d-flex flex-wrap justify-content-center gap-3">
             <span class="tech-badge">Laravel 11</span>
@@ -1041,11 +960,9 @@
     <div class="container" style="position:relative; z-index:2;">
         <div class="row justify-content-center">
             <div class="col-lg-7 text-center mb-5">
-                <div class="section-tag" data-i18n="tag_register">التسجيل</div>
-                <h2 class="section-title" data-i18n="register_title">سجّل مدرستك الآن</h2>
-                <p class="section-sub" data-i18n="register_sub">
-                    سيتواصل معكم فريقنا خلال <strong style="color:#93c5fd;">24 ساعة</strong> لتفعيل حسابكم وبدء التجربة
-                </p>
+                <div class="section-tag">{{ trans('landing_trans.tag_register') }}</div>
+                <h2 class="section-title">{{ trans('landing_trans.register_title') }}</h2>
+                <p class="section-sub">{!! trans('landing_trans.register_sub') !!}</p>
             </div>
         </div>
 
@@ -1060,9 +977,7 @@
                     </div>
                 @else
                     <div class="reg-form-card text-center" style="padding:40px 24px;">
-                        <p class="mb-0" style="color:#e2e8f0; font-weight:600;" data-i18n="register_closed">
-                            التسجيل العام مغلق حالياً، يرجى التواصل معنا مباشرةً لتفعيل حساب مدرستك.
-                        </p>
+                        <p class="mb-0" style="color:#e2e8f0; font-weight:600;">{{ trans('landing_trans.register_closed') }}</p>
                     </div>
                 @endif
             </div>
@@ -1080,11 +995,11 @@
                 <div class="d-flex align-items-center gap-3 mb-2">
                     <div class="footer-brand-icon"><i class="fas fa-graduation-cap"></i></div>
                     <div>
-                        <div class="footer-brand-name" data-i18n="footer_brand_name">نظام إدارة المدارس</div>
+                        <div class="footer-brand-name">{{ trans('landing_trans.footer_brand_name') }}</div>
                         <div class="footer-brand-sub">School Management SaaS</div>
                     </div>
                 </div>
-                <p class="footer-copy mt-2" data-i18n="footer_brand_desc">منصة SaaS متكاملة لإدارة مدارس متعددة بتقنية حديثة</p>
+                <p class="footer-copy mt-2">{{ trans('landing_trans.footer_brand_desc') }}</p>
             </div>
             <div class="col-md-4 text-center">
                 <div class="d-flex justify-content-center flex-wrap gap-3">
@@ -1094,21 +1009,19 @@
                     <a href="#" class="footer-link">
                         <i class="fab fa-linkedin me-1"></i> LinkedIn
                     </a>
-                    <a href="#features" class="footer-link" data-i18n="nav_features">المميزات</a>
-                    <a href="#dashboard-preview" class="footer-link" data-i18n="nav_dashboard">لوحة التحكم</a>
-                    <a href="#saas" class="footer-link" data-i18n="footer_platform_link">المنصة</a>
+                    <a href="#features" class="footer-link">{{ trans('landing_trans.nav_features') }}</a>
+                    <a href="#dashboard-preview" class="footer-link">{{ trans('landing_trans.nav_dashboard') }}</a>
+                    <a href="#saas" class="footer-link">{{ trans('landing_trans.footer_platform_link') }}</a>
                 </div>
             </div>
             <div class="col-md-3 text-md-start text-center mt-3 mt-md-0">
-                <p class="footer-copy">© {{ date('Y') }} <span data-i18n="footer_brand_name">نظام إدارة المدارس</span></p>
-                <p class="footer-copy"><span data-i18n="footer_dev_by">تطوير</span> <strong style="color:rgba(255,255,255,.45);">عاطف حجازي</strong></p>
+                <p class="footer-copy">© {{ date('Y') }} <span>{{ trans('landing_trans.footer_brand_name') }}</span></p>
+                <p class="footer-copy"><span>{{ trans('landing_trans.footer_dev_by') }}</span> <strong style="color:rgba(255,255,255,.45);">{{ trans('main_trans.Name_Programer') }}</strong></p>
             </div>
         </div>
 
         <hr class="footer-divider">
-        <p class="text-center footer-copy mb-0" data-i18n="footer_tagline">
-            مبني بـ ❤️ باستخدام Laravel + Livewire + Bootstrap 5
-        </p>
+        <p class="text-center footer-copy mb-0">{{ trans('landing_trans.footer_tagline') }}</p>
     </div>
 </footer>
 
@@ -1118,355 +1031,6 @@
 @livewireScripts
 
 <script>
-    const I18N = {
-        ar: {
-            meta_title: "نظام إدارة المدارس الذكي | منصة SaaS متكاملة للمدارس",
-            meta_description: "منصة SaaS متكاملة لإدارة المدارس: طلاب، معلمون، أولياء أمور، حضور، امتحانات، رسوم، حصص أونلاين، ومكتبة رقمية — كل مدرسة بمساحتها المعزولة الخاصة.",
-
-            brand_name: "إدارة المدارس",
-            nav_home: "الرئيسية",
-            nav_features: "المميزات",
-            nav_dashboard: "لوحة التحكم",
-            nav_roles: "الأدوار",
-            nav_saas: "منصة متعددة المدارس",
-            nav_register: "تسجيل مدرسة",
-            nav_login: "تسجيل الدخول",
-
-            hero_eyebrow: "منصة SaaS — كل مدرسة بمساحتها الخاصة والمعزولة بالكامل",
-            hero_title_line1: "نظام إدارة",
-            hero_title_line2: "المدارس الذكي",
-            hero_subtitle: "منصة متكاملة لإدارة الطلاب، المعلمين، أولياء الأمور، الحضور، الامتحانات، والرسوم في لوحة تحكم واحدة. سجّل مدرستك وابدأ العمل في دقائق — بياناتك معزولة وآمنة تماماً عن أي مدرسة أخرى على المنصة.",
-            hero_btn_register: "سجّل مدرستك الآن",
-            stat_modules: "وحدة إدارية متكاملة",
-            stat_roles: "أدوار مستخدمين",
-            stat_isolation: "عزل بيانات بين المدارس",
-            stat_languages: "دعم كامل للغتين",
-            hero_panel_title: "نظرة لحظية",
-            hero_panel_live: "مباشر",
-            hc_active_students: "طالب نشط لكل مدرسة",
-            hc_schools_count: "عدد المدارس على بنية واحدة",
-            hc_live_reports: "تقارير لحظية",
-            hc_live_reports_sub: "حضور · درجات · رسوم",
-
-            tag_features: "المميزات",
-            features_title: "كل ما تحتاجه مدرستك في مكان واحد",
-            features_sub: "من أول يوم تسجيل لمدرستك على المنصة، تحصل على كل هذه الوحدات جاهزة للعمل فوراً",
-            feat1_title: "إدارة الطلاب",
-            feat1_desc: "ملفات شاملة لكل طالب: بيانات شخصية، صور ومرفقات، الصف والفصل والقسم، وربط مباشر بولي الأمر.",
-            feat2_title: "إدارة المعلمين",
-            feat2_desc: "تخصصات، تواريخ التحاق، وربط كل معلم بالأقسام التي يُدرّسها مع صلاحيات مخصصة.",
-            feat3_title: "أولياء الأمور",
-            feat3_desc: "بيانات كاملة للأب والأم، وحساب مستقل لكل ولي أمر لمتابعة أبنائه في أي وقت.",
-            feat4_title: "المراحل والفصول والأقسام",
-            feat4_desc: "هيكل أكاديمي مرن: كل مدرسة تنشئ مراحلها وفصولها وأقسامها الخاصة بها بالكامل.",
-            feat5_title: "الحضور والغياب",
-            feat5_desc: "تسجيل يومي سريع لكل قسم، مع سجل تاريخي قابل للمراجعة في أي لحظة.",
-            feat6_title: "الاختبارات والأسئلة",
-            feat6_desc: "إنشاء اختبارات إلكترونية مرتبطة بالمادة والمرحلة، مع بنك أسئلة وتصحيح تلقائي للدرجات.",
-            feat7_title: "كشوف الدرجات والنتائج",
-            feat7_desc: "رصد درجة كل طالب في كل اختبار تلقائياً، مع تقارير نتائج جاهزة للمراجعة والطباعة.",
-            feat8_title: "الرسوم والفواتير والمدفوعات",
-            feat8_desc: "دورة مالية كاملة: فواتير رسوم، إيصالات استلام، متابعة المدفوعات، وحسابات الصندوق.",
-            feat9_title: "الترقية والتخرج",
-            feat9_desc: "نقل الطلاب بين الصفوف الدراسية في نهاية العام بضغطة واحدة، وأرشفة دفعات التخرج.",
-            feat10_title: "الحصص الأونلاين",
-            feat10_desc: "جدولة حصص ومؤتمرات مباشرة عبر تكامل Zoom API، بروابط دخول فورية للمعلم والطلاب.",
-            feat11_title: "المكتبة الرقمية",
-            feat11_desc: "رفع وتحميل الملفات والمواد التعليمية لكل مرحلة، متاحة للطلاب والمعلمين في أي وقت.",
-            feat12_title: "دعم العربية والإنجليزية",
-            feat12_desc: "واجهة كاملة باتجاه RTL/LTR تلقائياً حسب اللغة، لخدمة الفرق والطلاب بلغتهم المفضّلة.",
-
-            tag_dashboard: "لوحة التحكم",
-            dash_title: "رؤية كاملة لمدرستك من شاشة واحدة",
-            dash_sub: "إحصاءات لحظية، نسب الحضور، وآخر الأنشطة — كل ما يحتاجه المدير ليتخذ القرار الصحيح بسرعة",
-            dsm_brand: "مدرستي",
-            dsm_home: "الرئيسية",
-            dsm_students: "الطلاب",
-            dsm_teachers: "المعلمون",
-            dsm_attendance: "الحضور",
-            dsm_exams: "الاختبارات",
-            dsm_fees: "الرسوم",
-            dsm_settings: "الإعدادات",
-            dstat_students: "إجمالي الطلاب",
-            dstat_teachers: "إجمالي المعلمين",
-            dstat_attendance: "نسبة الحضور اليوم",
-            dstat_fees: "رسوم محصّلة هذا الشهر",
-            dpanel_weekly_attendance: "نسبة الحضور الأسبوعية",
-            day_sun: "أحد", day_mon: "إثنين", day_tue: "ثلاثاء", day_wed: "أربعاء", day_thu: "خميس",
-            dpanel_recent_activity: "آخر الأنشطة",
-            activity1_text: "تسجيل طالب جديد في الصف الأول",
-            activity1_time: "منذ 12 دقيقة",
-            activity2_text: "تم سداد فاتورة رسوم رقم #1042",
-            activity2_time: "منذ 40 دقيقة",
-            activity3_text: "نشر درجات اختبار العلوم — الصف التاسع",
-            activity3_time: "منذ ساعة",
-            activity4_text: "حصة أونلاين جديدة على Zoom للقسم (أ)",
-            activity4_time: "منذ 3 ساعات",
-
-            tag_roles: "الأدوار",
-            roles_title: "مصمّم لكل أفراد المدرسة",
-            roles_sub: "واجهة مخصصة وصلاحيات دقيقة لكل دور داخل المنظومة التعليمية",
-            role_admin_name: "المدير",
-            role_admin_desc: "يتحكم بكل جوانب مدرسته ويملك صلاحيات كاملة على جميع البيانات والتقارير والإعدادات.",
-            role_admin_badge: "صلاحيات كاملة",
-            role_teacher_name: "المعلم",
-            role_teacher_desc: "يدير صفوفه وطلابه، يُسجّل الحضور، يُنشئ الاختبارات، ويتابع أداء كل طالب.",
-            role_teacher_badge: "إدارة الصفوف",
-            role_student_name: "الطالب",
-            role_student_desc: "يتابع جدوله الدراسي، يطّلع على درجاته، يحضر الحصص الأونلاين، ويراجع المكتبة.",
-            role_student_badge: "متابعة الأداء",
-            role_parent_name: "ولي الأمر",
-            role_parent_desc: "يتابع أداء أبنائه، يستلم إشعارات الغياب، يراجع الدرجات، ويطّلع على الرسوم.",
-            role_parent_badge: "متابعة الأبناء",
-
-            tag_saas: "المنصة",
-            saas_title: "منصة واحدة... لا حدود لعدد المدارس",
-            saas_sub: "بُنيت المنصة من الأساس لتخدم عدداً غير محدود من المدارس على نفس البنية التقنية، مع فصل كامل وآمن لبيانات كل مدرسة عن غيرها.",
-            saas_check1: "عزل كامل لبيانات كل مدرسة (طلاب، معلمون، حضور، رسوم) عن باقي المدارس على المنصة.",
-            saas_check2: "لوحة تحكم مستقلة لكل مدير مدرسة، مع حساب Admin خاص بمدرسته فقط.",
-            saas_check3: "لوحة \"مدير المنصة\" العامة لمراجعة طلبات تسجيل المدارس وتفعيلها أو تعليقها.",
-            saas_check4: "قابلية توسّع حقيقية لخدمة آلاف المدارس دون الحاجة لأي تعديل في البنية الأساسية.",
-            saas_platform_box: "منصة إدارة المدارس",
-            saas_tenant_a: "مدرسة الأمل",
-            saas_tenant_b: "أكاديمية النجاح",
-            saas_tenant_c: "مدرستك القادمة",
-            saas_lock_badge: "عزل بيانات 100% بين المدارس",
-
-            tag_tech: "التقنية",
-            tech_title: "مبني بأحدث التقنيات",
-            tech_sub: "معمارية حديثة تضمن الأداء العالي والأمان وقابلية التوسع لخدمة آلاف المدارس",
-
-            tag_register: "التسجيل",
-            register_title: "سجّل مدرستك الآن",
-            register_sub: "سيتواصل معكم فريقنا خلال <strong style=\"color:#93c5fd;\">24 ساعة</strong> لتفعيل حسابكم وبدء التجربة",
-
-            footer_brand_name: "نظام إدارة المدارس",
-            footer_brand_desc: "منصة SaaS متكاملة لإدارة مدارس متعددة بتقنية حديثة",
-            footer_platform_link: "المنصة",
-            footer_dev_by: "تطوير",
-            footer_tagline: "مبني بـ ❤️ باستخدام Laravel + Livewire + Bootstrap 5",
-
-            reg_success_title: "شكراً! تم استلام طلبكم بنجاح",
-            reg_success_sub: "سيتواصل معكم فريقنا خلال <strong>24 ساعة</strong> لتفعيل حسابكم",
-            reg_success_email_label: "البريد الإلكتروني المسجّل",
-            reg_label_school_name: "اسم المدرسة",
-            reg_ph_school_name: "مثال: مدرسة الأمل الأهلية",
-            reg_label_contact_name: "اسم المسؤول",
-            reg_ph_contact_name: "الاسم الكامل للمسؤول",
-            reg_label_email: "البريد الإلكتروني",
-            reg_label_phone: "رقم الهاتف",
-            reg_label_city: "المدينة",
-            reg_ph_city: "مثال: الرياض",
-            reg_label_student_count: "عدد الطلاب المتوقع",
-            reg_opt_choose: "— اختر —",
-            reg_opt_less_100: "أقل من 100 طالب",
-            reg_opt_100_300: "من 100 إلى 300 طالب",
-            reg_opt_more_300: "أكثر من 300 طالب",
-            reg_label_message: "ملاحظات إضافية",
-            reg_ph_message: "أي معلومات إضافية تودّ مشاركتها مع فريقنا...",
-            reg_terms_text: "أوافق على <a href=\"#\" class=\"text-primary fw-semibold\">الشروط والأحكام</a> وسياسة الخصوصية",
-            reg_submit_btn: "إرسال طلب التسجيل",
-            reg_submitting: "جاري الإرسال...",
-            reg_secure_note: "بياناتك آمنة ومشفّرة — لن نشاركها مع أي طرف ثالث"
-        },
-        en: {
-            meta_title: "Smart School Management System | Multi-School SaaS Platform",
-            meta_description: "A complete SaaS platform for school management: students, teachers, parents, attendance, exams, fees, online classes, and a digital library — every school gets its own fully isolated space.",
-
-            brand_name: "School Management",
-            nav_home: "Home",
-            nav_features: "Features",
-            nav_dashboard: "Dashboard",
-            nav_roles: "Roles",
-            nav_saas: "Multi-School Platform",
-            nav_register: "Register School",
-            nav_login: "Sign In",
-
-            hero_eyebrow: "A SaaS platform — every school gets its own fully isolated space",
-            hero_title_line1: "Smart School",
-            hero_title_line2: "Management System",
-            hero_subtitle: "A complete platform to manage students, teachers, parents, attendance, exams, and fees from a single dashboard. Register your school and get started in minutes — your data stays fully isolated and secure from every other school on the platform.",
-            hero_btn_register: "Register Your School",
-            stat_modules: "integrated modules",
-            stat_roles: "user roles",
-            stat_isolation: "data isolation between schools",
-            stat_languages: "full bilingual support",
-            hero_panel_title: "Live Overview",
-            hero_panel_live: "Live",
-            hc_active_students: "active students per school",
-            hc_schools_count: "schools on one architecture",
-            hc_live_reports: "Live reports",
-            hc_live_reports_sub: "Attendance · grades · fees",
-
-            tag_features: "Features",
-            features_title: "Everything your school needs in one place",
-            features_sub: "From the day you register, your school gets every one of these modules ready to use immediately",
-            feat1_title: "Student Management",
-            feat1_desc: "Complete profiles for every student: personal data, photos and attachments, grade/class/section, and a direct link to the parent account.",
-            feat2_title: "Teacher Management",
-            feat2_desc: "Specializations, joining dates, and assignment of each teacher to the sections they teach, with custom permissions.",
-            feat3_title: "Parent Accounts",
-            feat3_desc: "Full father and mother records, with an independent account for each parent to follow their children at any time.",
-            feat4_title: "Grades, Classes & Sections",
-            feat4_desc: "A flexible academic structure: every school creates its own grades, classes, and sections entirely on its own.",
-            feat5_title: "Attendance Tracking",
-            feat5_desc: "Quick daily attendance for every section, with a full historical record you can review at any time.",
-            feat6_title: "Exams & Question Bank",
-            feat6_desc: "Create online exams linked to subject and grade level, with a question bank and automatic grade scoring.",
-            feat7_title: "Grade Reports & Results",
-            feat7_desc: "Automatically record every student's score on every exam, with results reports ready for review and printing.",
-            feat8_title: "Fees, Invoices & Payments",
-            feat8_desc: "A complete financial cycle: fee invoices, payment receipts, payment tracking, and treasury accounts.",
-            feat9_title: "Promotion & Graduation",
-            feat9_desc: "Move students up to the next grade at year-end with one click, and archive graduating classes.",
-            feat10_title: "Online Classes",
-            feat10_desc: "Schedule live classes and meetings via Zoom API integration, with instant join links for teachers and students.",
-            feat11_title: "Digital Library",
-            feat11_desc: "Upload and download files and learning materials for every grade level, available to students and teachers anytime.",
-            feat12_title: "Arabic & English Support",
-            feat12_desc: "A full RTL/LTR interface that switches automatically with language, serving every team and student in their preferred language.",
-
-            tag_dashboard: "Dashboard",
-            dash_title: "A complete view of your school on one screen",
-            dash_sub: "Live stats, attendance rates, and recent activity — everything an administrator needs to make the right call, fast",
-            dsm_brand: "My School",
-            dsm_home: "Home",
-            dsm_students: "Students",
-            dsm_teachers: "Teachers",
-            dsm_attendance: "Attendance",
-            dsm_exams: "Exams",
-            dsm_fees: "Fees",
-            dsm_settings: "Settings",
-            dstat_students: "Total Students",
-            dstat_teachers: "Total Teachers",
-            dstat_attendance: "Today's Attendance Rate",
-            dstat_fees: "Fees Collected This Month",
-            dpanel_weekly_attendance: "Weekly Attendance Rate",
-            day_sun: "Sun", day_mon: "Mon", day_tue: "Tue", day_wed: "Wed", day_thu: "Thu",
-            dpanel_recent_activity: "Recent Activity",
-            activity1_text: "New student registered in Grade 1",
-            activity1_time: "12 minutes ago",
-            activity2_text: "Fee invoice #1042 was paid",
-            activity2_time: "40 minutes ago",
-            activity3_text: "Science exam grades published — Grade 9",
-            activity3_time: "1 hour ago",
-            activity4_text: "New online class scheduled on Zoom for Section A",
-            activity4_time: "3 hours ago",
-
-            tag_roles: "Roles",
-            roles_title: "Built for everyone at your school",
-            roles_sub: "A tailored interface and precise permissions for every role across the educational system",
-            role_admin_name: "Admin",
-            role_admin_desc: "Controls every aspect of their school with full permissions over all data, reports, and settings.",
-            role_admin_badge: "Full permissions",
-            role_teacher_name: "Teacher",
-            role_teacher_desc: "Manages their classes and students, records attendance, creates exams, and tracks every student's performance.",
-            role_teacher_badge: "Class management",
-            role_student_name: "Student",
-            role_student_desc: "Follows their class schedule, checks their grades, attends online classes, and browses the library.",
-            role_student_badge: "Performance tracking",
-            role_parent_name: "Parent",
-            role_parent_desc: "Tracks their children's performance, receives absence notifications, reviews grades, and checks fees.",
-            role_parent_badge: "Tracking children",
-
-            tag_saas: "Platform",
-            saas_title: "One platform... no limit on the number of schools",
-            saas_sub: "Built from the ground up to serve an unlimited number of schools on the same technical architecture, with complete, secure separation of every school's data.",
-            saas_check1: "Complete isolation of every school's data (students, teachers, attendance, fees) from every other school on the platform.",
-            saas_check2: "An independent dashboard for every school admin, with an Admin account scoped to their school only.",
-            saas_check3: "A platform-owner dashboard to review, approve, or suspend school registration requests.",
-            saas_check4: "Real scalability to serve thousands of schools without any change to the underlying architecture.",
-            saas_platform_box: "School Management Platform",
-            saas_tenant_a: "Al-Amal School",
-            saas_tenant_b: "Al-Najah Academy",
-            saas_tenant_c: "Your School Next",
-            saas_lock_badge: "100% data isolation between schools",
-
-            tag_tech: "Technology",
-            tech_title: "Built with modern technology",
-            tech_sub: "A modern architecture that ensures high performance, security, and the ability to scale to thousands of schools",
-
-            tag_register: "Registration",
-            register_title: "Register Your School Now",
-            register_sub: "Our team will reach out within <strong style=\"color:#93c5fd;\">24 hours</strong> to activate your account and get you started",
-
-            footer_brand_name: "School Management System",
-            footer_brand_desc: "A complete SaaS platform for managing multiple schools with modern technology",
-            footer_platform_link: "Platform",
-            footer_dev_by: "Developed by",
-            footer_tagline: "Built with ❤️ using Laravel + Livewire + Bootstrap 5",
-
-            reg_success_title: "Thank you! Your request was received",
-            reg_success_sub: "Our team will reach out within <strong>24 hours</strong> to activate your account",
-            reg_success_email_label: "Registered email",
-            reg_label_school_name: "School Name",
-            reg_ph_school_name: "e.g. Al-Amal Private School",
-            reg_label_contact_name: "Contact Person",
-            reg_ph_contact_name: "Contact person's full name",
-            reg_label_email: "Email",
-            reg_label_phone: "Phone Number",
-            reg_label_city: "City",
-            reg_ph_city: "e.g. Riyadh",
-            reg_label_student_count: "Expected Number of Students",
-            reg_opt_choose: "— Choose —",
-            reg_opt_less_100: "Less than 100 students",
-            reg_opt_100_300: "100 to 300 students",
-            reg_opt_more_300: "More than 300 students",
-            reg_label_message: "Additional Notes",
-            reg_ph_message: "Any additional information you'd like to share with our team...",
-            reg_terms_text: "I agree to the <a href=\"#\" class=\"text-primary fw-semibold\">Terms & Conditions</a> and Privacy Policy",
-            reg_submit_btn: "Submit Registration Request",
-            reg_submitting: "Submitting...",
-            reg_secure_note: "Your data is safe and encrypted — we never share it with third parties"
-        }
-    };
-
-    function translatePage(lang) {
-        const dict = I18N[lang] || I18N.ar;
-
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (dict[key] !== undefined) el.innerHTML = dict[key];
-        });
-
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-            const key = el.getAttribute('data-i18n-placeholder');
-            if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
-        });
-
-        document.querySelectorAll('[data-i18n-content]').forEach(el => {
-            const key = el.getAttribute('data-i18n-content');
-            if (dict[key] !== undefined) el.setAttribute('content', dict[key]);
-        });
-    }
-
-    function applyLanguage(lang) {
-        document.documentElement.lang = lang;
-        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-
-        document.getElementById('bootstrapCss').href = lang === 'ar'
-            ? 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css'
-            : 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css';
-
-        translatePage(lang);
-
-        const toggleLabel = document.getElementById('langToggleLabel');
-        if (toggleLabel) toggleLabel.textContent = lang === 'ar' ? 'English' : 'العربية';
-
-        window.__currentLang = lang;
-        localStorage.setItem('siteLang', lang);
-    }
-
-    function toggleLanguage() {
-        applyLanguage(window.__currentLang === 'en' ? 'ar' : 'en');
-    }
-
-    applyLanguage(window.__initialLang || 'ar');
-
-    document.addEventListener('livewire:init', () => {
-        Livewire.hook('morph.updated', () => translatePage(window.__currentLang || 'ar'));
-    });
-
     const nav = document.getElementById('mainNav');
     window.addEventListener('scroll', () => {
         nav.classList.toggle('scrolled', window.scrollY > 60);

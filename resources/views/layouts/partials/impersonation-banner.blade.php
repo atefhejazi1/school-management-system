@@ -6,11 +6,11 @@
 @if (session()->has('original_super_admin_id'))
     <div class="impersonation-banner">
         <span class="impersonation-text">
-            أنت تتصفح الآن لوحة تحكم مدرسة "{{ auth()->user()->school->name ?? '' }}" بصفتك منشئ المنصة
+            {{ trans('super_dash.impersonation_banner_text', ['name' => auth()->user()->school->name ?? '']) }}
         </span>
         <form method="POST" action="{{ route('leave_impersonation') }}" class="impersonation-form">
             @csrf
-            <button type="submit" class="impersonation-leave-link">العودة إلى لوحة السوبر أدمن</button>
+            <button type="submit" class="impersonation-leave-link">{{ trans('super_dash.return_to_super_admin_dashboard') }}</button>
         </form>
     </div>
 

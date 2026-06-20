@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-  تعديل معالجة رسوم
+  {{ trans('Payment_trans.edit_fee_processing_title') }}
 @stop
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
 @section('PageTitle')
-    تعديل معالجة رسوم   : <label style="color: red">{{$ProcessingFee->student->name}}</label>
+    {{ trans('Payment_trans.edit_fee_processing_title') }}   : <label style="color: red">{{$ProcessingFee->student->name}}</label>
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -35,7 +35,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>المبلغ : <span class="text-danger">*</span></label>
+                                        <label>{{ trans('Payment_trans.amount_label') }} <span class="text-danger">*</span></label>
                                         <input  class="form-control" name="Debit" value="{{$ProcessingFee->amount}}" type="number" >
                                         <input  type="hidden" name="student_id" value="{{$ProcessingFee->student->id}}" class="form-control">
                                         <input  type="hidden" name="id"  value="{{$ProcessingFee->id}}" class="form-control">
@@ -46,7 +46,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>البيان : <span class="text-danger">*</span></label>
+                                        <label>{{ trans('Payment_trans.statement_label') }} <span class="text-danger">*</span></label>
                                         <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{$ProcessingFee->description}}</textarea>
                                     </div>
                                 </div>

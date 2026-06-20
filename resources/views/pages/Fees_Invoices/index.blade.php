@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    الفواتير الدراسية
+    {{ trans('Fees_trans.invoices_page_title') }}
 @stop
 @endsection
 @section('page-header')
     <!-- breadcrumb -->
 @section('PageTitle')
-   الفواتير الدراسية
+   {{ trans('Fees_trans.invoices_page_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -27,13 +27,13 @@
                                         <thead>
                                         <tr class="alert-success">
                                             <th>#</th>
-                                            <th>الاسم</th>
-                                            <th>نوع الرسوم</th>
-                                            <th>المبلغ</th>
-                                            <th>المرحلة الدراسية</th>
-                                            <th>الصف الدراسي</th>
-                                            <th>البيان</th>
-                                            <th>العمليات</th>
+                                            <th>{{ trans('Fees_trans.th_name') }}</th>
+                                            <th>{{ trans('Fees_trans.th_fee_type') }}</th>
+                                            <th>{{ trans('Fees_trans.th_amount') }}</th>
+                                            <th>{{ trans('Fees_trans.th_grade') }}</th>
+                                            <th>{{ trans('Fees_trans.th_classroom') }}</th>
+                                            <th>{{ trans('Fees_trans.th_statement') }}</th>
+                                            <th>{{ trans('Fees_trans.th_processes') }}</th>
                                         </tr>
                                         </thead>
                                         <tbody>

@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    قائمة الابناء
+    {{ trans('Parent_trans.children_list_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    قائمة الابناء
+    {{ trans('Parent_trans.children_list_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -50,14 +50,13 @@
                                                         <a class="btn btn-success btn-sm dropdown-toggle" href="#"
                                                             role="button" id="dropdownMenuLink" data-toggle="dropdown"
                                                             aria-haspopup="true" aria-expanded="false">
-                                                            العمليات
+                                                            {{ trans('Parent_trans.Processes') }}
                                                         </a>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                                             <a class="dropdown-item"
                                                                 href="{{ route('sons.results', $student->id) }}"><i
                                                                     style="color: #ffc107"
-                                                                    class="far fa-eye "></i>&nbsp;عرض نتائج
-                                                                الاختبارات</a>
+                                                                    class="far fa-eye "></i>&nbsp;{{ trans('Parent_trans.view_quiz_results') }}</a>
                                                         </div>
                                                     </div>
                                                 </td>

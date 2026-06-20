@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    تعديل كتاب {{ $book->title }}
+    {{ trans('Library_trans.edit_book_title') }} {{ $book->title }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    تعديل كتاب {{ $book->title }}
+    {{ trans('Library_trans.edit_book_title') }} {{ $book->title }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -36,7 +36,7 @@
                             <div class="form-row">
 
                                 <div class="col">
-                                    <label for="title">اسم الكتاب</label>
+                                    <label for="title">{{ trans('Library_trans.book_name_label') }}</label>
                                     <input type="text" name="title" value="{{ $book->title }}"
                                         class="form-control">
                                     <input type="hidden" name="id" value="{{ $book->id }}"
@@ -91,15 +91,14 @@
                                         type="application/pdf" height="150px" width="100px"><br><br>
 
                                     <div class="form-group">
-                                        <label for="academic_year">المرفقات : <span class="text-danger">*</span></label>
+                                        <label for="academic_year">{{ trans('Library_trans.attachments_label') }} : <span class="text-danger">*</span></label>
                                         <input type="file" accept="application/pdf" name="file_name">
                                     </div>
 
                                 </div>
                             </div>
 
-                            <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">حفظ
-                                البيانات</button>
+                            <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">{{ trans('Library_trans.submit_save') }}</button>
                         </form>
                     </div>
                 </div>

@@ -71,15 +71,15 @@
     <div class="flat-counters-row mb-4">
         <div class="flat-counter">
             <div class="flat-counter-value">{{ $stats['total_students'] }}</div>
-            <div class="flat-counter-label">إجمالي الطلاب على المنصة</div>
+            <div class="flat-counter-label">{{ trans('super_dash.total_students_platform') }}</div>
         </div>
         <div class="flat-counter">
             <div class="flat-counter-value">{{ $stats['total_teachers'] }}</div>
-            <div class="flat-counter-label">إجمالي المعلمين على المنصة</div>
+            <div class="flat-counter-label">{{ trans('super_dash.total_teachers_platform') }}</div>
         </div>
         <div class="flat-counter">
             <div class="flat-counter-value">{{ $stats['total_parents'] }}</div>
-            <div class="flat-counter-label">إجمالي أولياء الأمور على المنصة</div>
+            <div class="flat-counter-label">{{ trans('super_dash.total_parents_platform') }}</div>
         </div>
     </div>
 
@@ -108,7 +108,7 @@
         </div>
         <div class="p-4">
             <p class="text-muted mb-3" style="font-size:.88rem;">
-                راجع طلبات تسجيل المدارس الواردة من صفحة التسجيل العامة، واتخذ قرار الموافقة أو الرفض أو تعليق الوصول.
+                {{ trans('super_dash.school_requests_review_desc') }}
             </p>
             <a href="{{ route('super-admin.school-requests.index') }}" class="btn btn-emerald">
                 <i class="fas fa-arrow-up-right-from-square me-2"></i>{{ __('super_dash.school_requests') }}

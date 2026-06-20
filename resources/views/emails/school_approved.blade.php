@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تمت الموافقة على طلب تسجيل مدرستكم</title>
+    <title>{{ trans('Emails_trans.school_approved_title') }}</title>
     <style>
         body { margin: 0; padding: 0; background: #f1f5f9; font-family: Arial, sans-serif; direction: rtl; }
         .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border: 1px solid #e2e8f0; }
@@ -28,40 +28,39 @@
 <body>
 <div class="wrapper">
     <div class="header">
-        <p class="header-title">تمت الموافقة على طلب تسجيل مدرستكم</p>
+        <p class="header-title">{{ trans('Emails_trans.school_approved_title') }}</p>
     </div>
 
     <div class="body">
-        <p class="greeting">مرحباً،</p>
+        <p class="greeting">{{ trans('Emails_trans.school_approved_greeting') }}</p>
 
         <p class="text">
-            تمت الموافقة على طلب تسجيل مدرسة <strong>{{ $schoolName }}</strong> على المنصة، وتم تفعيل حساب مدير المدرسة بنجاح.
-            فيما يلي بيانات الدخول الخاصة بكم عبر بوابة تسجيل الدخول الموحدة:
+            {{ trans('Emails_trans.school_approved_body', ['schoolName' => $schoolName]) }}
         </p>
 
         <div class="credentials-box">
-            <div class="cred-title">بيانات الدخول</div>
+            <div class="cred-title">{{ trans('Emails_trans.login_credentials_title') }}</div>
             <div class="cred-row">
-                <span class="cred-label">البريد الإلكتروني</span>
+                <span class="cred-label">{{ trans('Emails_trans.email_label') }}</span>
                 <span class="cred-value" dir="ltr">{{ $email }}</span>
             </div>
             <div class="cred-row">
-                <span class="cred-label">كلمة المرور المؤقتة</span>
+                <span class="cred-label">{{ trans('Emails_trans.temporary_password_label') }}</span>
                 <span class="cred-value" dir="ltr">{{ $password }}</span>
             </div>
         </div>
 
         <div class="cta">
-            <a href="{{ $loginUrl }}" dir="ltr">تسجيل الدخول إلى المنصة</a>
+            <a href="{{ $loginUrl }}" dir="ltr">{{ trans('Emails_trans.login_to_platform_cta') }}</a>
         </div>
 
         <div class="notice">
-            لأسباب أمنية، يُرجى تغيير كلمة المرور المؤقتة فور تسجيل الدخول لأول مرة.
+            {{ trans('Emails_trans.change_password_notice') }}
         </div>
     </div>
 
     <div class="footer">
-        <p class="footer-text">© {{ date('Y') }} نظام إدارة المدارس</p>
+        <p class="footer-text">© {{ date('Y') }} {{ trans('Emails_trans.school_management_system_footer') }}</p>
     </div>
 </div>
 </body>

@@ -49,6 +49,63 @@ return [
     'role_admin_desc'     => 'Full system and user management',
     'role_parent_desc'    => 'Track your children\'s progress',
 
+    // ── Login page ──
+    'login_page_title'    => 'Sign In',
+    'login_page_subtitle' => 'Enter your email and password to access your account',
+    'password_label'      => 'Password',
+    'remember_me'         => 'Remember me',
+    'forgot_password'     => 'Forgot password?',
+
+    // ── School-admin dashboard ──
+    'dash_welcome_greeting'   => 'Welcome,',
+    'dash_system_overview'    => 'System Overview',
+    'dash_total_students'     => 'Total Registered Students',
+    'dash_view_all'           => 'View All',
+    'dash_today'              => 'Today',
+    'dash_total_teachers'     => 'Total Teachers',
+    'dash_academic_sections'  => 'Academic Sections',
+    'dash_class_unit'         => 'Class',
+    'dash_recent_activity'    => 'Recent Activity Log',
+    'dash_col_student'        => 'Student',
+    'dash_col_email'          => 'Email',
+    'dash_col_gender'         => 'Gender',
+    'dash_col_grade'          => 'Grade Level',
+    'dash_col_class'          => 'Class',
+    'dash_col_section'        => 'Section',
+    'dash_col_date'           => 'Date',
+    'dash_no_students'        => 'No students registered yet',
+    'dash_col_teacher'        => 'Teacher',
+    'dash_col_joining_date'   => 'Joining Date',
+    'dash_col_specialization' => 'Specialization',
+    'dash_no_teachers'        => 'No teachers registered yet',
+    'dash_col_parent'         => 'Parent/Guardian',
+    'dash_col_national_id'    => 'National ID',
+    'dash_col_phone'          => 'Phone',
+    'dash_no_parents'         => 'No parents registered yet',
+    'dash_col_invoice_date'   => 'Invoice Date',
+    'dash_status_active'      => 'Active',
+    'dash_no_invoices'        => 'No invoices yet',
+    'dash_quick_access'       => 'Quick Access',
+    'dash_qa_new_registration'=> 'New Registration',
+    'dash_qa_teaching_staff'  => 'Teaching Staff',
+    'dash_qa_tuition_fees'    => 'Tuition Fees',
+    'dash_qa_attendance_tracking' => 'Attendance Tracking',
+    'dash_qa_academic_grades' => 'Academic Grades',
+    'dash_qa_classes'         => 'Classes',
+    'dash_qa_question_mgmt'   => 'Question Management',
+    'dash_qa_system_settings' => 'System Settings',
+    'dash_system_status'      => 'System Status',
+    'dash_status_database'    => 'Database',
+    'dash_status_connected'   => 'Connected',
+    'dash_status_webserver'   => 'Web Server',
+    'dash_status_running'     => 'Running',
+    'dash_status_version'     => 'System Version',
+    'dash_academic_calendar'  => 'Academic Calendar',
+
+    // ── Cascading dropdowns (Grade → Classroom → Section) ──
+    'no_classrooms_for_grade'    => 'No classes added for this grade yet',
+    'no_sections_for_classroom'  => 'No sections added for this class yet',
+
     // ── Header ──
     'search_placeholder'  => 'Search the system...',
     'notifications'       => 'Notifications',
@@ -180,5 +237,39 @@ return [
     'general_details'     => 'General Details',
     'related_records'     => 'Related Records',
     'students_subtitle'   => 'Manage all enrolled students',
+
+    // ── Header notifications (sample data) ──
+    'notif_new_student_registered' => 'A new student has registered',
+    'notif_minutes_ago_5'           => '5 minutes ago',
+    'notif_new_invoice_received'    => 'A new invoice has arrived',
+    'notif_minutes_ago_22'          => '22 minutes ago',
+    'notif_system_update_required'  => 'A system update is required',
+    'notif_hours_ago_2'             => '2 hours ago',
+
+    // ── Settings page ──
+    'settings_page_title'        => 'Settings',
+    'school_name_label'          => 'School Name',
+    'current_academic_year_label'=> 'Current Academic Year',
+    'school_short_name_label'    => 'School Short Name',
+    'school_address_label'       => 'School Address',
+    'first_term_end_label'       => 'End of First Term',
+    'second_term_end_label'      => 'End of Second Term',
+    'school_logo_label'          => 'School Logo',
+
+    // ── Show template page ──
+    'attendance_status_present'  => 'Present',
+    'attendance_status_absent'   => 'Absent',
+    'attendance_status_late'     => 'Late',
+    'grade_excellent'            => 'Excellent',
+    'grade_good'                 => 'Good',
+    'grade_pass'                 => 'Pass',
+    'grade_fail'                 => 'Fail',
+    'invoice_paid'               => 'Paid',
+    'invoice_unpaid'             => 'Unpaid',
+
+    // ── Calendar ──
+    'calendar_enter_event_title'        => 'Enter the event title ',
+    'calendar_event_added_success'      => 'Event added successfully',
+    'calendar_enter_event_title_prompt' => 'Please enter the event title',
 
 ];

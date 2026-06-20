@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}">
 @section('title')
 {{trans('main_trans.Main_title')}}
 @stop
@@ -40,7 +40,7 @@
             <div class="page-title" >
                 <div class="row">
                     <div class="col-sm-6" >
-                        <h4 class="mb-0" style="font-family: 'Cairo', sans-serif">مرحبا بك : {{auth()->user()->name}}</h4>
+                        <h4 class="mb-0" style="font-family: 'Cairo', sans-serif">{{ trans('Students_trans.Welcome_message') }} : {{auth()->user()->name}}</h4>
                     </div><br><br>
                     <div class="col-sm-6">
                         <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right">

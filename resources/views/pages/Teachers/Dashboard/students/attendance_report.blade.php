@@ -2,13 +2,13 @@
 @section('css')
 
 @section('title')
-    تقرير الحضور والغياب
+    {{ trans('Teacher_trans.attendance_report_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    تقارير الحضور والغياب
+    {{ trans('Teacher_trans.attendance_report_title') }}
 @stop
 <!-- breadcrumb -->
 
@@ -31,13 +31,13 @@
 
                     <form method="post" action="{{ route('attendance.search') }}" autocomplete="off">
                         @csrf
-                        <h6 style="font-family: 'Cairo', sans-serif;color: blue">معلومات البحث</h6><br>
+                        <h6 style="font-family: 'Cairo', sans-serif;color: blue">{{ trans('Teacher_trans.search_information') }}</h6><br>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="student">الطلاب</label>
+                                    <label for="student">{{ trans('Teacher_trans.students_label') }}</label>
                                     <select class="custom-select mr-sm-2" name="student_id">
-                                        <option value="0">الكل</option>
+                                        <option value="0">{{ trans('Teacher_trans.all') }}</option>
                                         @foreach ($students as $student)
                                             <option value="{{ $student->id }}">{{ $student->name }}</option>
                                         @endforeach
@@ -48,9 +48,9 @@
                             <div class="card-body datepicker-form">
                                 <div class="input-group" data-date-format="yyyy-mm-dd">
                                     <input type="text" class="form-control range-from date-picker-default"
-                                        placeholder="تاريخ البداية" required name="from">
-                                    <span class="input-group-addon">الي تاريخ</span>
-                                    <input class="form-control range-to date-picker-default" placeholder="تاريخ النهاية"
+                                        placeholder="{{ trans('Teacher_trans.start_date_placeholder') }}" required name="from">
+                                    <span class="input-group-addon">{{ trans('Teacher_trans.to_date') }}</span>
+                                    <input class="form-control range-to date-picker-default" placeholder="{{ trans('Teacher_trans.end_date_placeholder') }}"
                                         type="text" required name="to">
                                 </div>
                             </div>
@@ -69,8 +69,8 @@
                                         <th class="alert-success">{{ trans('Students_trans.name') }}</th>
                                         <th class="alert-success">{{ trans('Students_trans.Grade') }}</th>
                                         <th class="alert-success">{{ trans('Students_trans.section') }}</th>
-                                        <th class="alert-success">التاريخ</th>
-                                        <th class="alert-warning">الحالة</th>
+                                        <th class="alert-success">{{ trans('Teacher_trans.date_column') }}</th>
+                                        <th class="alert-warning">{{ trans('Teacher_trans.status_column') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,9 +84,9 @@
                                             <td>
 
                                                 @if ($student->attendence_status == 0)
-                                                    <span class="btn-danger">غياب</span>
+                                                    <span class="btn-danger">{{ trans('Teacher_trans.absence') }}</span>
                                                 @else
-                                                    <span class="btn-success">حضور</span>
+                                                    <span class="btn-success">{{ trans('Teacher_trans.presence') }}</span>
                                                 @endif
                                             </td>
                                         </tr>

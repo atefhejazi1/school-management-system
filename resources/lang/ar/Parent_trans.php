@@ -39,8 +39,56 @@ return [
     'Attachments' => 'المرفقات',
     'Processes' => 'العمليات',
 
+    'profile_title' => 'الملف الشخصي',
+    'parent_role_label' => 'ولي امر',
+    'username_arabic_label' => 'اسم المستخدم باللغة العربية',
+    'username_english_label' => 'اسم المستخدم باللغة الانجليزية',
+    'show_password' => 'اظهار كلمة المرور',
+    'update_data' => 'تعديل البيانات',
 
+    'fee_invoices_title' => 'الفواتير الدراسية',
+    'name' => 'الاسم',
+    'fee_type' => 'نوع الرسوم',
+    'amount' => 'المبلغ',
+    'academic_stage' => 'المرحلة الدراسية',
+    'academic_grade' => 'الصف الدراسي',
+    'statement' => 'البيان',
+    'payments' => 'المدفوعات',
 
+    'quiz_results_title' => 'قائمة نتائج الاختبارات',
+    'student_name' => 'اسم الطالب',
+    'quiz_name' => 'اسم الاختبار',
+    'grade_score' => 'الدرجة',
+    'quiz_date' => 'تاريخ اجراء الاختبار',
+
+    'children_list_title' => 'قائمة الابناء',
+    'view_quiz_results' => 'عرض نتائج الاختبارات',
+
+    'welcome_colon' => 'مرحبا بك :',
+    'student_info' => 'معلومات الطالب',
+    'stage_label' => 'المرحلة',
+    'classroom_label' => 'الصف',
+    'section_label' => 'القسم',
+
+    'attendance_report_title' => 'تقرير الحضور والغياب',
+    'attendance_reports_title' => 'تقارير الحضور والغياب',
+    'search_info' => 'معلومات البحث',
+    'students_label' => 'الطلاب',
+    'all_label' => 'الكل',
+    'start_date_placeholder' => 'تاريخ البداية',
+    'to_date_label' => 'الي تاريخ',
+    'end_date_placeholder' => 'تاريخ النهاية',
+    'date_label' => 'التاريخ',
+    'status_label' => 'الحالة',
+    'absent' => 'غياب',
+    'present' => 'حضور',
+
+    'receipts_title' => 'سندات القبض',
+
+    'sidebar_children' => 'الابناء',
+    'sidebar_attendance_report' => 'تقرير الحضور والغياب',
+    'sidebar_financial_report' => 'تقرير المالية',
+    'sidebar_profile' => 'الملف الشخصي',
 
 
 

@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'he', 'fa', 'ur']) ? 'rtl' : 'ltr' }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ LaravelLocalization::getCurrentLocaleDirection() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>تسجيل الدخول — نظام إدارة المدارس</title>
+    <title>{{ trans('main_trans.login_page_title') }} — {{ trans('main_trans.Main_title') }}</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
-    @if(in_array(app()->getLocale(), ['ar', 'he', 'fa', 'ur']))
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    @if (LaravelLocalization::getCurrentLocaleDirection() === 'rtl')
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     @else
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -161,17 +162,51 @@
             color: #94a3b8;
             margin-top: 18px;
         }
+
+        .lp-lang-switcher {
+            position: fixed;
+            top: 20px;
+            inset-inline-end: 24px;
+        }
+        .lp-lang-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: #ffffff;
+            border: 1px solid var(--lp-border);
+            color: var(--lp-text);
+            font-family: 'Cairo', sans-serif;
+            font-size: 13px; font-weight: 600;
+            padding: 7px 16px; border-radius: 50px;
+        }
+        .lp-lang-btn::after { display: none; }
     </style>
 </head>
 <body>
+    <div class="lp-lang-switcher dropdown">
+        <button class="lp-lang-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-globe"></i> {{ trans('main_trans.lang_name') }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            @foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                <li>
+                    <a class="dropdown-item {{ app()->getLocale() === $localeCode ? 'active' : '' }}"
+                       rel="alternate"
+                       hreflang="{{ $localeCode }}"
+                       href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                        {{ $properties['native'] }}
+                    </a>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
     <div class="lp-wrapper">
         <div class="lp-brand">
-            <span class="lp-brand-name">نظام إدارة المدارس</span>
+            <span class="lp-brand-name">{{ trans('main_trans.Main_title') }}</span>
         </div>
 
         <div class="lp-card">
-            <h1>تسجيل الدخول</h1>
-            <p class="lp-subtitle">أدخل بريدك الإلكتروني وكلمة المرور للوصول إلى حسابك</p>
+            <h1>{{ trans('main_trans.login_page_title') }}</h1>
+            <p class="lp-subtitle">{{ trans('main_trans.login_page_subtitle') }}</p>
 
             @if(\Session::has('message'))
                 <div class="lp-alert">{!! \Session::get('message') !!}</div>
@@ -184,7 +219,7 @@
                 @endif
 
                 <div class="mb-3">
-                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                    <label for="email" class="form-label">{{ trans('main_trans.email_label') }}</label>
                     <input id="email" type="email" name="email"
                         value="{{ old('email') }}"
                         class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
@@ -195,7 +230,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label">كلمة المرور</label>
+                    <label for="password" class="form-label">{{ trans('main_trans.password_label') }}</label>
                     <input id="password" type="password" name="password"
                         class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
                         required autocomplete="current-password" dir="ltr">
@@ -207,16 +242,18 @@
                 <div class="d-flex align-items-center justify-content-between mb-4">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                        <label class="form-check-label" for="remember">تذكرني</label>
+                        <label class="form-check-label" for="remember">{{ trans('main_trans.remember_me') }}</label>
                     </div>
-                    <a href="#" class="lp-forgot">نسيت كلمة المرور؟</a>
+                    <a href="{{ route('password.request') }}" class="lp-forgot">{{ trans('main_trans.forgot_password') }}</a>
                 </div>
 
-                <button type="submit" class="btn btn-submit">تسجيل الدخول</button>
+                <button type="submit" class="btn btn-submit">{{ trans('main_trans.login_page_title') }}</button>
             </form>
         </div>
 
-        <p class="lp-footer-note">© {{ date('Y') }} نظام إدارة المدارس</p>
+        <p class="lp-footer-note">© {{ date('Y') }} {{ trans('main_trans.Main_title') }}</p>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

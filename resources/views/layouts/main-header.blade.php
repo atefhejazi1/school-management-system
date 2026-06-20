@@ -84,22 +84,22 @@
                     <a href="#" class="hd-notif-item">
                         <div class="hd-notif-icon hd-ni-blue"><i class="fas fa-user-plus"></i></div>
                         <div class="hd-notif-text">
-                            <p>تم تسجيل طالب جديد</p>
-                            <span>{{ __('منذ 5 دقائق') }}</span>
+                            <p>{{ trans('main_trans.notif_new_student_registered') }}</p>
+                            <span>{{ trans('main_trans.notif_minutes_ago_5') }}</span>
                         </div>
                     </a>
                     <a href="#" class="hd-notif-item">
                         <div class="hd-notif-icon hd-ni-green"><i class="fas fa-file-invoice"></i></div>
                         <div class="hd-notif-text">
-                            <p>فاتورة جديدة واردة</p>
-                            <span>{{ __('منذ 22 دقيقة') }}</span>
+                            <p>{{ trans('main_trans.notif_new_invoice_received') }}</p>
+                            <span>{{ trans('main_trans.notif_minutes_ago_22') }}</span>
                         </div>
                     </a>
                     <a href="#" class="hd-notif-item">
                         <div class="hd-notif-icon hd-ni-amber"><i class="fas fa-triangle-exclamation"></i></div>
                         <div class="hd-notif-text">
-                            <p>تحديث النظام مطلوب</p>
-                            <span>{{ __('منذ ساعتين') }}</span>
+                            <p>{{ trans('main_trans.notif_system_update_required') }}</p>
+                            <span>{{ trans('main_trans.notif_hours_ago_2') }}</span>
                         </div>
                     </a>
                 </div>

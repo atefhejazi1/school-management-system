@@ -1,14 +1,14 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    تعديل سند قبض
+    {{ trans('Payment_trans.edit_receipt_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
-تعديل سند قبض : <label style="color: red">{{ $receipt_student->student->name }}</label>
+{{ trans('Payment_trans.edit_receipt_title') }} : <label style="color: red">{{ $receipt_student->student->name }}</label>
 @section('PageTitle')
-    تعديل سند قبض : <label style="color: red">{{ $receipt_student->student->name }}</label>
+    {{ trans('Payment_trans.edit_receipt_title') }} : <label style="color: red">{{ $receipt_student->student->name }}</label>
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -36,7 +36,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>المبلغ : <span class="text-danger">*</span></label>
+                                <label>{{ trans('Payment_trans.amount_label') }} <span class="text-danger">*</span></label>
                                 <input class="form-control" name="Debit" value="{{ $receipt_student->Debit }}"
                                     type="number">
                                 <input type="hidden" name="student_id" value="{{ $receipt_student->student->id }}"
@@ -50,7 +50,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label>البيان : <span class="text-danger">*</span></label>
+                                <label>{{ trans('Payment_trans.statement_label') }} <span class="text-danger">*</span></label>
                                 <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3">{{ $receipt_student->description }}</textarea>
                             </div>
                         </div>

@@ -17,7 +17,7 @@
                 var calendar = new Calendar(calendarEl, {
                     events: JSON.parse(data),
                     dateClick(info)  {
-                        var title = prompt('ادخل عنوان الحدث ');
+                        var title = prompt(@js(trans('main_trans.calendar_enter_event_title')));
                         var date = new Date(info.dateStr + 'T00:00:00');
                         if(title != null && title != ''){
                             calendar.addEvent({
@@ -27,9 +27,9 @@
                             });
                             var eventAdd = {title: title,start: date};
                         @this.addevent(eventAdd);
-                            alert('تم اضافة الحدث بنجاح');
+                            alert(@js(trans('main_trans.calendar_event_added_success')));
                         }else{
-                            alert('من فضلك ادخل عنوان الحدث');
+                            alert(@js(trans('main_trans.calendar_enter_event_title_prompt')));
                         }
                     },
                     editable: true,

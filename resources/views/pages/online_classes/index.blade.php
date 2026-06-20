@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    حصص اونلاين
+    {{ trans('OnlineClasses_trans.list_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    حصص اونلاين
+    {{ trans('OnlineClasses_trans.list_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -21,23 +21,23 @@
                     <div class="card card-statistics h-100">
                         <div class="card-body">
                             <a href="{{ route('online_classes.create') }}" class="btn btn-success" role="button"
-                                aria-pressed="true">اضافة حصة اونلاين جديدة</a>
-                            <a class="btn btn-warning" href="{{ route('indirect.create') }}">اضافة حصة اوفلاين جديدة</a>
+                                aria-pressed="true">{{ trans('OnlineClasses_trans.add_online_class') }}</a>
+                            <a class="btn btn-warning" href="{{ route('indirect.create') }}">{{ trans('OnlineClasses_trans.add_offline_class') }}</a>
                             <div class="table-responsive">
                                 <table id="datatable" class="table  table-hover table-sm table-bordered p-0"
                                     data-page-length="50" style="text-align: center">
                                     <thead>
                                         <tr class="alert-success">
                                             <th>#</th>
-                                            <th>المرحلة</th>
-                                            <th>الصف</th>
-                                            <th>القسم</th>
-                                            <th>المعلم</th>
-                                            <th>عنوان الحصة</th>
-                                            <th>تاريخ البداية</th>
-                                            <th>وقت الحصة</th>
-                                            <th>رابط الحصة</th>
-                                            <th>العمليات</th>
+                                            <th>{{ trans('OnlineClasses_trans.grade_stage_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.classroom_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.section_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.teacher_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.class_title_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.start_date_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.class_time_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.class_link_column') }}</th>
+                                            <th>{{ trans('OnlineClasses_trans.processes_column') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -52,7 +52,7 @@
                                                 <td>{{ $online_classe->start_at }}</td>
                                                 <td>{{ $online_classe->duration }}</td>
                                                 <td class="text-danger"><a href="{{ $online_classe->join_url }}"
-                                                        target="_blank">انضم الان</a></td>
+                                                        target="_blank">{{ trans('OnlineClasses_trans.join_now') }}</a></td>
                                                 <td>
                                                     <button type="button" class="btn btn-danger btn-sm"
                                                         data-toggle="modal"

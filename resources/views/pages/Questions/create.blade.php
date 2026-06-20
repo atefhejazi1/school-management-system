@@ -1,13 +1,13 @@
 @extends('layouts.master')
 @section('css')
 @section('title')
-    اضافة سؤال جديد
+    {{ trans('Questions_trans.add_question_title') }}
 @stop
 @endsection
 @section('page-header')
 <!-- breadcrumb -->
 @section('PageTitle')
-    اضافة سؤال جديد
+    {{ trans('Questions_trans.add_question_title') }}
 @stop
 <!-- breadcrumb -->
 @endsection
@@ -34,7 +34,7 @@
                             <div class="form-row">
 
                                 <div class="col">
-                                    <label for="title">اسم السؤال</label>
+                                    <label for="title">{{ trans('Questions_trans.question_name_label') }}</label>
                                     <input type="text" name="title" id="input-name"
                                         class="form-control form-control-alternative" autofocus>
                                 </div>
@@ -43,7 +43,7 @@
 
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="title">الاجابات</label>
+                                    <label for="title">{{ trans('Questions_trans.answers_label') }}</label>
                                     <textarea name="answers" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
                                 </div>
                             </div>
@@ -51,7 +51,7 @@
 
                             <div class="form-row">
                                 <div class="col">
-                                    <label for="title">الاجابة الصحيحة</label>
+                                    <label for="title">{{ trans('Questions_trans.right_answer_label') }}</label>
                                     <input type="text" name="right_answer" id="input-name"
                                         class="form-control form-control-alternative" autofocus>
                                 </div>
@@ -61,9 +61,9 @@
                             <div class="form-row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="Grade_id">اسم الاختبار : <span class="text-danger">*</span></label>
+                                        <label for="Grade_id">{{ trans('Questions_trans.quiz_label') }} : <span class="text-danger">*</span></label>
                                         <select class="custom-select mr-sm-2" name="quizze_id">
-                                            <option selected disabled>حدد اسم الاختبار...</option>
+                                            <option selected disabled>{{ trans('Questions_trans.select_quiz_placeholder') }}</option>
                                             @foreach ($quizzes as $quizze)
                                                 <option value="{{ $quizze->id }}">{{ $quizze->name }}</option>
                                             @endforeach
@@ -72,9 +72,9 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="Grade_id">الدرجة : <span class="text-danger">*</span></label>
+                                        <label for="Grade_id">{{ trans('Questions_trans.score_label') }} : <span class="text-danger">*</span></label>
                                         <select class="custom-select mr-sm-2" name="score">
-                                            <option selected disabled> حدد الدرجة...</option>
+                                            <option selected disabled> {{ trans('Questions_trans.select_score_placeholder') }}</option>
                                             <option value="5">5</option>
                                             <option value="10">10</option>
                                             <option value="15">15</option>
@@ -84,8 +84,7 @@
                                 </div>
                             </div>
                             <br>
-                            <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">حفظ
-                                البيانات</button>
+                            <button class="btn btn-success btn-sm nextBtn btn-lg pull-right" type="submit">{{ trans('Questions_trans.submit_save') }}</button>
                         </form>
                     </div>
                 </div>

@@ -1,31 +1,31 @@
 @extends('layouts.super-admin.master')
 
-@section('title', 'اختيار باقة الاشتراك')
+@section('title', trans('super_dash.plan_selection_title'))
 
-@section('PageTitle', 'اختيار باقة الاشتراك')
+@section('PageTitle', trans('super_dash.plan_selection_title'))
 
 @section('content')
 
     <div class="ph-wrap">
         <div class="ph-title-group">
             <div>
-                <h1 class="ph-title">تفعيل / تجديد باقة الاشتراك</h1>
-                <p class="ph-subtitle">مدرسة "{{ $school->name }}"</p>
+                <h1 class="ph-title">{{ trans('super_dash.plan_activate_renew') }}</h1>
+                <p class="ph-subtitle">{{ trans('super_dash.school_name_quoted', ['name' => $school->name]) }}</p>
             </div>
         </div>
         <div class="ph-actions">
-            <a href="{{ route('super-admin.school-requests.index') }}" class="btn-flat-outline">رجوع إلى طلبات المدارس</a>
+            <a href="{{ route('super-admin.school-requests.index') }}" class="btn-flat-outline">{{ trans('super_dash.back_to_school_requests') }}</a>
         </div>
     </div>
 
     @if ($school->plan)
         <div class="admin-card mb-4 flat-card">
             <div class="p-4">
-                <span class="pill pill-info">الباقة الحالية: {{ $school->plan->name }}</span>
+                <span class="pill pill-info">{{ trans('super_dash.current_plan_label') }}: {{ $school->plan->name }}</span>
                 @if ($school->subscription_expires_at)
                     <span class="pill {{ $school->isSubscriptionExpired() ? 'pill-danger' : 'pill-success' }}">
-                        ينتهي الاشتراك في {{ $school->subscription_expires_at->format('Y/m/d') }}
-                        {{ $school->isSubscriptionExpired() ? '(منتهي)' : '' }}
+                        {{ trans('super_dash.subscription_ends_on') }} {{ $school->subscription_expires_at->format('Y/m/d') }}
+                        {{ $school->isSubscriptionExpired() ? trans('super_dash.expired_paren') : '' }}
                     </span>
                 @endif
             </div>
@@ -35,7 +35,7 @@
     @if ($plans->isEmpty())
         <div class="admin-card flat-card">
             <div class="p-5 text-center">
-                <p class="text-muted mb-0">لا توجد باقات نشطة متاحة حالياً. يرجى إضافة باقة من قاعدة البيانات أولاً.</p>
+                <p class="text-muted mb-0">{{ trans('super_dash.no_active_plans') }}</p>
             </div>
         </div>
     @else
@@ -44,26 +44,26 @@
                 <div class="col-md-4">
                     <div class="pricing-card {{ $school->plan_id === $plan->id ? 'pricing-card-current' : '' }}">
                         @if ($school->plan_id === $plan->id)
-                            <span class="pricing-current-badge">الباقة الحالية</span>
+                            <span class="pricing-current-badge">{{ trans('super_dash.current_plan_label') }}</span>
                         @endif
 
                         <h3 class="pricing-name">{{ $plan->name }}</h3>
 
                         <div class="pricing-price">
                             {{ number_format((float) $plan->price, 2) }}
-                            <span class="pricing-price-unit">/ شهرياً</span>
+                            <span class="pricing-price-unit">/ {{ trans('super_dash.per_month') }}</span>
                         </div>
 
                         <div class="pricing-feature">
-                            <span class="pricing-feature-label">الحد الأقصى للطلاب</span>
-                            <span class="pricing-feature-value">{{ $plan->max_students }} طالب</span>
+                            <span class="pricing-feature-label">{{ trans('super_dash.max_students_label') }}</span>
+                            <span class="pricing-feature-value">{{ $plan->max_students }} {{ trans('super_dash.student_unit') }}</span>
                         </div>
 
                         <form method="POST" action="{{ route('super-admin.plan-selection.store', $school->id) }}" class="pricing-form">
                             @csrf
                             <input type="hidden" name="plan_id" value="{{ $plan->id }}">
 
-                            <label class="pricing-months-label" for="months-{{ $plan->id }}">عدد أشهر التجديد</label>
+                            <label class="pricing-months-label" for="months-{{ $plan->id }}">{{ trans('super_dash.renewal_months_label') }}</label>
                             <input type="number"
                                    id="months-{{ $plan->id }}"
                                    name="months"
@@ -73,7 +73,7 @@
                                    class="form-control pricing-months-input"
                                    required>
 
-                            <button type="submit" class="btn-flat-emerald w-100">تفعيل هذه الباقة</button>
+                            <button type="submit" class="btn-flat-emerald w-100">{{ trans('super_dash.activate_this_plan') }}</button>
                         </form>
                     </div>
                 </div>

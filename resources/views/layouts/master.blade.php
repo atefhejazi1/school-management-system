@@ -786,7 +786,7 @@
                 const id = $(this).val();
                 if (!id) return;
                 $.getJSON('{{ URL::to("Get_classrooms") }}/' + id, function (data) {
-                    fillCascadeSelect($(classroomField), data, 'لا توجد فصول مضافة لهذا الصف بعد');
+                    fillCascadeSelect($(classroomField), data, @js(trans('main_trans.no_classrooms_for_grade')));
                 });
             });
         }
@@ -797,7 +797,7 @@
                 const id = $(this).val();
                 if (!id) return;
                 $.getJSON('{{ URL::to("Get_Sections") }}/' + id, function (data) {
-                    fillCascadeSelect($(sectionField), data, 'لا توجد شعب مضافة لهذا الفصل بعد');
+                    fillCascadeSelect($(sectionField), data, @js(trans('main_trans.no_sections_for_classroom')));
                 });
             });
         }

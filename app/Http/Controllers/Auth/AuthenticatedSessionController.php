@@ -86,7 +86,7 @@ class AuthenticatedSessionController extends Controller
     private function redirectAfterLogin(string $guard): RedirectResponse
     {
         if ($guard !== 'web') {
-            return redirect()->intended("/{$guard}/dashboard");
+            return redirect()->intended(route("{$guard}.dashboard"));
         }
 
         /** @var User $authenticatedUser */
