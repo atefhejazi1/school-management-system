@@ -369,7 +369,8 @@
             </button>
             <ul class="collapse sb-submenu {{ $finActive ? 'show' : '' }}" id="sub-accounts">
                 <li><a href="{{ route('Fees.index') }}"             class="{{ request()->routeIs('Fees.index')             ? 'sub-active' : '' }}">{{ trans('main_trans.fees_title') }}</a></li>
-                <li><a href="{{ route('Fees_Invoices.index') }}"    class="{{ request()->routeIs('Fees_Invoices.*')        ? 'sub-active' : '' }}">{{ trans('main_trans.invoices') }}</a></li>
+                <li><a href="{{ route('Fees_Invoices.index') }}"    class="{{ request()->routeIs('Fees_Invoices.index')    ? 'sub-active' : '' }}">{{ trans('main_trans.invoices') }}</a></li>
+                <li><a href="{{ route('Fees_Invoices.outstanding') }}" class="{{ request()->routeIs('Fees_Invoices.outstanding') ? 'sub-active' : '' }}">{{ trans('main_trans.outstanding_invoices') }}</a></li>
                 <li><a href="{{ route('receipt_students.index') }}" class="{{ request()->routeIs('receipt_students.*')    ? 'sub-active' : '' }}">{{ trans('main_trans.receipts') }}</a></li>
                 <li><a href="{{ route('ProcessingFee.index') }}"    class="{{ request()->routeIs('ProcessingFee.*')       ? 'sub-active' : '' }}">{{ trans('main_trans.fee_exemptions') }}</a></li>
                 <li><a href="{{ route('Payment_students.index') }}" class="{{ request()->routeIs('Payment_students.*')   ? 'sub-active' : '' }}">{{ trans('main_trans.payment_orders') }}</a></li>

@@ -131,6 +131,7 @@ return [
     'subjects_list'       => 'Subjects List',
     'fees_title'          => 'Tuition Fees',
     'invoices'            => 'Invoices',
+    'outstanding_invoices'=> 'Outstanding Invoices',
     'receipts'            => 'Receipts',
     'fee_exemptions'      => 'Fee Exemptions',
     'payment_orders'      => 'Payment Orders',

@@ -131,6 +131,11 @@ Route::group(
         Route::resource('Fees', FeesController::class);
 
         Route::resource('Fees_Invoices', FeeInvoiceController::class);
+        // مسار ثابت (literal) بدلاً من {fee_invoice} لتفادي أي تعارض مع مسار العرض الديناميكي
+        // أعلاه ضمن Route::resource، ويجب أن يُسجَّل دائماً قبل تعريف الـ resource في حال
+        // تغيّر ترتيب التسجيل مستقبلاً (هنا الترتيب الحالي صحيح بالفعل: لا تعارض فعلي حتى الآن
+        // لأن "Fees_Invoices_Outstanding" مقطع مختلف تماماً عن "Fees_Invoices/{id}")
+        Route::get('Fees_Invoices_Outstanding', [FeeInvoiceController::class, 'outstanding'])->name('Fees_Invoices.outstanding');
 
         Route::resource('receipt_students', ReceiptStudentController::class);
         Route::resource('ProcessingFee', ProcessingFeeController::class);

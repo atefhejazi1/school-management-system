@@ -20,6 +20,11 @@ class FeeInvoiceController extends Controller
         return $this->Fees_Invoices->index();
     }
 
+    public function outstanding()
+    {
+        return $this->Fees_Invoices->outstanding();
+    }
+
 
     public function create()
     {

@@ -135,6 +135,7 @@ return [
     'subjects_list'       => 'قائمة المواد',
     'fees_title'          => 'الرسوم الدراسية',
     'invoices'            => 'الفواتير',
+    'outstanding_invoices'=> 'الفواتير غير المسدَّدة',
     'receipts'            => 'سندات القبض',
     'fee_exemptions'      => 'استبعاد رسوم',
     'payment_orders'      => 'سندات الصرف',
