@@ -667,6 +667,9 @@
 </head>
 <body>
 
+    {{-- ══ شريط تنبيه اقتراب انتهاء اشتراك المدرسة (أعلى عنصر في الصفحة) ══ --}}
+    @include('layouts.partials.subscription-expiry-banner')
+
     {{-- ══ شريط معاينة منشئ المنصة (يظهر فقط أثناء جلسة Impersonation) ══ --}}
     @include('layouts.partials.impersonation-banner')
 
