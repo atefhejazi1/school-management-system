@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToSchool;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class Fees extends Model
 {
     use HasTranslations;
+    // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
+    use BelongsToSchool;
     public $translatable = ['title'];
-    protected $fillable = ['title', 'amount', 'Grade_id', 'Classroom_id', 'year', 'description', 'Fee_type'];
+    protected $fillable = ['title', 'amount', 'Grade_id', 'Classroom_id', 'year', 'description', 'Fee_type', 'school_id'];
 
 
     // علاقة بين الرسوم الدراسية والمراحل الدراسية لجب اسم المرحلة

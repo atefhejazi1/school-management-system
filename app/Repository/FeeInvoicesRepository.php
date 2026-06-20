@@ -23,6 +23,23 @@ class FeeInvoicesRepository implements FeeInvoicesRepositoryInterface
         return view('pages.Fees_Invoices.index', compact('Fee_invoices', 'Grades'));
     }
 
+    /**
+     * لوحة الفواتير غير المسدَّدة بالكامل: نجلب كل الفواتير ثم نُبقي فقط ما كان رصيده
+     * المتبقي (balance_amount المُحتسَب لحظياً من دفتر الأستاذ) أكبر من صفر. لا يمكن
+     * تنفيذ هذا الفلتر مباشرة عبر where() في قاعدة البيانات لأن balance_amount ليس
+     * عموداً مخزَّناً بل Accessor محتسَب، فنُصفّيه بعد الجلب (filter على Collection).
+     */
+    public function outstanding()
+    {
+        $outstandingInvoices = Fee_invoice::with(['student', 'fees'])
+            ->orderByDesc('invoice_date')
+            ->get()
+            ->filter(fn (Fee_invoice $invoice) => $invoice->balance_amount > 0)
+            ->values();
+
+        return view('pages.Fees_Invoices.outstanding', compact('outstandingInvoices'));
+    }
+
     public function show($id)
     {
         $student = students::findorfail($id);
