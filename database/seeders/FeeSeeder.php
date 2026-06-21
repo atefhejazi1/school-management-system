@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Classroom;
 use App\Models\Fees;
-use App\Models\Grade;
 use App\Models\School;
 use Illuminate\Database\Seeder;
 
@@ -17,10 +16,13 @@ class FeeSeeder extends Seeder
      */
     public function run(School $school): void
     {
-        $gradeIds = Grade::where('school_id', $school->id)->pluck('id');
-        $classroomIds = Classroom::where('school_id', $school->id)->pluck('id');
+        $classrooms = Classroom::where('school_id', $school->id)->get();
 
-        Fees::whereIn('Grade_id', $gradeIds)->delete();
+        Fees::whereIn('Grade_id', $classrooms->pluck('Grade_id'))->delete();
+
+        if ($classrooms->isEmpty()) {
+            return;
+        }
 
         $feeTypes = [
             ['title' => 'رسوم دراسية', 'amount' => 5000, 'Fee_type' => 1],
@@ -29,11 +31,15 @@ class FeeSeeder extends Seeder
         ];
 
         foreach ($feeTypes as $fee) {
+            // نختار صفاً دراسياً واحداً ونشتق منه المرحلة الدراسية مباشرة، حتى لا تنتمي
+            // هذه الرسوم لمرحلة لا تتبعها هذا الصف فعلياً
+            $classroom = $classrooms->random();
+
             Fees::create([
                 'title' => $fee['title'],
                 'amount' => $fee['amount'],
-                'Grade_id' => $gradeIds->random(),
-                'Classroom_id' => $classroomIds->random(),
+                'Grade_id' => $classroom->Grade_id,
+                'Classroom_id' => $classroom->id,
                 'description' => $fee['title'] . ' للعام الدراسي الحالي',
                 'year' => (string) now()->year,
                 'Fee_type' => $fee['Fee_type'],

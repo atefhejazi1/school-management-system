@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Classroom;
-use App\Models\Grade;
 use App\Models\Library;
 use App\Models\School;
 use App\Models\sections;
@@ -17,22 +15,28 @@ class LibrarySeeder extends Seeder
      */
     public function run(School $school): void
     {
-        $gradeIds = Grade::where('school_id', $school->id)->pluck('id');
-        $classroomIds = Classroom::where('school_id', $school->id)->pluck('id');
-        $sectionIds = sections::where('school_id', $school->id)->pluck('id');
+        $schoolSections = sections::where('school_id', $school->id)->get();
         $teacherIds = Teachers::where('school_id', $school->id)->pluck('id');
 
-        Library::whereIn('Grade_id', $gradeIds)->delete();
+        Library::whereIn('Grade_id', $schoolSections->pluck('Grade_id'))->delete();
+
+        if ($schoolSections->isEmpty() || $teacherIds->isEmpty()) {
+            return;
+        }
 
         $resources = ['ملخص الوحدة الأولى', 'كتاب التمارين', 'عرض تقديمي للمراجعة'];
 
         foreach ($resources as $title) {
+            // نختار قسماً واحداً ونشتق منه المرحلة والصف الدراسي مباشرة، حتى لا يُرفَق
+            // المورد بمرحلة لا تتبعها القسم/الصف المختارين فعلياً
+            $section = $schoolSections->random();
+
             Library::create([
                 'title' => $title,
                 'file_name' => 'placeholder.pdf',
-                'Grade_id' => $gradeIds->random(),
-                'Classroom_id' => $classroomIds->random(),
-                'section_id' => $sectionIds->random(),
+                'Grade_id' => $section->Grade_id,
+                'Classroom_id' => $section->Class_id,
+                'section_id' => $section->id,
                 'teacher_id' => $teacherIds->random(),
             ]);
         }

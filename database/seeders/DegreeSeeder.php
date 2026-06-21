@@ -14,22 +14,32 @@ class DegreeSeeder extends Seeder
 {
     /**
      * درجات الطلاب في كل سؤال من كل اختبار، لمحاكاة بيانات تقييم واقعية.
+     *
+     * كل اختبار يخص مرحلة وصفاً وقسماً بعينه (grade_id/classroom_id/section_id)، فلا
+     * يُفترَض أن يُسجَّل لكل طالب في المدرسة علامة في اختبار لا يخص قسمه أصلاً. لذلك
+     * نُقيِّد الطلاب هنا فعلياً لمن ينتمون لنفس (مرحلة + صف + قسم) الاختبار بالتحديد،
+     * بدل تسجيل علامة لكل طالب في كل اختبار بالمدرسة بصرف النظر عن قسمه الحقيقي.
      */
     public function run(School $school): void
     {
         DB::table('degrees')->where('school_id', $school->id)->delete();
 
-        $studentIds = students::where('school_id', $school->id)->pluck('id');
         $quizzes = Quizze::where('school_id', $school->id)->get();
 
-        if ($studentIds->isEmpty()) {
-            return;
-        }
-
         foreach ($quizzes as $quiz) {
+            $classmateIds = students::where('school_id', $school->id)
+                ->where('Grade_id', $quiz->grade_id)
+                ->where('Classroom_id', $quiz->classroom_id)
+                ->where('section_id', $quiz->section_id)
+                ->pluck('id');
+
+            if ($classmateIds->isEmpty()) {
+                continue;
+            }
+
             $questions = Question::where('quizze_id', $quiz->id)->get();
 
-            foreach ($studentIds as $studentId) {
+            foreach ($classmateIds as $studentId) {
                 foreach ($questions as $question) {
                     Degree::create([
                         'quizze_id' => $quiz->id,

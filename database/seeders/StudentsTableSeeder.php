@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Classroom;
-use App\Models\Grade;
 use App\Models\My_Parent;
 use App\Models\Nationalities;
 use App\Models\School;
@@ -26,12 +24,10 @@ class StudentsTableSeeder extends Seeder
 
         $nationalityIds = Nationalities::pluck('id');
         $bloodTypeIds = Type_Blood::pluck('id');
-        $gradeIds = Grade::where('school_id', $school->id)->pluck('id');
-        $classroomIds = Classroom::where('school_id', $school->id)->pluck('id');
-        $sectionIds = sections::where('school_id', $school->id)->pluck('id');
+        $schoolSections = sections::where('school_id', $school->id)->get();
         $parentIds = My_Parent::where('school_id', $school->id)->pluck('id');
 
-        if ($parentIds->isEmpty()) {
+        if ($parentIds->isEmpty() || $schoolSections->isEmpty()) {
             return;
         }
 
@@ -44,6 +40,11 @@ class StudentsTableSeeder extends Seeder
         ];
 
         foreach ($students as $index => $name) {
+            // نختار قسماً دراسياً واحداً ونشتق منه المرحلة والصف الدراسي مباشرة، حتى يبقى
+            // الطالب منتمياً فعلياً لمجموعة (مرحلة + صف + قسم) متوافقة فيما بينها، بدل
+            // اختيار الثلاثة بشكل عشوائي ومستقل قد يضع طالباً في قسم لا يتبع صفه أصلاً
+            $section = $schoolSections->random();
+
             $student = new students();
             $student->name = $name;
             $student->email = 'student' . ($index + 1) . '.' . $school->slug . '@example.test';
@@ -52,10 +53,9 @@ class StudentsTableSeeder extends Seeder
             $student->nationalitie_id = $nationalityIds->random();
             $student->blood_id = $bloodTypeIds->random();
             $student->Date_Birth = now()->subYears(10)->subDays($index)->toDateString();
-            // نختار الصف والفصل والقسم وولي الأمر من نفس المدرسة فقط، لمنع تسرب بيانات مدرسة أخرى داخل العلاقات
-            $student->Grade_id = $gradeIds->random();
-            $student->Classroom_id = $classroomIds->random();
-            $student->section_id = $sectionIds->random();
+            $student->Grade_id = $section->Grade_id;
+            $student->Classroom_id = $section->Class_id;
+            $student->section_id = $section->id;
             $student->parent_id = $parentIds->random();
             $student->academic_year = now()->year . '-' . (now()->year + 1);
             $student->school_id = $school->id; // حقن مباشر لأن السيدنج لا يعمل تحت جلسة auth حقيقية

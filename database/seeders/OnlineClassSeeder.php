@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Classroom;
-use App\Models\Grade;
 use App\Models\Online_class;
 use App\Models\School;
 use App\Models\sections;
@@ -16,15 +14,21 @@ class OnlineClassSeeder extends Seeder
     {
         DB::table('online_classes')->where('school_id', $school->id)->delete();
 
-        $gradeIds = Grade::where('school_id', $school->id)->pluck('id');
-        $classroomIds = Classroom::where('school_id', $school->id)->pluck('id');
-        $sectionIds = sections::where('school_id', $school->id)->pluck('id');
+        $schoolSections = sections::where('school_id', $school->id)->get();
+
+        if ($schoolSections->isEmpty()) {
+            return;
+        }
+
+        // نختار قسماً واحداً ونشتق منه المرحلة والصف الدراسي مباشرة، حتى تبقى الحصة
+        // مرتبطة فعلياً بقسم ينتمي لذلك الصف وتلك المرحلة بالتحديد
+        $section = $schoolSections->random();
 
         Online_class::create([
             'integration' => true,
-            'Grade_id' => $gradeIds->random(),
-            'Classroom_id' => $classroomIds->random(),
-            'section_id' => $sectionIds->random(),
+            'Grade_id' => $section->Grade_id,
+            'Classroom_id' => $section->Class_id,
+            'section_id' => $section->id,
             'created_by' => 'admin',
             'meeting_id' => '000-000-' . random_int(1000, 9999),
             'topic' => 'حصة مراجعة عبر الإنترنت',
