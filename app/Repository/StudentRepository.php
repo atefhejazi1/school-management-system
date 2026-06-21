@@ -157,13 +157,25 @@ class StudentRepository implements StudentRepositoryInterface
 
     public function Upload_attachment($request)
     {
+        // يجب أن يكون الطالب الهدف ضمن مدرسة المستخدم الحالي (يفرضها BelongsToSchool تلقائياً
+        // عبر findOrFail)، وإلا يمكن لمدير مدرسة ربط مرفقات بطالب من مدرسة أخرى
+        students::findOrFail($request->student_id);
+
+        // التحقق من نوع وامتداد كل ملف قبل تخزينه: بدون هذا الفحص كان بالإمكان رفع ملف
+        // .php منتحلاً صفة صورة، يتم تخزينه داخل public/ ويُنفَّذ مباشرة على الخادم (RCE)
+        $request->validate([
+            'photos.*' => 'required|image|mimes:jpg,jpeg,png,webp|max:4096',
+        ]);
+
         foreach ($request->file('photos') as $file) {
-            $name = $file->getClientOriginalName();
-            $file->storeAs('attachments/students/' . $request->student_name, $file->getClientOriginalName(), 'upload_attachments');
+            // اسم تخزين عشوائي بدل اسم الملف الأصلي من المتصفح: يمنع تصادم/استبدال ملفات
+            // طلاب آخرين بنفس الاسم، ويزيل تماماً أي اعتماد على امتداد يتحكم به المستخدم
+            $storedName = \Illuminate\Support\Str::random(40) . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('attachments/students/' . $request->student_name, $storedName, 'upload_attachments');
 
             // insert in image_table
             $images = new image();
-            $images->filename = $name;
+            $images->filename = $storedName;
             $images->imageable_id = $request->student_id;
             $images->imageable_type = students::class;
             $images->save();
@@ -174,13 +186,31 @@ class StudentRepository implements StudentRepositoryInterface
 
     public function Download_attachment($studentsname, $filename)
     {
+        // basename() يمنع أي محاولة Path Traversal (../) عبر اسم الطالب أو الملف في الرابط
+        $studentsname = basename($studentsname);
+        $filename = basename($filename);
+
+        // لا نثق باسم الطالب القادم من الرابط لتحديد الصلاحية، بل نتحقق أن صورة بهذا الاسم
+        // مرتبطة فعلاً بطالب ضمن مدرسة المستخدم الحالي (students::find محكوم بـ BelongsToSchool
+        // تلقائياً، فيُرجع null لأي طالب من مدرسة أخرى حتى لو كان السجل موجوداً في قاعدة البيانات)
+        $image = Image::where('filename', $filename)->where('imageable_type', students::class)->first();
+        $student = $image ? students::find($image->imageable_id) : null;
+
+        abort_unless($student, 404);
+
         return response()->download(public_path('attachments/students/' . $studentsname . '/' . $filename));
     }
 
     public function Delete_attachment($request)
     {
+        // يجب أن يكون الطالب الهدف ضمن مدرسة المستخدم الحالي قبل حذف أي ملف له من القرص
+        students::findOrFail($request->student_id);
+
+        $studentName = basename($request->student_name);
+        $filename = basename($request->filename);
+
         // Delete img in server disk
-        Storage::disk('upload_attachments')->delete('attachments/students/' . $request->student_name . '/' . $request->filename);
+        Storage::disk('upload_attachments')->delete('attachments/students/' . $studentName . '/' . $filename);
 
         // Delete in data
         image::where('id', $request->id)->where('filename', $request->filename)->delete();

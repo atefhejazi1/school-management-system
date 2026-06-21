@@ -111,8 +111,14 @@ class OnlineZoomClassesController extends Controller
     public function destroy(Request $request, $id)
     {
         try {
+            // مقيّد بـ created_by لمنع أي معلم من إلغاء/حذف حصة أونلاين أنشأها معلم آخر
+            // بمجرد تمرير meeting_id مختلف، فالحماية على مستوى المدرسة لا تكفي هنا
+            Online_class::where('created_by', Auth::user()->email)
+                ->where('meeting_id', $request->id)
+                ->firstOrFail();
+
             $meetings = Zoom::deleteMeeting($request->id);
-            Online_class::where('meeting_id', $request->id)->delete();
+            Online_class::where('created_by', Auth::user()->email)->where('meeting_id', $request->id)->delete();
             toastr()->success(trans('messages.Delete'));
             return redirect()->route('online_zoom_classes.index');
         } catch (\Exception $e) {

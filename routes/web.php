@@ -68,11 +68,18 @@ Route::group(
             // (منشئ المنصة، مدير المدرسة، المعلم، الطالب، ولي الأمر). التمييز بين الأدوار
             // يحدث صامتاً في الباك-إند بعد المصادقة عبر AuthenticatedSessionController::storeUnified().
             Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-            Route::post('/login', [AuthenticatedSessionController::class, 'storeUnified'])->name('login.attempt');
+            // throttle: يحد من محاولات تسجيل الدخول إلى 5 محاولات لكل دقيقة لكل (بريد إلكتروني + IP)
+            // معاً — storeUnified() تجرّب 4 حراس مصادقة في كل طلب، فبدون هذا الحد كان التخمين
+            // العشوائي لكلمات المرور غير محدود عملياً
+            Route::post('/login', [AuthenticatedSessionController::class, 'storeUnified'])
+                ->middleware('throttle:5,1')
+                ->name('login.attempt');
 
             // المسارات القديمة الخاصة بكل نوع مستخدم — تبقى متاحة للتوافق مع الروابط الحالية في الواجهات
             Route::get('/login/{type}', [AuthenticatedSessionController::class, 'create'])->name('login.show');
-            Route::post('/login/{type}', [AuthenticatedSessionController::class, 'store'])->name('login.store');
+            Route::post('/login/{type}', [AuthenticatedSessionController::class, 'store'])
+                ->middleware('throttle:5,1')
+                ->name('login.store');
         });
 
         Route::post('/logout/{type}', [AuthenticatedSessionController::class, 'destroy'])->name('custom.logout');

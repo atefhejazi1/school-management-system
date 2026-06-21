@@ -4,13 +4,19 @@ namespace App\Http\Controllers\Teachers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Question;
+use App\Models\Quizze;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
     public function store(Request $request)
     {
         try {
+            // التأكد من أن الاختبار المستهدَف يخص المعلم الحالي قبل إضافة سؤال إليه،
+            // وإلا يمكن لأي معلم إضافة أسئلة لاختبار معلم آخر بمجرد تمرير quizz_id مختلف
+            Quizze::where('teacher_id', Auth::user()->id)->findOrFail($request->quizz_id);
+
             $question = new Question();
             $question->title = $request->title;
             $question->answers = $request->answers;
@@ -35,7 +41,11 @@ class QuestionController extends Controller
 
     public function edit($id)
     {
-        $question = Question::findorFail($id);
+        // مقيّد بملكية الاختبار الأب (Quizze::teacher_id) عبر علاقة quizze() المعرّفة على النموذج،
+        // لمنع أي معلم من تعديل سؤال (بما فيه الإجابة الصحيحة) ضمن اختبار معلم آخر
+        $question = Question::whereHas('quizze', function ($query) {
+            $query->where('teacher_id', Auth::user()->id);
+        })->findOrFail($id);
         return view('pages.Teachers.dashboard.Questions.edit', compact('question'));
     }
 
@@ -43,7 +53,9 @@ class QuestionController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $question = Question::findorfail($id);
+            $question = Question::whereHas('quizze', function ($query) {
+                $query->where('teacher_id', Auth::user()->id);
+            })->findOrFail($id);
             $question->title = $request->title;
             $question->answers = $request->answers;
             $question->right_answer = $request->right_answer;
@@ -60,7 +72,9 @@ class QuestionController extends Controller
     public function destroy($id)
     {
         try {
-            Question::destroy($id);
+            Question::whereHas('quizze', function ($query) {
+                $query->where('teacher_id', Auth::user()->id);
+            })->findOrFail($id)->delete();
             toastr()->error(trans('messages.Delete'));
             return redirect()->back();
         } catch (\Exception $e) {

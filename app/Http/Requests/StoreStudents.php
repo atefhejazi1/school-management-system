@@ -40,10 +40,13 @@ class StoreStudents extends FormRequest
             'nationalitie_id' => 'required',
             'blood_id' => 'required',
             'Date_Birth' => 'required|date|date_format:Y-m-d',
-            'Grade_id' => 'required',
-            'Classroom_id' => 'required',
-            'section_id' => 'required',
-            'parent_id' => 'required',
+            // 'exists' هنا مقيّد بـ school_id الخاص بالمستخدم الحالي، تماماً كما هو الحال أعلاه
+            // مع البريد الإلكتروني — بدون هذا القيد كان بالإمكان ربط طالب بصف/فصل/قسم/ولي أمر
+            // من مدرسة أخرى بالكامل بمجرد تمرير رقم تعريف (id) مختلف ضمن الطلب
+            'Grade_id' => ['required', Rule::exists('Grades', 'id')->where('school_id', auth()->user()->school_id)],
+            'Classroom_id' => ['required', Rule::exists('Classrooms', 'id')->where('school_id', auth()->user()->school_id)],
+            'section_id' => ['required', Rule::exists('sections', 'id')->where('school_id', auth()->user()->school_id)],
+            'parent_id' => ['required', Rule::exists('my__parents', 'id')->where('school_id', auth()->user()->school_id)],
             'academic_year' => 'required',
         ];
     }

@@ -1,0 +1,5 @@
+# دفاع إضافي (Defense in Depth): حتى لو نجح ملف غير سليم في تجاوز فحص الامتداد/النوع
+# عند الرفع، هذا الملف يمنع تنفيذه كـ PHP إن كان داخل مجلد المرفقات العام مباشرة
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|phps|pht)$">
+    Require all denied
+</FilesMatch>

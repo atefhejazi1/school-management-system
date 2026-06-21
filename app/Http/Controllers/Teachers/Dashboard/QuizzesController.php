@@ -53,15 +53,17 @@ class QuizzesController extends Controller
 
     public function show($id)
     {
-        $questions = Question::where('quizze_id', $id)->get();
-        $quizz = Quizze::findorFail($id);
+        // findOrFail مقيّد بـ teacher_id لمنع أي معلم من عرض أسئلة وإجابات اختبار معلم آخر
+        // بمجرد تغيير الرقم في الرابط، فالحماية على مستوى المدرسة (BelongsToSchool) لا تكفي هنا
+        $quizz = Quizze::where('teacher_id', Auth::user()->id)->findOrFail($id);
+        $questions = Question::where('quizze_id', $quizz->id)->get();
 
         return view('pages.Teachers.Dashboard.Questions.index', compact('questions', 'quizz'));
     }
 
     public function edit($id)
     {
-        $quizz = Quizze::findorFail($id);
+        $quizz = Quizze::where('teacher_id', Auth::user()->id)->findOrFail($id);
         $data['grades'] = Grade::all();
         $data['subjects'] = Subject::where('teacher_id', Auth::user()->id)->get();
         return view('pages.Teachers.dashboard.Quizzes.edit', $data, compact('quizz'));
@@ -71,7 +73,7 @@ class QuizzesController extends Controller
     public function update(Request $request)
     {
         try {
-            $quizz = Quizze::findorFail($request->id);
+            $quizz = Quizze::where('teacher_id', Auth::user()->id)->findOrFail($request->id);
             $quizz
                 ->setTranslation('name', 'en', $request->Name_en)
                 ->setTranslation('name', 'ar', $request->Name_ar);
@@ -92,7 +94,7 @@ class QuizzesController extends Controller
     public function destroy($id)
     {
         try {
-            Quizze::destroy($id);
+            Quizze::where('teacher_id', Auth::user()->id)->where('id', $id)->firstOrFail()->delete();
             toastr()->error(trans('messages.Delete'));
             return redirect()->back();
         } catch (\Exception $e) {
@@ -103,12 +105,16 @@ class QuizzesController extends Controller
 
     public function student_quiz($quizze_id)
     {
+        // التأكد من أن الاختبار يخص المعلم الحالي قبل عرض درجات الطلاب فيه
+        Quizze::where('teacher_id', Auth::user()->id)->findOrFail($quizze_id);
         $degrees = Degree::where('quizze_id', $quizze_id)->get();
         return view('pages.Teachers.dashboard.Quizzes.student_quiz', compact('degrees'));
     }
 
     public function repeat_quiz(Request $request)
     {
+        // التأكد من أن الاختبار يخص المعلم الحالي قبل حذف محاولة الطالب وإعادة فتحه
+        Quizze::where('teacher_id', Auth::user()->id)->findOrFail($request->quizze_id);
         Degree::where('student_id', $request->student_id)->where('quizze_id', $request->quizze_id)->delete();
         toastr()->success('تم فتح الاختبار مرة اخرى للطالب');
         return redirect()->back();

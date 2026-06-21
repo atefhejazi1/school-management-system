@@ -30,6 +30,10 @@ class StudentController extends Controller
     {
 
         try {
+            // التأكد من أن القسم المُرسَل ضمن الطلب يخص المعلم الحالي فعلاً عبر جدول teacher_section،
+            // وإلا يمكن لأي معلم تسجيل حضور لطلاب لا يُدرّسهم بمجرد تمرير section_id مختلف
+            $teacherSectionIds = DB::table('teacher_section')->where('teacher_id', auth()->user()->id)->pluck('section_id');
+            abort_unless($teacherSectionIds->contains((int) $request->section_id), 403);
 
             $attenddate = date('Y-m-d');
             foreach ($request->attendences as $studentid => $attendence) {
@@ -48,7 +52,7 @@ class StudentController extends Controller
                     'grade_id' => $request->grade_id,
                     'classroom_id' => $request->classroom_id,
                     'section_id' => $request->section_id,
-                    'teacher_id' => 1,
+                    'teacher_id' => auth()->user()->id,
                     'attendence_date' => $attenddate,
                     'attendence_status' => $attendence_status
                 ]);
@@ -65,6 +69,11 @@ class StudentController extends Controller
     {
 
         try {
+            // التأكد من أن الطالب المُراد تعديل حضوره ضمن أحد أقسام المعلم الحالي فعلاً،
+            // وإلا يمكن لأي معلم تعديل حالة حضور طالب لا يُدرّسه بمجرد تمرير student_id مختلف
+            $teacherSectionIds = DB::table('teacher_section')->where('teacher_id', auth()->user()->id)->pluck('section_id');
+            students::where('id', $request->id)->whereIn('section_id', $teacherSectionIds)->firstOrFail();
+
             $date = date('Y-m-d');
             $student_id = Attendance::where('attendence_date', $date)->where('student_id', $request->id)->first();
             if ($request->attendences == 'presence') {

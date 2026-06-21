@@ -44,7 +44,9 @@ class ProfileController extends Controller
 
     public function update(Request $request, $id)
     {
-        $information = students::findorFail($id);
+        // $id قادم من الرابط ولا يُعتمَد عليه: يجب ألا يستطيع أي طالب تعديل بيانات طالب آخر
+        // (بما فيها كلمة المرور) بمجرد تغيير الرقم في الطلب، لذا نستخدم هوية المستخدم المسجَّل دخوله فقط
+        $information = students::findorFail(Auth::id());
 
         if (!empty($request->password)) {
             $information

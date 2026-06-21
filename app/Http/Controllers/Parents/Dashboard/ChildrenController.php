@@ -11,7 +11,6 @@ use App\Models\ReceiptStudent;
 use App\Models\students;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ChildrenController extends Controller
@@ -60,14 +59,20 @@ class ChildrenController extends Controller
             'to.date_format' => 'صيغة التاريخ يجب ان تكون yyyy-mm-dd',
         ]);
 
-        $ids = DB::table('teacher_section')->where('teacher_id', Auth::user()->id)->pluck('section_id');
-        $students = students::whereIn('section_id', $ids)->get();
+        // نطاق الأبناء الفعلي لولي الأمر الحالي فقط — لمنع أي ولي أمر من قراءة سجلات حضور
+        // طالب لا ينتمي إليه عبر تمرير student_id تعسفياً (كانت هذه الدالة تستخدم خطأً
+        // معرّف ولي الأمر كمعرّف معلم في جدول teacher_section، وهو غير ذي صلة بالمرة)
+        $myChildrenIds = students::where('parent_id', Auth::user()->id)->pluck('id');
+        $students = students::where('parent_id', Auth::user()->id)->get();
 
         if ($request->student_id == 0) {
 
-            $Students = Attendance::whereBetween('attendence_date', [$request->from, $request->to])->get();
+            $Students = Attendance::whereBetween('attendence_date', [$request->from, $request->to])
+                ->whereIn('student_id', $myChildrenIds)->get();
             return view('pages.parents.Attendance.index', compact('Students', 'students'));
         } else {
+
+            abort_unless($myChildrenIds->contains((int) $request->student_id), 403);
 
             $Students = Attendance::whereBetween('attendence_date', [$request->from, $request->to])
                 ->where('student_id', $request->student_id)->get();
@@ -109,8 +114,9 @@ class ChildrenController extends Controller
 
     public function update(Request $request, $id)
     {
-
-        $information = My_Parent::findorFail($id);
+        // $id قادم من الرابط ولا يُعتمَد عليه: يجب ألا يستطيع أي ولي أمر تعديل بيانات ولي أمر آخر
+        // (بما فيها كلمة المرور) بمجرد تغيير الرقم في الطلب، لذا نستخدم هوية المستخدم المسجَّل دخوله فقط
+        $information = My_Parent::findorFail(Auth::user()->id);
 
         if (!empty($request->password)) {
             $information->Name_Father = ['en' => $request->Name_en, 'ar' => $request->Name_ar];
