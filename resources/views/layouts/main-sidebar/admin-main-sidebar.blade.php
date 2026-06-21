@@ -295,6 +295,23 @@
             </ul>
         </li>
 
+        <li>
+            @php $reportCardsActive = request()->routeIs('Exams.*') || request()->routeIs('ReportCards.*'); @endphp
+            <button data-bs-toggle="collapse"
+                    data-bs-target="#sub-report-cards"
+                    class="sb-link {{ $reportCardsActive ? 'sb-active' : '' }}"
+                    aria-expanded="{{ $reportCardsActive ? 'true' : 'false' }}"
+                    aria-controls="sub-report-cards">
+                <span class="sb-icon"><i class="fas fa-file-alt"></i></span>
+                <span class="sb-text">{{ trans('main_trans.report_cards') }}</span>
+                <i class="fas fa-chevron-left sb-arrow"></i>
+            </button>
+            <ul class="collapse sb-submenu {{ $reportCardsActive ? 'show' : '' }}" id="sub-report-cards">
+                <li><a href="{{ route('Exams.index') }}" class="{{ request()->routeIs('Exams.index') ? 'sub-active' : '' }}">{{ trans('main_trans.exam_terms') }}</a></li>
+                <li><a href="{{ route('ReportCards.index') }}" class="{{ request()->routeIs('ReportCards.*') ? 'sub-active' : '' }}">{{ trans('main_trans.report_cards') }}</a></li>
+            </ul>
+        </li>
+
     </ul>
 
     {{-- ── People ── --}}

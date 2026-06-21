@@ -7,10 +7,12 @@ use App\Http\Controllers\FullCalenderController;
 use App\Http\Controllers\Grades\GradeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\questions\QuestionController;
+use App\Http\Controllers\Quizzes\ExamController;
 use App\Http\Controllers\Quizzes\QuizzeController;
 use App\Http\Controllers\Sections\SectionsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\Students\FeeInvoiceController;
+use App\Http\Controllers\Students\ReportCardController;
 use App\Http\Controllers\Students\FeesController;
 use App\Http\Controllers\Students\GraduatedController;
 use App\Http\Controllers\Students\LibraryController;
@@ -147,6 +149,11 @@ Route::group(
         Route::resource('subjects', SubjectController::class);
         Route::resource('Quizzes', QuizzeController::class);
         Route::resource('questions', QuestionController::class);
+        Route::resource('Exams', ExamController::class)->only(['index', 'store', 'destroy']);
+
+        //==============================Report Cards (PDF)============================
+        Route::get('ReportCards', [ReportCardController::class, 'index'])->name('ReportCards.index');
+        Route::get('ReportCards/{studentId}/{examId}/pdf', [ReportCardController::class, 'generateReportCardPdf'])->name('ReportCards.pdf');
 
 
         Route::resource('online_classes', OnlineClassController::class);

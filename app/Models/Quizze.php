@@ -44,8 +44,18 @@ class Quizze extends Model
         return $this->belongsTo(sections::class, 'section_id');
     }
 
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class, 'exam_id');
+    }
+
     public function degree()
     {
         return $this->hasMany(Degree::class);
+    }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'quizze_id');
     }
 }

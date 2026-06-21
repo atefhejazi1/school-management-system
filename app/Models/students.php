@@ -82,4 +82,10 @@ class students extends Authenticatable
      {
          return $this->hasMany(Attendance::class, 'student_id');
      }
+
+     // علاقة بين جدول الطلاب وعلامات الاختبارات (degrees)، تُستخدم في حساب بطاقة الأداء الدراسي
+     public function degrees()
+     {
+         return $this->hasMany(Degree::class, 'student_id');
+     }
 }

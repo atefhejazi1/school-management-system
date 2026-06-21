@@ -22,6 +22,8 @@ use App\Repository\QuizzRepository;
 use App\Repository\QuizzRepositoryInterface;
 use App\Repository\ReceiptStudentsRepository;
 use App\Repository\ReceiptStudentsRepositoryInterface;
+use App\Repository\ReportCardRepository;
+use App\Repository\ReportCardRepositoryInterface;
 use App\Repository\StudentGraduatedRepository;
 use App\Repository\StudentGraduatedRepositoryInterface;
 use App\Repository\StudentPromotionRepository;
@@ -55,6 +57,8 @@ class RepoServiceProvider extends ServiceProvider
         $this->app->bind(QuizzRepositoryInterface::class, QuizzRepository::class);
         $this->app->bind(QuestionRepositoryInterface::class, QuestionRepository::class);
         $this->app->bind(LibraryRepositoryInterface::class, LibraryRepository::class);
+        $this->app->bind(ExamRepositoryInterface::class, ExamRepository::class);
+        $this->app->bind(ReportCardRepositoryInterface::class, ReportCardRepository::class);
     }
 
     /**

@@ -129,6 +129,8 @@ return [
     // ── Sidebar items ──
     'subjects'            => 'Subjects',
     'subjects_list'       => 'Subjects List',
+    'exam_terms'          => 'Exam Terms',
+    'report_cards'        => 'Report Cards',
     'fees_title'          => 'Tuition Fees',
     'invoices'            => 'Invoices',
     'outstanding_invoices'=> 'Outstanding Invoices',
