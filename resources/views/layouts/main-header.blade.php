@@ -1,3 +1,33 @@
+@php
+    // المستخدم الحالي يُحدَّد بحسب الحارس الفعلي (Multi-Guard) — auth()->user() الافتراضي
+    // يقرأ من حارس web فقط، فيظهر فارغاً لأي معلم/طالب/ولي أمر ويسقط على بيانات المدير
+    if (auth('student')->check()) {
+        $hdGuard = 'student';
+        $hdUser = auth('student')->user();
+        $hdName = $hdUser->name;
+        $hdRoleLabel = trans('main_trans.role_student');
+        $hdProfileRoute = route('profile-student.index');
+    } elseif (auth('teacher')->check()) {
+        $hdGuard = 'teacher';
+        $hdUser = auth('teacher')->user();
+        $hdName = $hdUser->Name;
+        $hdRoleLabel = trans('main_trans.role_teacher');
+        $hdProfileRoute = route('profile.show');
+    } elseif (auth('parent')->check()) {
+        $hdGuard = 'parent';
+        $hdUser = auth('parent')->user();
+        $hdName = $hdUser->Name_Father;
+        $hdRoleLabel = trans('main_trans.role_parent');
+        $hdProfileRoute = route('profile.show.parent');
+    } else {
+        $hdGuard = 'web';
+        $hdUser = auth('web')->user();
+        $hdName = $hdUser->name ?? trans('main_trans.role_admin');
+        $hdRoleLabel = trans('main_trans.admin_role_label');
+        $hdProfileRoute = route('profile.edit');
+    }
+@endphp
+
 <header class="admin-header" id="adminHeader">
 
     {{-- ── Mobile: hamburger to open sidebar offcanvas ── --}}
@@ -118,37 +148,31 @@
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
                 <div class="hd-avatar">
-                    {{ mb_substr(auth()->user()->name ?? 'A', 0, 1) }}
+                    {{ mb_substr($hdName ?? 'A', 0, 1) }}
                 </div>
                 <div class="hd-user-info d-none d-sm-block">
-                    <span class="hd-user-name">{{ auth()->user()->name ?? trans('main_trans.role_admin') }}</span>
-                    <span class="hd-user-role">{{ trans('main_trans.admin_role_label') }}</span>
+                    <span class="hd-user-name">{{ $hdName }}</span>
+                    <span class="hd-user-role">{{ $hdRoleLabel }}</span>
                 </div>
             </button>
             <ul class="dropdown-menu dropdown-menu-end hd-user-menu">
                 <li>
-                    <a class="dropdown-item hd-menu-item" href="{{ route('profile.edit') }}">
+                    <a class="dropdown-item hd-menu-item" href="{{ $hdProfileRoute }}">
                         <i class="fas fa-user-circle"></i>
                         {{ trans('main_trans.profile') }}
                     </a>
                 </li>
-                <li>
-                    <a class="dropdown-item hd-menu-item" href="{{ route('settings.index') }}">
-                        <i class="fas fa-gear"></i>
-                        {{ trans('main_trans.system_settings') }}
-                    </a>
-                </li>
+                @if ($hdGuard === 'web')
+                    <li>
+                        <a class="dropdown-item hd-menu-item" href="{{ route('settings.index') }}">
+                            <i class="fas fa-gear"></i>
+                            {{ trans('main_trans.system_settings') }}
+                        </a>
+                    </li>
+                @endif
                 <li><hr class="dropdown-divider my-1"></li>
                 <li>
-                    @if (auth('student')->check())
-                        <form method="POST" action="{{ route('custom.logout', 'student') }}">
-                    @elseif (auth('teacher')->check())
-                        <form method="POST" action="{{ route('custom.logout', 'teacher') }}">
-                    @elseif (auth('parent')->check())
-                        <form method="POST" action="{{ route('custom.logout', 'parent') }}">
-                    @else
-                        <form method="POST" action="{{ route('custom.logout', 'web') }}">
-                    @endif
+                    <form method="POST" action="{{ route('custom.logout', $hdGuard) }}">
                     @csrf
                     <button type="submit" class="dropdown-item hd-menu-item hd-logout-item">
                         <i class="fas fa-right-from-bracket"></i>

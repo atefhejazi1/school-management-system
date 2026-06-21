@@ -674,6 +674,7 @@
     @include('layouts.partials.impersonation-banner')
 
     {{-- ══ SIDEBAR — Offcanvas (always visible on desktop, slide-in on mobile) ══ --}}
+    @include('layouts.main-sidebar.sidebar-styles')
     <div class="offcanvas offcanvas-start"
          id="adminSidebar"
          data-bs-backdrop="false"

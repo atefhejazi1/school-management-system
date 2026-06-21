@@ -44,6 +44,7 @@ return [
     'status'                      => 'الحالة',
     'status_partially_paid'       => 'مدفوعة جزئياً',
     'status_unpaid'                => 'غير مدفوعة',
+    'status_paid'                  => 'مدفوعة بالكامل',
     'no_outstanding_invoices'     => 'لا توجد فواتير غير مسدَّدة حالياً',
     'record_payment_action'      => 'تسجيل دفعة',
     'record_payment_title'       => 'تسجيل دفعة جديدة',

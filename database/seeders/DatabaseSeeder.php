@@ -99,6 +99,13 @@ class DatabaseSeeder extends Seeder
 
             $this->seedSchool($school);
         }
+
+        // أي مدرسة أخرى على المنصة لم تُذكر أعلاه (مثلاً مدرسة تمت الموافقة على طلب
+        // تسجيلها فعلياً من خلال لوحة منشئ المنصة أثناء الاختبار) تحصل أيضاً على بيانات
+        // تجريبية كاملة عند إعادة تشغيل السيدنج، حتى لا تظهر فارغة بدون بيانات بالخطأ
+        School::whereNotIn('slug', collect($schools)->pluck('slug'))
+            ->get()
+            ->each(fn (School $school) => $this->seedSchool($school));
     }
 
     /**

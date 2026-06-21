@@ -90,6 +90,23 @@ return [
     'sidebar_financial_report' => 'تقرير المالية',
     'sidebar_profile' => 'الملف الشخصي',
 
+    'pd_overview' => 'نظرة عامة',
+    'pd_children_count' => 'عدد الابناء',
+    'pd_attendance_rate' => 'معدل الحضور',
+    'pd_average_score' => 'المعدل العام',
+    'pd_fee_balance' => 'المتبقي من الرسوم',
+    'pd_no_attendance_yet' => 'لا توجد بيانات حضور بعد',
+    'pd_no_scores_yet' => 'لا توجد نتائج بعد',
+    'pd_my_children' => 'أبنائي',
+    'pd_view_results' => 'النتائج',
+    'pd_no_children' => 'لا يوجد أبناء مسجلون بعد',
+    'pd_recent_attendance' => 'سجل الحضور الأخير',
+    'pd_no_attendance' => 'لا توجد سجلات حضور بعد',
+    'pd_qa_children_sub' => 'عرض قائمة الأبناء',
+    'pd_qa_attendance_sub' => 'تقرير الحضور والغياب',
+    'pd_qa_fees_sub' => 'تقرير المالية والفواتير',
+    'pd_qa_profile_sub' => 'تعديل بيانات الحساب',
+
 
 
 

@@ -44,6 +44,7 @@ return [
     'status'                      => 'Status',
     'status_partially_paid'       => 'Partially Paid',
     'status_unpaid'                => 'Unpaid',
+    'status_paid'                  => 'Fully Paid',
     'no_outstanding_invoices'     => 'There are no outstanding invoices right now',
     'record_payment_action'      => 'Record Payment',
     'record_payment_title'       => 'Record New Payment',

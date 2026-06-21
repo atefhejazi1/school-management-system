@@ -9,6 +9,10 @@ use App\Http\Controllers\Teachers\Dashboard\ProfileController;
 use App\Http\Controllers\Teachers\Dashboard\QuestionController;
 use App\Http\Controllers\Teachers\Dashboard\QuizzesController;
 use App\Http\Controllers\Teachers\Dashboard\StudentController;
+use App\Models\Attendance;
+use App\Models\Online_class;
+use App\Models\Quizze;
+use App\Models\students;
 use App\Models\Teachers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +28,51 @@ Route::group(
 
         // 🔐 مسارات المعلمين
         Route::get('/teacher/dashboard', function () {
-            $ids = Teachers::findorFail(Auth::user()->id)->Sections()->pluck('section_id');
-            $data['count_sections'] = $ids->count();
-            $data['count_students'] = \App\Models\students::whereIn('section_id', $ids)->count();
-            return view('pages.Teachers.Dashboard.dashboard', $data);
+            $teacher = Auth::user();
+            $sectionIds = Teachers::findorFail($teacher->id)->Sections()->pluck('section_id');
+
+            $countSections = $sectionIds->count();
+            $countStudents = students::whereIn('section_id', $sectionIds)->count();
+            $countQuizzes = Quizze::where('teacher_id', $teacher->id)->count();
+
+            $upcomingClasses = Online_class::where('created_by', $teacher->id)
+                ->where('start_at', '>=', now())
+                ->orderBy('start_at')
+                ->take(5)
+                ->get();
+            $countUpcomingClasses = Online_class::where('created_by', $teacher->id)
+                ->where('start_at', '>=', now())
+                ->count();
+
+            $recentStudents = students::whereIn('section_id', $sectionIds)
+                ->with('grade', 'classroom', 'section')
+                ->latest()
+                ->take(8)
+                ->get();
+
+            $recentQuizzes = Quizze::where('teacher_id', $teacher->id)
+                ->with('subject', 'section')
+                ->latest()
+                ->take(8)
+                ->get();
+
+            $recentAttendance = Attendance::whereIn('section_id', $sectionIds)
+                ->with('students')
+                ->latest('attendence_date')
+                ->take(8)
+                ->get();
+
+            return view('pages.Teachers.Dashboard.dashboard', [
+                'teacher' => $teacher,
+                'countSections' => $countSections,
+                'countStudents' => $countStudents,
+                'countQuizzes' => $countQuizzes,
+                'upcomingClasses' => $upcomingClasses,
+                'countUpcomingClasses' => $countUpcomingClasses,
+                'recentStudents' => $recentStudents,
+                'recentQuizzes' => $recentQuizzes,
+                'recentAttendance' => $recentAttendance,
+            ]);
         })->name('teacher.dashboard');
 
         // Route::group(['namespace' => 'Teachers\dashboard'], function () { laravel 8
