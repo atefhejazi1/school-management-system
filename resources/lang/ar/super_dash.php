@@ -85,6 +85,8 @@ return [
     'search_schools_placeholder'    => 'البحث باسم المدرسة...',
     'configure_settings_link'       => 'ضبط إعدادات المنصة',
     'no_recent_schools'             => 'لا توجد مدارس مسجَّلة حتى الآن',
+    'actions_th'                    => 'العمليات',
+    'view_school_action'             => 'عرض / إدارة',
 
     // ── School requests page ──
     'total_results_label'        => 'إجمالي النتائج',

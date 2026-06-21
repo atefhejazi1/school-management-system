@@ -74,6 +74,7 @@
                 <th>{{ trans('super_dash.school_name_th') }}</th>
                 <th>{{ trans('super_dash.school_status_th') }}</th>
                 <th>{{ trans('super_dash.date_th') }}</th>
+                <th>{{ trans('super_dash.actions_th') }}</th>
             </tr>
             </thead>
             <tbody id="sadSchoolRows">
@@ -90,10 +91,15 @@
                         @endif
                     </td>
                     <td>{{ $school->created_at->format('Y-m-d') }}</td>
+                    <td>
+                        <a href="{{ route('super-admin.plan-selection.index', $school) }}" class="sad-row-action">
+                            {{ trans('super_dash.view_school_action') }}
+                        </a>
+                    </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3" class="sad-empty">{{ trans('super_dash.no_recent_schools') }}</td>
+                    <td colspan="4" class="sad-empty">{{ trans('super_dash.no_recent_schools') }}</td>
                 </tr>
             @endforelse
             </tbody>
@@ -160,6 +166,11 @@
         .sad-table tbody tr:last-child td { border-bottom: none; }
         .sad-school-name { font-weight: 700; }
         .sad-empty { text-align: center; padding: 30px; color: #94a3b8; }
+        .sad-row-action {
+            display: inline-block; background: #ffffff; color: #059669; border: 1px solid #059669; border-radius: 0;
+            padding: 5px 14px; font-family: 'Cairo', sans-serif; font-size: .78rem; font-weight: 700; text-decoration: none;
+        }
+        .sad-row-action:hover { background: #059669; color: #ffffff; }
 
         @media (max-width: 991px) { .sad-metrics-grid { grid-template-columns: repeat(2, 1fr); } .sad-metric:nth-child(2n) { border-inline-end: none; } .sad-metric:nth-child(4n) { border-inline-end: 1px solid #e2e8f0; } }
         @media (max-width: 575px)  { .sad-metrics-grid { grid-template-columns: 1fr; } .sad-metric { border-inline-end: none !important; border-bottom: 1px solid #f1f5f9; } .sad-metric:last-child { border-bottom: none; } }

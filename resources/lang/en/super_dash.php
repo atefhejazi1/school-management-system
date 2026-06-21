@@ -85,6 +85,8 @@ return [
     'search_schools_placeholder'    => 'Search by school name...',
     'configure_settings_link'       => 'Configure Platform Settings',
     'no_recent_schools'             => 'No schools registered yet',
+    'actions_th'                    => 'Actions',
+    'view_school_action'             => 'View / Manage',
 
     // ── School requests page ──
     'total_results_label'        => 'Total Results',
