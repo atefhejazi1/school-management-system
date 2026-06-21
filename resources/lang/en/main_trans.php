@@ -131,6 +131,7 @@ return [
     'subjects_list'       => 'Subjects List',
     'exam_terms'          => 'Exam Terms',
     'report_cards'        => 'Report Cards',
+    'audit_logs'          => 'Security Audit Log',
     'fees_title'          => 'Tuition Fees',
     'invoices'            => 'Invoices',
     'outstanding_invoices'=> 'Outstanding Invoices',

@@ -24,6 +24,7 @@ use App\Http\Controllers\Students\ReceiptStudentController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\Students\StudentsController;
 use App\Http\Controllers\Subjects\SubjectController;
+use App\Http\Controllers\SystemAuditLogController;
 use App\Http\Controllers\SuperAdmin\DashboardController as SuperAdminDashboardController;
 use App\Http\Controllers\SuperAdmin\ImpersonationController;
 use App\Http\Controllers\SuperAdmin\PlanSelectionController;
@@ -166,6 +167,9 @@ Route::group(
 
         //==============================Setting============================
         Route::resource('settings', SettingController::class);
+
+        //==============================Audit Logs (Security)============================
+        Route::get('AuditLogs', [SystemAuditLogController::class, 'index'])->name('AuditLogs.index');
     }
 );
 

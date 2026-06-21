@@ -475,6 +475,14 @@
         </li>
 
         <li>
+            <a href="{{ route('AuditLogs.index') }}"
+               class="sb-link {{ request()->routeIs('AuditLogs.*') ? 'sb-active' : '' }}">
+                <span class="sb-icon"><i class="fas fa-shield-alt"></i></span>
+                <span class="sb-text">{{ trans('main_trans.audit_logs') }}</span>
+            </a>
+        </li>
+
+        <li>
             <button data-bs-toggle="collapse"
                     data-bs-target="#sub-users"
                     class="sb-link"

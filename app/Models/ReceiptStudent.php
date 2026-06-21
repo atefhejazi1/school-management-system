@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use App\Traits\BelongsToSchool;
+use App\Traits\LogsSystemActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class ReceiptStudent extends Model
 {
     // تفعيل عزل البيانات بين المدارس (Multi-Tenancy) — يضيف فلتر school_id تلقائياً بصمت
     use BelongsToSchool;
+    // تسجيل كل عملية سداد جديدة تلقائياً في سجل التدقيق (audit_logs)
+    use LogsSystemActivity;
     protected $guarded = [];
 
     public function student()

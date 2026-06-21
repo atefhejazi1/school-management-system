@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repository\AttendanceRepository;
 use App\Repository\AttendanceRepositoryInterface;
+use App\Repository\AuditLogRepository;
+use App\Repository\AuditLogRepositoryInterface;
 use App\Repository\ExamRepository;
 use App\Repository\ExamRepositoryInterface;
 use App\Repository\FeeInvoicesRepository;
@@ -59,6 +61,7 @@ class RepoServiceProvider extends ServiceProvider
         $this->app->bind(LibraryRepositoryInterface::class, LibraryRepository::class);
         $this->app->bind(ExamRepositoryInterface::class, ExamRepository::class);
         $this->app->bind(ReportCardRepositoryInterface::class, ReportCardRepository::class);
+        $this->app->bind(AuditLogRepositoryInterface::class, AuditLogRepository::class);
     }
 
     /**

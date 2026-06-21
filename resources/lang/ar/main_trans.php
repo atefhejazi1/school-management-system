@@ -135,6 +135,7 @@ return [
     'subjects_list'       => 'قائمة المواد',
     'exam_terms'          => 'الفترات الامتحانية',
     'report_cards'        => 'بطاقات الأداء الدراسي',
+    'audit_logs'          => 'سجل التدقيق الأمني',
     'fees_title'          => 'الرسوم الدراسية',
     'invoices'            => 'الفواتير',
     'outstanding_invoices'=> 'الفواتير غير المسدَّدة',
