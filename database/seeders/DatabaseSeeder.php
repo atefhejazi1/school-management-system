@@ -34,39 +34,62 @@ class DatabaseSeeder extends Seeder
 
         $basicPlan = Plan::where('slug', 'basic')->first();
         $advancedPlan = Plan::where('slug', 'advanced')->first();
+        $premiumPlan = Plan::where('slug', 'premium')->first();
 
-        // ── مدرستان فعّالتان بالكامل (بيانات أكاديمية ومالية كاملة)، لاختبار أن عزل
-        // البيانات (Multi-Tenancy) يعمل بصمت وبشكل صحيح بين مدرسة وأخرى
-        // (راجع App\Models\Scopes\SchoolScope)، وتغطية حالتي اشتراك مختلفتين:
-        // مدرسة سليمة الاشتراك، ومدرسة اشتراكها على وشك الانتهاء (لاختبار شريط التنبيه) ──
-        $schoolA = School::firstOrCreate(
-            ['slug' => 'al-amal-model-school'],
+        // ── ثلاث مدارس فعّالة بالكامل (بيانات أكاديمية ومالية كاملة لكل واحدة منها)،
+        // لاختبار أن عزل البيانات (Multi-Tenancy) يعمل بصمت وبشكل صحيح بين أكثر من
+        // مدرستين معاً (راجع App\Models\Scopes\SchoolScope)، وتغطية حالتي اشتراك
+        // مختلفتين: مدرستان سليمتا الاشتراك، ومدرسة اشتراكها على وشك الانتهاء
+        // (لاختبار شريط التنبيه) ──
+        $schools = [
             [
+                'slug' => 'al-amal-model-school',
                 'name' => 'مدرسة الأمل النموذجية (Al-Amal School)',
                 'company_email' => 'info@al-amal-school.test',
                 'phone' => '0100000001',
-                'status' => 'active',
+                'admin_email' => 'admin@al-amal-model-school.test',
                 'plan_id' => $advancedPlan?->id,
                 'subscription_expires_at' => now()->addDays(90), // اشتراك سليم
-            ]
-        );
-
-        $schoolB = School::firstOrCreate(
-            ['slug' => 'al-najah-academy'],
+            ],
             [
+                'slug' => 'al-najah-academy',
                 'name' => 'أكاديمية النجاح (Al-Najah Academy)',
                 'company_email' => 'info@al-najah-academy.test',
                 'phone' => '0100000002',
-                'status' => 'active',
+                'admin_email' => 'admin@al-najah-academy.test',
                 'plan_id' => $basicPlan?->id,
                 'subscription_expires_at' => now()->addDays(5), // يفعّل شريط تنبيه اقتراب الانتهاء
-            ]
-        );
+            ],
+            [
+                'slug' => 'al-rowad-academy',
+                'name' => 'أكاديمية الرواد (Al-Rowad Academy)',
+                'company_email' => 'info@al-rowad-academy.test',
+                'phone' => '0100000003',
+                // بريد المدير هنا مطابق تماماً لبريد طلب التسجيل التجريبي "مونا عبد الله"
+                // (راجع SchoolRegistrationSeeder)، لمحاكاة مدرسة وافق منشئ المنصة على
+                // طلبها فعلياً وأصبح لها الآن حساب مدير ولوحة تحكم كاملة بالبيانات
+                'admin_email' => 'mona@al-rowad.test',
+                'plan_id' => $premiumPlan?->id,
+                'subscription_expires_at' => now()->addDays(120), // اشتراك سليم
+            ],
+        ];
 
-        foreach ([$schoolA, $schoolB] as $school) {
+        foreach ($schools as $schoolData) {
+            $school = School::firstOrCreate(
+                ['slug' => $schoolData['slug']],
+                [
+                    'name' => $schoolData['name'],
+                    'company_email' => $schoolData['company_email'],
+                    'phone' => $schoolData['phone'],
+                    'status' => 'active',
+                    'plan_id' => $schoolData['plan_id'],
+                    'subscription_expires_at' => $schoolData['subscription_expires_at'],
+                ]
+            );
+
             // حساب مدير لهذه المدرسة، حتى يمكن تسجيل الدخول إليها فعلياً واختبار عزل البيانات
             User::firstOrCreate(
-                ['email' => 'admin@' . $school->slug . '.test'],
+                ['email' => $schoolData['admin_email']],
                 [
                     'name' => 'مدير ' . $school->name,
                     'password' => 'password', // يُشفَّر تلقائياً بفضل cast('hashed') في نموذج User
@@ -76,49 +99,6 @@ class DatabaseSeeder extends Seeder
 
             $this->seedSchool($school);
         }
-
-        // ── مدرستان إضافيتان "خفيفتان" (بدون بيانات أكاديمية كاملة) فقط لاختبار حالات
-        // وصول خاصة لا تحتاج بيانات طلاب/معلمين: مدرسة معلَّقة (للوصول كمدير مدرسة معلَّق)،
-        // ومدرسة اشتراكها منتهٍ فعلاً (لاختبار صفحة خطأ انتهاء الاشتراك 403) ──
-        $schoolSuspended = School::firstOrCreate(
-            ['slug' => 'al-baraka-school-suspended'],
-            [
-                'name' => 'مدرسة البركة (معلَّقة - لأغراض الاختبار)',
-                'company_email' => 'info@al-baraka-school.test',
-                'phone' => '0100000003',
-                'status' => 'suspended',
-                'plan_id' => $basicPlan?->id,
-                'subscription_expires_at' => now()->addDays(60),
-            ]
-        );
-        User::firstOrCreate(
-            ['email' => 'admin@' . $schoolSuspended->slug . '.test'],
-            [
-                'name' => 'مدير ' . $schoolSuspended->name,
-                'password' => 'password',
-                'school_id' => $schoolSuspended->id,
-            ]
-        );
-
-        $schoolExpired = School::firstOrCreate(
-            ['slug' => 'al-fajr-school-expired'],
-            [
-                'name' => 'مدرسة الفجر (اشتراك منتهٍ - لأغراض الاختبار)',
-                'company_email' => 'info@al-fajr-school.test',
-                'phone' => '0100000004',
-                'status' => 'active',
-                'plan_id' => $basicPlan?->id,
-                'subscription_expires_at' => now()->subDays(2), // اشتراك منتهٍ فعلاً
-            ]
-        );
-        User::firstOrCreate(
-            ['email' => 'admin@' . $schoolExpired->slug . '.test'],
-            [
-                'name' => 'مدير ' . $schoolExpired->name,
-                'password' => 'password',
-                'school_id' => $schoolExpired->id,
-            ]
-        );
     }
 
     /**

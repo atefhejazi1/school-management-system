@@ -27,9 +27,9 @@ class SchoolRegistrationSeeder extends Seeder
                 'status' => 'pending',
             ],
             [
-                'school_name' => 'أكاديمية الرواد',
+                'school_name' => 'أكاديمية الرؤية',
                 'contact_name' => 'منى عبد الله',
-                'email' => 'mona@al-rowad.test',
+                'email' => 'mona@al-roya.test',
                 'phone' => '0102222222',
                 'city' => 'الجيزة',
                 'student_count' => 'less_100',
