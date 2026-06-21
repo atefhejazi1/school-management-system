@@ -6,6 +6,7 @@ use App\Models\Fee_invoice;
 use App\Models\FundAccount;
 use App\Models\ReceiptStudent;
 use App\Models\StudentAccount;
+use App\Services\WhatsAppNotificationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
@@ -119,9 +120,39 @@ class RecordPayment extends Component
             $studentAccount->save();
         });
 
+        $this->notifyParentOfPayment($invoice);
+
         $this->dispatch('payment-recorded');
         toastr()->success(trans('Fees_trans.payment_recorded_success'));
         $this->closeModal();
+    }
+
+    /**
+     * إشعار فوري لولي الأمر عبر واتساب بالمبلغ المُستلَم والمتبقي الجديد على الفاتورة.
+     * نُعيد جلب balance_amount هنا (بعد إغلاق المعاملة) وليس قبلها، لأنه Accessor محتسَب
+     * لحظياً من دفتر الأستاذ ولا بد أن يعكس الدفعة التي حُفظت للتو. فشل الإرسال هنا لا
+     * يجوز أن يُرجِع المستخدم لرسالة خطأ بعد أن نجحت عملية تسجيل الدفعة المحاسبية فعلاً.
+     */
+    private function notifyParentOfPayment(Fee_invoice $invoice): void
+    {
+        try {
+            $student = $invoice->student?->load('myparent');
+            $phone = $student?->myparent?->Phone_Father ?? $student?->myparent?->Phone_Mother;
+
+            if (! $student || ! $phone) {
+                return;
+            }
+
+            $message = trans('Fees_trans.payment_whatsapp_message', [
+                'amount' => number_format($this->amount, 2),
+                'name' => $student->name,
+                'balance' => number_format($invoice->balance_amount, 2),
+            ], 'ar');
+
+            app(WhatsAppNotificationService::class)->sendDynamicMessage($phone, $message);
+        } catch (\Exception $e) {
+            report($e);
+        }
     }
 
     public function render()

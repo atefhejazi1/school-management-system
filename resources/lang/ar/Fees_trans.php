@@ -56,4 +56,7 @@ return [
     'amount_exceeds_balance'     => 'المبلغ المُدخل أكبر من المتبقي على الفاتورة',
     'payment_against_invoice'    => 'دفعة على الفاتورة رقم :id',
     'payment_recorded_success'   => 'تم تسجيل الدفعة بنجاح',
+
+    // ── رسالة واتساب تلقائية لولي الأمر عند تسجيل دفعة جديدة ──
+    'payment_whatsapp_message'   => 'عزيزي ولي الأمر، تم استلام دفعة بقيمة :amount على حساب الطالب :name. المتبقي الحالي: :balance.',
 ];

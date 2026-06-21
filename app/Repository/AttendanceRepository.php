@@ -10,9 +10,13 @@ use App\Models\Student;
 use App\Models\students;
 use App\Models\Teacher;
 use App\Models\Teachers;
+use App\Services\WhatsAppNotificationService;
 
 class AttendanceRepository implements AttendanceRepositoryInterface
 {
+    public function __construct(private WhatsAppNotificationService $whatsApp)
+    {
+    }
 
     public function index()
     {
@@ -47,12 +51,39 @@ class AttendanceRepository implements AttendanceRepositoryInterface
                     'attendence_date' => date('Y-m-d'),
                     'attendence_status' => $attendence_status
                 ]);
+
+                // إشعار فوري لولي الأمر عبر واتساب عند تسجيل غياب الطالب فقط (لا شيء عند الحضور)
+                if (! $attendence_status) {
+                    $this->notifyParentOfAbsence($studentid);
+                }
             }
 
             toastr()->success(trans('messages.success'));
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * يرسل رسالة واتساب تلقائية لولي أمر الطالب فور تسجيله غائباً، باستخدام هاتف
+     * الأب إن وُجد، وإلا هاتف الأم كخيار احتياطي. لا يُوقِف أي استثناء هنا عملية حفظ
+     * الحضور نفسها — فشل إرسال الإشعار لا يجوز أن يُسقِط العملية المحاسبية/الأكاديمية الأساسية.
+     */
+    private function notifyParentOfAbsence($studentId): void
+    {
+        try {
+            $student = students::with('myparent')->find($studentId);
+            $phone = $student?->myparent?->Phone_Father ?? $student?->myparent?->Phone_Mother;
+
+            if (! $student || ! $phone) {
+                return;
+            }
+
+            $message = trans('Attendance_trans.absence_whatsapp_message', ['name' => $student->name], 'ar');
+            $this->whatsApp->sendDynamicMessage($phone, $message);
+        } catch (\Exception $e) {
+            report($e);
         }
     }
 
