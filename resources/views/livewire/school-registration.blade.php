@@ -1,27 +1,14 @@
 <div>
     @if ($submitted)
-        {{-- ── Success State ── --}}
+        {{-- ── Success State — نصّي بحت بدون أي رسم متحرك أو أيقونات، فقط حدود مسطّحة ── --}}
         <div class="reg-success text-center py-5">
-            <div class="success-icon-wrap">
-                <svg viewBox="0 0 52 52" class="checkmark" xmlns="http://www.w3.org/2000/svg">
-                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
-                    <path class="checkmark-check" fill="none" d="M14 27l8 8 16-16"/>
-                </svg>
-            </div>
-            <h3 class="mt-4 fw-bold" style="color:#1e3a8a; font-size:1.6rem;">{{ trans('landing_trans.reg_success_title') }}</h3>
-            <p class="text-muted mt-2" style="font-size:1.05rem;">{!! trans('landing_trans.reg_success_sub') !!}</p>
-            <div class="mt-4 p-3 rounded-3" style="background:#f0f7ff; border:1px solid #bfdbfe; display:inline-block; min-width:260px;">
-                <div class="text-muted" style="font-size:.85rem;">{{ trans('landing_trans.reg_success_email_label') }}</div>
-                <div class="fw-bold" style="color:#1e3a8a;">{{ $email }}</div>
+            <h3 class="mt-2 fw-bold" style="color:#334155; font-size:1.5rem;">{{ trans('landing_trans.reg_success_title') }}</h3>
+            <p class="text-muted mt-2" style="font-size:1.02rem; color:#64748b;">{!! trans('landing_trans.reg_success_sub') !!}</p>
+            <div class="mt-4 p-3" style="background:#ffffff; border:1px solid #e2e8f0; display:inline-block; min-width:260px;">
+                <div style="font-size:.85rem; color:#64748b;">{{ trans('landing_trans.reg_success_email_label') }}</div>
+                <div class="fw-bold" style="color:#059669;">{{ $email }}</div>
             </div>
         </div>
-
-        <style>
-            .checkmark { width: 72px; height: 72px; }
-            .checkmark-circle { stroke: #22c55e; stroke-width: 2; stroke-dasharray: 166; stroke-dashoffset: 166; animation: stroke .6s cubic-bezier(.65,0,.45,1) forwards; }
-            .checkmark-check { stroke: #22c55e; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke .3s cubic-bezier(.65,0,.45,1) .8s forwards; }
-            @keyframes stroke { 100% { stroke-dashoffset: 0; } }
-        </style>
     @else
         {{-- ── Form ── --}}
         <form wire:submit.prevent="submit" novalidate>
@@ -30,7 +17,7 @@
                 {{-- School Name --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">🏫</span> <span>{{ trans('landing_trans.reg_label_school_name') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_school_name') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
@@ -45,7 +32,7 @@
                 {{-- Contact Name --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">👤</span> <span>{{ trans('landing_trans.reg_label_contact_name') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_contact_name') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
@@ -60,7 +47,7 @@
                 {{-- Email --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">📧</span> <span>{{ trans('landing_trans.reg_label_email') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_email') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="email"
@@ -76,7 +63,7 @@
                 {{-- Phone --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">📱</span> <span>{{ trans('landing_trans.reg_label_phone') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_phone') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
@@ -92,7 +79,7 @@
                 {{-- City --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">🏙️</span> <span>{{ trans('landing_trans.reg_label_city') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_city') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <input type="text"
@@ -107,7 +94,7 @@
                 {{-- Student Count --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">🎓</span> <span>{{ trans('landing_trans.reg_label_student_count') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_student_count') }}</span>
                         <span class="text-danger">*</span>
                     </label>
                     <select wire:model="student_count"
@@ -125,7 +112,7 @@
                 {{-- Message --}}
                 <div class="col-12">
                     <label class="form-label fw-semibold">
-                        <span class="field-icon">💬</span> <span>{{ trans('landing_trans.reg_label_message') }}</span>
+                        <span>{{ trans('landing_trans.reg_label_message') }}</span>
                     </label>
                     <textarea wire:model="message"
                               class="form-control reg-input"
@@ -155,15 +142,14 @@
                             class="btn btn-primary btn-lg px-5 py-3 reg-submit-btn"
                             wire:loading.attr="disabled">
                         <span wire:loading.remove wire:target="submit">
-                            <i class="fas fa-paper-plane me-2"></i> <span>{{ trans('landing_trans.reg_submit_btn') }}</span>
+                            <span>{{ trans('landing_trans.reg_submit_btn') }}</span>
                         </span>
                         <span wire:loading wire:target="submit">
                             <span class="spinner-border spinner-border-sm me-2" role="status"></span>
                             <span>{{ trans('landing_trans.reg_submitting') }}</span>
                         </span>
                     </button>
-                    <p class="mt-3 text-muted" style="font-size:.85rem;">
-                        <i class="fas fa-shield-halved me-1" style="color:#22c55e;"></i>
+                    <p class="mt-3" style="font-size:.85rem; color:#64748b;">
                         <span>{{ trans('landing_trans.reg_secure_note') }}</span>
                     </p>
                 </div>

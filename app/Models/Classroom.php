@@ -26,4 +26,10 @@ class Classroom extends Model
     {
         return $this->belongsTo(Grade::class, 'Grade_id');
     }
+
+    // علاقة بين الصفوف والطلاب لحساب عدد طلاب كل صف في لوحة التحكم
+    public function students()
+    {
+        return $this->hasMany(students::class, 'Classroom_id');
+    }
 }

@@ -17,7 +17,7 @@
     .td-welcome {
         background: #ffffff;
         border: 1px solid var(--border, #e2e8f0);
-        border-radius: 14px;
+        border-radius: 0;
         padding: 24px 26px;
         margin-bottom: 20px;
         display: flex;
@@ -37,7 +37,7 @@
         border: none;
         font-family: 'Cairo', sans-serif;
         font-weight: 700;
-        border-radius: 8px;
+        border-radius: 0;
         padding: 9px 18px;
         font-size: .84rem;
         text-decoration: none;
@@ -51,7 +51,7 @@
         border: 1px solid var(--border, #e2e8f0);
         font-family: 'Cairo', sans-serif;
         font-weight: 700;
-        border-radius: 8px;
+        border-radius: 0;
         padding: 8px 16px;
         font-size: .82rem;
         text-decoration: none;
@@ -71,7 +71,7 @@
     .td-kpi-card {
         background: #ffffff;
         border: 1px solid var(--border, #e2e8f0);
-        border-radius: 14px;
+        border-radius: 0;
         padding: 20px 20px 16px;
     }
     .td-kpi-lbl { font-size: .82rem; font-weight: 600; color: #334155; margin-bottom: 6px; }
@@ -119,14 +119,14 @@
     .td-table tbody td { padding: 10px 14px; font-size: .8rem; color: #334155; text-align: center; vertical-align: middle; }
     .td-name { display: flex; align-items: center; gap: 8px; justify-content: center; }
     .td-av {
-        width: 26px; height: 26px; border-radius: 7px;
+        width: 26px; height: 26px; border-radius: 0;
         display: flex; align-items: center; justify-content: center;
         font-size: .72rem; font-weight: 700; flex-shrink: 0;
         background: #ecfdf5; color: #047857;
     }
     .td-pill {
         display: inline-flex; align-items: center; padding: 2px 9px;
-        border-radius: 6px; font-size: .68rem; font-weight: 700;
+        border-radius: 0; font-size: .68rem; font-weight: 700;
     }
     .td-pill.neutral { background: #f1f5f9; color: #475569; }
     .td-pill.ok      { background: #ecfdf5; color: #047857; }
@@ -138,7 +138,7 @@
     .td-qa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; }
     .td-qa-btn {
         display: flex; flex-direction: column; gap: 2px;
-        padding: 12px 10px; border-radius: 10px;
+        padding: 12px 10px; border-radius: 0;
         text-decoration: none; color: #334155;
         border: 1px solid var(--border, #e2e8f0);
         background: #ffffff;
@@ -266,6 +266,7 @@
                 <button class="td-tab" data-tab="tab-t" type="button">{{ trans('main_trans.Teachers') }}</button>
                 <button class="td-tab" data-tab="tab-p" type="button">{{ trans('main_trans.Parents') }}</button>
                 <button class="td-tab" data-tab="tab-i" type="button">{{ trans('main_trans.invoices') }}</button>
+                <button class="td-tab" data-tab="tab-c" type="button">{{ trans('main_trans.List_classes') }}</button>
             </div>
 
             <div class="tab-content">
@@ -364,12 +365,12 @@
                     </table>
                 </div>
 
-                {{-- Invoices tab --}}
+                {{-- Invoices tab — يضم عمود "المتبقي" لعرض رصيد الرسوم المالية المتبقي على كل فاتورة --}}
                 <div class="tab-pane fade" id="tab-i">
                     <table class="td-table">
                         <thead><tr>
                             <th>#</th><th>{{ trans('main_trans.dash_col_invoice_date') }}</th><th>{{ trans('main_trans.dash_col_class') }}</th>
-                            <th>{{ trans('main_trans.dash_col_grade') }}</th><th>{{ trans('main_trans.status') }}</th>
+                            <th>{{ trans('main_trans.dash_col_grade') }}</th><th>{{ trans('main_trans.dash_col_balance') }}</th><th>{{ trans('main_trans.status') }}</th>
                         </tr></thead>
                         <tbody>
                             @forelse(\App\Models\Fee_invoice::latest()->take(5)->get() as $inv)
@@ -378,10 +379,33 @@
                                     <td><span class="td-pill ok">{{ $inv->invoice_date ?? '—' }}</span></td>
                                     <td>{{ $inv->classroom->Name_Class ?? '—' }}</td>
                                     <td>{{ $inv->classroom->grade->Name ?? '—' }}</td>
+                                    <td>{{ number_format($inv->balance_amount, 2) }}</td>
                                     <td><span class="td-pill ok">{{ trans('main_trans.dash_status_active') }}</span></td>
                                 </tr>
                             @empty
-                                <tr><td colspan="5" class="td-empty">{{ trans('main_trans.dash_no_invoices') }}</td></tr>
+                                <tr><td colspan="6" class="td-empty">{{ trans('main_trans.dash_no_invoices') }}</td></tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+
+                {{-- Classrooms tab — ملخص تتبّع الصفوف الدراسية وعدد طلاب كل صف --}}
+                <div class="tab-pane fade" id="tab-c">
+                    <table class="td-table">
+                        <thead><tr>
+                            <th>#</th><th>{{ trans('main_trans.dash_col_classroom_name') }}</th>
+                            <th>{{ trans('main_trans.dash_col_grade') }}</th><th>{{ trans('main_trans.dash_col_students_count') }}</th>
+                        </tr></thead>
+                        <tbody>
+                            @forelse(\App\Models\Classroom::with('Grades')->withCount('students')->latest()->take(5)->get() as $classroom)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $classroom->Name_Class }}</td>
+                                    <td>{{ $classroom->Grades->Name ?? '—' }}</td>
+                                    <td><span class="td-pill neutral">{{ $classroom->students_count }}</span></td>
+                                </tr>
+                            @empty
+                                <tr><td colspan="4" class="td-empty">{{ trans('main_trans.dash_no_classrooms') }}</td></tr>
                             @endforelse
                         </tbody>
                     </table>

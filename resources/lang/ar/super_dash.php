@@ -81,6 +81,10 @@ return [
     'total_teachers_platform'       => 'إجمالي المعلمين على المنصة',
     'total_parents_platform'        => 'إجمالي أولياء الأمور على المنصة',
     'school_requests_review_desc'   => 'راجع طلبات تسجيل المدارس الواردة من صفحة التسجيل العامة، واتخذ قرار الموافقة أو الرفض أو تعليق الوصول.',
+    'recent_signups_title'          => 'أحدث تسجيلات المدارس',
+    'search_schools_placeholder'    => 'البحث باسم المدرسة...',
+    'configure_settings_link'       => 'ضبط إعدادات المنصة',
+    'no_recent_schools'             => 'لا توجد مدارس مسجَّلة حتى الآن',
 
     // ── School requests page ──
     'total_results_label'        => 'إجمالي النتائج',

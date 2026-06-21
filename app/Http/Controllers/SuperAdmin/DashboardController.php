@@ -31,6 +31,9 @@ class DashboardController extends Controller
             'total_parents'     => My_Parent::query()->count(),
         ];
 
-        return view('super-admin.dashboard.index', compact('stats'));
+        // آخر المدارس التي انضمت للمنصة، لعرضها في جدول "أحدث التسجيلات" بلوحة التحكم
+        $recentSchools = School::query()->latest()->take(8)->get();
+
+        return view('super-admin.dashboard.index', compact('stats', 'recentSchools'));
     }
 }

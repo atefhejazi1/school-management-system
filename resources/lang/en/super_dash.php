@@ -81,6 +81,10 @@ return [
     'total_teachers_platform'       => 'Total Teachers on Platform',
     'total_parents_platform'        => 'Total Parents on Platform',
     'school_requests_review_desc'   => 'Review school registration requests submitted from the public registration page, and decide to approve, reject, or suspend access.',
+    'recent_signups_title'          => 'Recent School Sign-ups',
+    'search_schools_placeholder'    => 'Search by school name...',
+    'configure_settings_link'       => 'Configure Platform Settings',
+    'no_recent_schools'             => 'No schools registered yet',
 
     // ── School requests page ──
     'total_results_label'        => 'Total Results',
